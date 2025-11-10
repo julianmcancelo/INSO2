@@ -4,11 +4,14 @@ import { ArrowLeft, Plus, Edit, Trash2 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../context/AuthContext';
 import { categoriaAPI } from '../../services/api';
+import CategoriaFormModal from '../../components/admin/CategoriaFormModal';
 
 const AdminCategorias = () => {
   const { user } = useAuth();
   const [categorias, setCategorias] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [categoriaEditar, setCategoriaEditar] = useState(null);
 
   const cargarCategorias = useCallback(async () => {
     if (!user?.localId) return;
@@ -35,6 +38,25 @@ const AdminCategorias = () => {
     }
   }, [user, cargarCategorias]);
 
+  const handleNuevaCategoria = () => {
+    setCategoriaEditar(null);
+    setShowModal(true);
+  };
+
+  const handleEditarCategoria = (categoria) => {
+    setCategoriaEditar(categoria);
+    setShowModal(true);
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    setCategoriaEditar(null);
+  };
+
+  const handleModalSuccess = () => {
+    cargarCategorias();
+  };
+
   const eliminarCategoria = async (id) => {
     if (!window.confirm('¿Estás seguro de eliminar esta categoría?')) return;
 
@@ -59,7 +81,10 @@ const AdminCategorias = () => {
               </Link>
               <h1 className="text-3xl font-bold text-gray-900">Categorías</h1>
             </div>
-            <button className="flex items-center space-x-2 bg-primary text-white px-4 py-2 rounded-lg hover:opacity-90">
+            <button 
+              onClick={handleNuevaCategoria}
+              className="flex items-center space-x-2 bg-primary text-white px-4 py-2 rounded-lg hover:opacity-90"
+            >
               <Plus size={18} />
               <span>Nueva Categoría</span>
             </button>
@@ -85,7 +110,10 @@ const AdminCategorias = () => {
         ) : categorias.length === 0 ? (
           <div className="bg-white rounded-lg shadow p-12 text-center">
             <p className="text-gray-500 mb-4">No hay categorías creadas</p>
-            <button className="bg-primary text-white px-6 py-2 rounded-lg hover:opacity-90">
+            <button 
+              onClick={handleNuevaCategoria}
+              className="bg-primary text-white px-6 py-2 rounded-lg hover:opacity-90"
+            >
               Crear Primera Categoría
             </button>
           </div>
@@ -108,7 +136,10 @@ const AdminCategorias = () => {
                     </div>
                     
                     <div className="flex space-x-3 ml-4">
-                      <button className="text-blue-600 hover:text-blue-800 p-2">
+                      <button 
+                        onClick={() => handleEditarCategoria(categoria)}
+                        className="text-blue-600 hover:text-blue-800 p-2"
+                      >
                         <Edit size={20} />
                       </button>
                       <button
@@ -125,6 +156,14 @@ const AdminCategorias = () => {
           </div>
         )}
       </main>
+
+      {showModal && (
+        <CategoriaFormModal
+          categoria={categoriaEditar}
+          onClose={handleModalClose}
+          onSuccess={handleModalSuccess}
+        />
+      )}
     </div>
   );
 };

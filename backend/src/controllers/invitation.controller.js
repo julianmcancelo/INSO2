@@ -7,7 +7,7 @@ const { Op } = require('sequelize');
 exports.create = async (req, res) => {
   try {
     const { localId, email, rol, diasExpiracion } = req.body;
-    const userId = req.user.userId;
+    const userId = req.user.id;
 
     // Validar rol
     if (!['admin', 'staff'].includes(rol)) {
