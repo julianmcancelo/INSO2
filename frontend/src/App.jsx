@@ -10,6 +10,7 @@ import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 
 // Páginas
+import LandingPage from './pages/LandingPage';
 import SetupPage from './pages/SetupPage';
 import RegisterByInvitation from './pages/RegisterByInvitation';
 import MenuPage from './pages/cliente/MenuPage';
@@ -18,6 +19,7 @@ import SeguimientoPedidoPage from './pages/cliente/SeguimientoPedidoPage';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminLocales from './pages/admin/AdminLocales';
+import AdminSolicitudes from './pages/admin/AdminSolicitudes';
 import AdminProductos from './pages/admin/AdminProductos';
 import AdminPedidos from './pages/admin/AdminPedidos';
 import AdminCategorias from './pages/admin/AdminCategorias';
@@ -78,20 +80,13 @@ function App() {
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/admin" element={<PrivateRoute><AdminDashboard /></PrivateRoute>} />
                 <Route path="/admin/locales" element={<PrivateRoute><AdminLocales /></PrivateRoute>} />
+                <Route path="/admin/solicitudes" element={<PrivateRoute><AdminSolicitudes /></PrivateRoute>} />
                 <Route path="/admin/productos" element={<PrivateRoute><AdminProductos /></PrivateRoute>} />
                 <Route path="/admin/pedidos" element={<PrivateRoute><AdminPedidos /></PrivateRoute>} />
                 <Route path="/admin/categorias" element={<PrivateRoute><AdminCategorias /></PrivateRoute>} />
 
-                {/* Ruta por defecto */}
-                <Route path="/" element={
-                  <div className="min-h-screen flex items-center justify-center bg-gray-50">
-                    <div className="text-center">
-                      <h1 className="text-4xl font-bold text-gray-800 mb-4">Menú Digital</h1>
-                      <p className="text-gray-600">Sistema de menú digital para restaurantes</p>
-                      <p className="text-sm text-gray-500 mt-4">Accede como administrador: /admin/login</p>
-                    </div>
-                  </div>
-                } />
+                {/* Landing Page */}
+                <Route path="/" element={<LandingPage />} />
               </Routes>
 
               <ToastContainer

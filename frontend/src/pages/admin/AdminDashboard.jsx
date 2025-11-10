@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, Package, Grid, BarChart3, LogOut, Store } from 'lucide-react';
+import { ShoppingBag, Package, Grid, BarChart3, LogOut, Store, FileText } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { pedidoAPI } from '../../services/api';
 import socketService from '../../services/socket';
@@ -135,16 +135,27 @@ const AdminDashboard = () => {
         )}
 
         {/* Accesos rápidos */}
-        <div className={`grid grid-cols-1 md:grid-cols-${user?.rol === 'superadmin' ? '4' : '3'} gap-6 mb-8`}>
+        <div className={`grid grid-cols-1 md:grid-cols-${user?.rol === 'superadmin' ? '2' : '3'} lg:grid-cols-${user?.rol === 'superadmin' ? '5' : '3'} gap-6 mb-8`}>
           {user?.rol === 'superadmin' && (
-            <Link
-              to="/admin/locales"
-              className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow p-6 hover:shadow-md transition text-white"
-            >
-              <Store className="mb-4" size={32} />
-              <h3 className="text-lg font-semibold mb-2">Gestionar Locales</h3>
-              <p className="text-sm text-blue-100">Crear y administrar locales</p>
-            </Link>
+            <>
+              <Link
+                to="/admin/solicitudes"
+                className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg shadow p-6 hover:shadow-md transition text-white"
+              >
+                <FileText className="mb-4" size={32} />
+                <h3 className="text-lg font-semibold mb-2">Solicitudes</h3>
+                <p className="text-sm text-green-100">Revisar nuevas solicitudes</p>
+              </Link>
+              
+              <Link
+                to="/admin/locales"
+                className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow p-6 hover:shadow-md transition text-white"
+              >
+                <Store className="mb-4" size={32} />
+                <h3 className="text-lg font-semibold mb-2">Gestionar Locales</h3>
+                <p className="text-sm text-blue-100">Crear y administrar locales</p>
+              </Link>
+            </>
           )}
           
           <Link
