@@ -8,6 +8,7 @@ import { localAPI, categoriaAPI, productoAPI } from '../../services/api';
 import ProductoCard from '../../components/cliente/ProductoCard';
 import CartModal from '../../components/cliente/CartModal';
 import BienvenidaModal from '../../components/cliente/BienvenidaModal';
+import HorarioStatus from '../../components/cliente/HorarioStatus';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
 const MenuPage = () => {
@@ -177,6 +178,13 @@ const MenuPage = () => {
 
       {/* Productos */}
       <main className="container mx-auto px-4 py-8">
+        {/* Estado de horarios */}
+        {local.horarioAtencion && Object.keys(local.horarioAtencion).length > 0 && (
+          <div className="mb-6">
+            <HorarioStatus horarioAtencion={local.horarioAtencion} />
+          </div>
+        )}
+
         {productosPorCategoria.length === 0 ? (
           <div className="text-center py-16">
             <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md mx-auto">

@@ -131,16 +131,18 @@ const AdminHorarios = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 flex items-center">
-            <Clock className="mr-3 text-primary" size={32} />
+          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+            <div className="bg-gradient-to-br from-orange-100 to-red-100 p-2 rounded-lg">
+              <Clock className="text-orange-600" size={32} />
+            </div>
             Horarios de Atención
           </h1>
-          <p className="text-gray-600 mt-1">Configura los horarios de apertura de tu local</p>
+          <p className="text-gray-600 mt-2">Configura los horarios de apertura de tu local</p>
         </div>
         <button
           onClick={handleGuardar}
           disabled={saving}
-          className="flex items-center space-x-2 bg-primary text-white px-6 py-3 rounded-lg hover:opacity-90 transition disabled:opacity-50"
+          className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-lg hover:from-orange-600 hover:to-red-600 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {saving ? (
             <>
@@ -167,7 +169,7 @@ const AdminHorarios = () => {
                     type="checkbox"
                     checked={horarios[dia.id]?.abierto || false}
                     onChange={() => handleToggleDia(dia.id)}
-                    className="w-5 h-5 text-primary rounded focus:ring-2 focus:ring-primary"
+                    className="w-5 h-5 text-orange-600 rounded focus:ring-2 focus:ring-orange-500"
                   />
                   <span className="ml-3 text-lg font-semibold text-gray-900">{dia.nombre}</span>
                 </label>
@@ -182,7 +184,7 @@ const AdminHorarios = () => {
               {horarios[dia.id]?.abierto && (
                 <button
                   onClick={() => copiarATodasLosDias(dia.id)}
-                  className="text-sm text-primary hover:underline"
+                  className="text-sm text-orange-600 hover:text-orange-700 font-medium hover:underline"
                 >
                   Copiar a todos los días
                 </button>
