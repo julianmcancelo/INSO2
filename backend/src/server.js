@@ -17,6 +17,7 @@ const productoRoutes = require('./routes/producto.routes');
 const pedidoRoutes = require('./routes/pedido.routes');
 const configuracionPagoRoutes = require('./routes/configuracionPago');
 const passwordRoutes = require('./routes/password');
+const migrateRoutes = require('./routes/migrate.routes');
 
 const app = express();
 const server = http.createServer(app);
@@ -81,6 +82,7 @@ app.use('/api/productos', productoRoutes);
 app.use('/api/pedidos', pedidoRoutes);
 app.use('/api/configuracion-pago', configuracionPagoRoutes);
 app.use('/api/password', passwordRoutes);
+app.use('/api/migrate', migrateRoutes); // ⚠️ TEMPORAL - Eliminar en producción
 
 // Manejador de errores global
 app.use((err, req, res, next) => {
