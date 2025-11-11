@@ -43,13 +43,17 @@ En Railway Dashboard → Backend Service → Variables, agrega:
 NODE_ENV=production
 PORT=5000
 
-# Base de Datos (Railway te da estas automáticamente)
-DB_DIALECT=mysql
-DB_HOST=${{MySQL.MYSQL_HOST}}
-DB_PORT=${{MySQL.MYSQL_PORT}}
-DB_USER=${{MySQL.MYSQL_USER}}
-DB_PASSWORD=${{MySQL.MYSQL_PASSWORD}}
-DB_NAME=${{MySQL.MYSQL_DATABASE}}
+# Base de Datos (Neon PostgreSQL)
+# Opción 1: Usar DATABASE_URL (Recomendado)
+DATABASE_URL=postgresql://usuario:password@host.neon.tech/dbname?sslmode=require
+
+# Opción 2: Variables individuales
+DB_DIALECT=postgres
+DB_HOST=tu-proyecto.neon.tech
+DB_PORT=5432
+DB_USER=tu-usuario
+DB_PASSWORD=tu-password
+DB_NAME=neondb
 
 # JWT
 JWT_SECRET=tu-secreto-super-seguro-cambiame-en-produccion-12345

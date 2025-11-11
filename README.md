@@ -163,47 +163,49 @@ Los servicios se auto-recargan al detectar cambios (hot reload habilitado).
 
 ## 🌐 Despliegue en Producción
 
-### Arquitectura Recomendada
+### Arquitectura Recomendada: Vercel + Neon ⭐
 
 ```
-┌─────────────┐      ┌─────────────┐      ┌─────────────┐
-│   Vercel    │ ───> │   Railway   │ ───> │MySQL Railway│
-│  (Frontend) │      │  (Backend)  │      │  (Database) │
-└─────────────┘      └─────────────┘      └─────────────┘
+┌─────────────────────────┐      ┌─────────────┐
+│       Vercel            │ ───> │    Neon     │
+│  Frontend + Backend API │      │ PostgreSQL  │
+└─────────────────────────┘      └─────────────┘
 ```
 
-### 🚀 Guía Rápida de Despliegue
+**Todo en un solo lugar** - Más simple y eficiente
 
-#### 1. Backend en Railway
+### 🚀 Despliegue en 3 Pasos
+
+#### 1. Crear Base de Datos en Neon
 
 ```bash
-# 1. Crear proyecto en Railway
-# 2. Agregar MySQL Database
-# 3. Conectar repositorio GitHub
-# 4. Configurar variables de entorno
-# 5. Deploy automático
+# 1. Ir a https://neon.tech
+# 2. Crear proyecto
+# 3. Copiar DATABASE_URL
 ```
 
-📖 **Guía completa**: [DEPLOY_RAILWAY.md](DEPLOY_RAILWAY.md)
-
-#### 2. Frontend en Vercel
+#### 2. Desplegar en Vercel
 
 ```bash
-# Opción 1: Desde la web
-# 1. Ir a vercel.com/new
+# 1. Ir a https://vercel.com/new
 # 2. Importar repo de GitHub
 # 3. Configurar variables de entorno
-# 4. Deploy
-
-# Opción 2: Desde CLI
-.\deploy-vercel.ps1
+# 4. Deploy (frontend + backend juntos)
 ```
 
-📖 **Guía completa**: [QUICK_START_VERCEL.md](QUICK_START_VERCEL.md)
+#### 3. Crear Usuario Admin
 
-### ✅ Checklist de Despliegue
+```sql
+-- En Neon SQL Editor
+INSERT INTO usuarios ...
+```
 
-Sigue la lista paso a paso: [DEPLOY_CHECKLIST.md](DEPLOY_CHECKLIST.md)
+📖 **Guía completa paso a paso**: [DEPLOY_VERCEL_NEON.md](DEPLOY_VERCEL_NEON.md)
+
+### Alternativas de Despliegue
+
+- **Railway + Neon**: [NEON_RAILWAY_SETUP.md](NEON_RAILWAY_SETUP.md)
+- **Vercel Solo Frontend**: [QUICK_START_VERCEL.md](QUICK_START_VERCEL.md)
 
 ### Variables de Entorno en Producción
 
