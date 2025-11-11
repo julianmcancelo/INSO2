@@ -162,7 +162,7 @@ const LandingPage = () => {
                           onChange={handleInputChange}
                           placeholder="Nombre completo"
                           required
-                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition"
+                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-gray-900"
                         />
                       </div>
 
@@ -178,7 +178,7 @@ const LandingPage = () => {
                           onChange={handleInputChange}
                           placeholder="tu@email.com"
                           required
-                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition"
+                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-gray-900"
                         />
                       </div>
                     </div>
@@ -195,7 +195,7 @@ const LandingPage = () => {
                           value={formData.telefono}
                           onChange={handleInputChange}
                           placeholder="+54 11 1234-5678"
-                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition"
+                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-gray-900"
                         />
                       </div>
 
@@ -207,7 +207,7 @@ const LandingPage = () => {
                           name="tipoNegocio"
                           value={formData.tipoNegocio}
                           onChange={handleInputChange}
-                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition"
+                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-gray-900"
                         >
                           <option value="">Selecciona...</option>
                           <option value="restaurante">Restaurante</option>
@@ -232,7 +232,7 @@ const LandingPage = () => {
                         onChange={handleInputChange}
                         placeholder="Cuéntanos sobre tu negocio..."
                         rows={3}
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition"
+                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-gray-900"
                       />
                     </div>
 
