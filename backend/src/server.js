@@ -111,4 +111,10 @@ process.on('SIGINT', async () => {
   });
 });
 
-startServer();
+// Solo iniciar servidor si no estamos en Vercel
+if (process.env.VERCEL !== '1') {
+  startServer();
+}
+
+// Exportar app para Vercel Serverless
+module.exports = app;

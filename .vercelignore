@@ -1,9 +1,9 @@
 node_modules
 .git
-backend
 database
 docker-compose.yml
 Dockerfile
 *.log
 .env
 .DS_Store
+backend/node_modules
