@@ -180,11 +180,11 @@ const ConfirmacionPage = () => {
   if (!local) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-4 sm:py-8">
       <div className="container mx-auto px-4 max-w-2xl">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Confirmar Pedido</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">Confirmar Pedido</h1>
 
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-4 sm:mb-6">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">Resumen del Pedido</h2>
           <div className="space-y-2">
             {cart.map((item, idx) => (
@@ -257,42 +257,42 @@ const ConfirmacionPage = () => {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Tipo de Entrega *
             </label>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
               <button
                 type="button"
                 onClick={() => setFormData(prev => ({ ...prev, tipoEntrega: 'mesa' }))}
-                className={`py-3 px-4 rounded-lg border-2 transition flex flex-col items-center ${
+                className={`py-2 sm:py-3 px-2 sm:px-4 rounded-lg border-2 transition flex flex-col items-center ${
                   formData.tipoEntrega === 'mesa'
                     ? 'border-primary bg-primary bg-opacity-10'
                     : 'border-gray-300 hover:border-gray-400'
                 }`}
               >
-                <MapPin size={24} className="mb-1" />
-                <span className="text-sm font-medium">Mesa</span>
+                <MapPin size={20} className="sm:w-6 sm:h-6 mb-1" />
+                <span className="text-xs sm:text-sm font-medium">Mesa</span>
               </button>
               <button
                 type="button"
                 onClick={() => setFormData(prev => ({ ...prev, tipoEntrega: 'llevar' }))}
-                className={`py-3 px-4 rounded-lg border-2 transition flex flex-col items-center ${
+                className={`py-2 sm:py-3 px-2 sm:px-4 rounded-lg border-2 transition flex flex-col items-center ${
                   formData.tipoEntrega === 'llevar'
                     ? 'border-primary bg-primary bg-opacity-10'
                     : 'border-gray-300 hover:border-gray-400'
                 }`}
               >
-                <Home size={24} className="mb-1" />
-                <span className="text-sm font-medium">Para Llevar</span>
+                <Home size={20} className="sm:w-6 sm:h-6 mb-1" />
+                <span className="text-xs sm:text-sm font-medium">Para Llevar</span>
               </button>
               <button
                 type="button"
                 onClick={() => setFormData(prev => ({ ...prev, tipoEntrega: 'delivery' }))}
-                className={`py-3 px-4 rounded-lg border-2 transition flex flex-col items-center ${
+                className={`py-2 sm:py-3 px-2 sm:px-4 rounded-lg border-2 transition flex flex-col items-center ${
                   formData.tipoEntrega === 'delivery'
                     ? 'border-primary bg-primary bg-opacity-10'
                     : 'border-gray-300 hover:border-gray-400'
                 }`}
               >
-                <Bike size={24} className="mb-1" />
-                <span className="text-sm font-medium">Delivery</span>
+                <Bike size={20} className="sm:w-6 sm:h-6 mb-1" />
+                <span className="text-xs sm:text-sm font-medium">Delivery</span>
               </button>
             </div>
           </div>

@@ -80,20 +80,21 @@ const AdminPedidos = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <Link to="/admin" className="text-gray-600 hover:text-gray-900">
-                <ArrowLeft size={24} />
+                <ArrowLeft size={20} className="sm:w-6 sm:h-6" />
               </Link>
-              <h1 className="text-3xl font-bold text-gray-900">Gestión de Pedidos</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Gestión de Pedidos</h1>
             </div>
             <button
               onClick={cargarPedidos}
-              className="flex items-center space-x-2 bg-primary text-white px-4 py-2 rounded-lg hover:opacity-90"
+              className="flex items-center space-x-2 bg-primary text-white px-3 sm:px-4 py-2 rounded-lg hover:opacity-90 text-sm sm:text-base"
             >
-              <RefreshCw size={18} />
-              <span>Actualizar</span>
+              <RefreshCw size={16} className="sm:w-[18px] sm:h-[18px]" />
+              <span className="hidden sm:inline">Actualizar</span>
+              <span className="sm:hidden">Refrescar</span>
             </button>
           </div>
         </div>
@@ -101,13 +102,13 @@ const AdminPedidos = () => {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Filtros */}
-        <div className="bg-white rounded-lg shadow p-4 mb-6">
-          <div className="flex flex-wrap gap-2">
+        <div className="bg-white rounded-lg shadow p-3 sm:p-4 mb-6">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2">
             {estados.map(estado => (
               <button
                 key={estado.value}
                 onClick={() => setFiltroEstado(estado.value)}
-                className={`px-4 py-2 rounded-lg transition ${
+                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition text-sm sm:text-base ${
                   filtroEstado === estado.value
                     ? 'bg-primary text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -138,8 +139,12 @@ const AdminPedidos = () => {
           <div className="bg-white rounded-lg shadow p-12 text-center">
             <p className="text-gray-500">No hay pedidos para mostrar</p>
           </div>
+        ) : pedidosFiltrados.length === 0 ? (
+          <div className="bg-white rounded-lg shadow p-12 text-center">
+            <p className="text-gray-500">No hay pedidos para mostrar</p>
+          </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             {pedidosFiltrados.map(pedido => (
               <div key={pedido.id} className="bg-white rounded-lg shadow-md overflow-hidden">
                 {/* Header del pedido */}

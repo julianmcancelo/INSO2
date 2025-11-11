@@ -56,7 +56,7 @@ const AdminLogin = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Lado Izquierdo - Ilustración y Beneficios */}
-      <div className="hidden lg:flex lg:w-1/2 bg-white p-12 flex-col justify-center">
+      <div className="hidden md:flex md:w-1/2 bg-white p-6 lg:p-12 flex-col justify-center">
         <div className="max-w-lg">
           {/* Ilustración */}
           <div className="mb-12">
@@ -131,10 +131,10 @@ const AdminLogin = () => {
       </div>
 
       {/* Lado Derecho - Formulario de Login */}
-      <div className="flex-1 flex items-center justify-center p-8">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-6 md:p-8">
         <div className="max-w-md w-full">
           {/* Logo y selector de idioma */}
-          <div className="flex items-center justify-between mb-12">
+          <div className="flex items-center justify-between mb-6 sm:mb-8 md:mb-12">
             <BrandLogo size="md" showText={true} />
             <button className="text-sm text-gray-600 hover:text-gray-900 flex items-center space-x-1">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -145,7 +145,7 @@ const AdminLogin = () => {
           </div>
 
           {/* Título */}
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
             Inicia sesión con tu correo electrónico
           </h2>
 

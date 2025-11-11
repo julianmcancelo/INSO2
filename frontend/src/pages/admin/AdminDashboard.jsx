@@ -48,18 +48,18 @@ const AdminDashboard = () => {
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
       <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold text-gray-900">Panel de Administración</h1>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-600">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Panel de Administración</h1>
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <span className="text-sm sm:text-base text-gray-600 hidden sm:inline">
                 {user?.nombre} ({user?.rol})
               </span>
               <button
                 onClick={logout}
-                className="flex items-center space-x-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+                className="flex items-center space-x-1 sm:space-x-2 bg-red-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-red-700 text-sm sm:text-base"
               >
-                <LogOut size={18} />
+                <LogOut size={16} className="sm:w-[18px] sm:h-[18px]" />
                 <span>Salir</span>
               </button>
             </div>
@@ -135,7 +135,7 @@ const AdminDashboard = () => {
         )}
 
         {/* Accesos rápidos */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mb-8">
           {user?.rol === 'superadmin' && (
             <>
               <Link
