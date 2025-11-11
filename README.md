@@ -1,6 +1,39 @@
-# 🍔 App de Menú Digital Multi-Local
+# 🍽️ Cartita - Sistema Multi-Local
 
-Aplicación completa de menú digital para restaurantes, bares y locales gastronómicos. Sistema multi-local con personalización por establecimiento.
+<div align="center">
+
+### **[cartita.digital](https://cartita.digital)**
+
+*La plataforma definitiva para digitalizar tu restaurante en 2025*
+
+[![Año](https://img.shields.io/badge/Año-2025-blue.svg)](https://cartita.digital)
+[![Estado](https://img.shields.io/badge/Estado-Producción-success.svg)](https://cartita.digital)
+[![Tech](https://img.shields.io/badge/Stack-React%20%7C%20Node.js%20%7C%20PostgreSQL-orange.svg)](https://cartita.digital)
+
+</div>
+
+---
+
+## 🌟 Introducción
+
+En **2025**, la industria gastronómica ha evolucionado completamente hacia lo digital. Los clientes esperan experiencias sin fricción: escanear un código QR, ver el menú en sus dispositivos y hacer pedidos en segundos.
+
+**Cartita** es la plataforma completa que permite a restaurantes, bares y locales gastronómicos ofrecer una experiencia digital de primera clase:
+
+- ✨ **Sin Apps**: Los clientes acceden desde el navegador, sin descargas
+- 🚀 **Setup en Minutos**: De solicitud a menú online en 24 horas
+- 💰 **Sin Permanencia**: Prueba gratuita de 30 días
+- 📱 **100% Móvil**: Diseñado para la generación mobile-first
+- 🏢 **Multi-Local**: Ideal para cadenas o grupos gastronómicos
+- ⚡ **Tiempo Real**: Pedidos y notificaciones instantáneas con WebSockets
+
+> 📖 **Para una introducción detallada**, lee [INTRODUCCION.md](INTRODUCCION.md)
+
+---
+
+## 📋 Descripción
+
+Aplicación completa de carta digital para restaurantes, bares y locales gastronómicos. Sistema multi-local con menú QR, pedidos online y personalización por establecimiento.
 
 ## 🏗️ Arquitectura
 
@@ -127,6 +160,67 @@ INSO2/
 ## 🛠️ Desarrollo
 
 Los servicios se auto-recargan al detectar cambios (hot reload habilitado).
+
+## 🌐 Despliegue en Producción
+
+### Arquitectura Recomendada
+
+```
+┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+│   Vercel    │ ───> │   Railway   │ ───> │MySQL Railway│
+│  (Frontend) │      │  (Backend)  │      │  (Database) │
+└─────────────┘      └─────────────┘      └─────────────┘
+```
+
+### 🚀 Guía Rápida de Despliegue
+
+#### 1. Backend en Railway
+
+```bash
+# 1. Crear proyecto en Railway
+# 2. Agregar MySQL Database
+# 3. Conectar repositorio GitHub
+# 4. Configurar variables de entorno
+# 5. Deploy automático
+```
+
+📖 **Guía completa**: [DEPLOY_RAILWAY.md](DEPLOY_RAILWAY.md)
+
+#### 2. Frontend en Vercel
+
+```bash
+# Opción 1: Desde la web
+# 1. Ir a vercel.com/new
+# 2. Importar repo de GitHub
+# 3. Configurar variables de entorno
+# 4. Deploy
+
+# Opción 2: Desde CLI
+.\deploy-vercel.ps1
+```
+
+📖 **Guía completa**: [QUICK_START_VERCEL.md](QUICK_START_VERCEL.md)
+
+### ✅ Checklist de Despliegue
+
+Sigue la lista paso a paso: [DEPLOY_CHECKLIST.md](DEPLOY_CHECKLIST.md)
+
+### Variables de Entorno en Producción
+
+```env
+# Frontend (Vercel)
+REACT_APP_API_URL=https://tu-backend.railway.app
+REACT_APP_SOCKET_URL=https://tu-backend.railway.app
+
+# Backend (Railway/Render)
+NODE_ENV=production
+DB_HOST=tu-db-host
+DB_USER=tu-usuario
+DB_PASSWORD=tu-password
+DB_NAME=menu_digital
+JWT_SECRET=tu-secreto-seguro
+FRONTEND_URL=https://tu-app.vercel.app
+```
 
 ## 📝 Credenciales por Defecto
 

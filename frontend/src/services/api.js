@@ -104,4 +104,12 @@ export const configuracionPagoAPI = {
   update: (localId, data) => api.put(`/configuracion-pago/${localId}`, data)
 };
 
+// API de Configuración Global
+export const configuracionAPI = {
+  getMantenimiento: () => api.get('/configuracion/mantenimiento'),
+  getByKey: (clave) => api.get(`/configuracion/${clave}`),
+  getAll: () => api.get('/configuracion'),
+  update: (data) => api.put('/configuracion', data)
+};
+
 export default api;

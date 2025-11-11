@@ -17,10 +17,6 @@ const RegisterByInvitation = () => {
     confirmPassword: ''
   });
 
-  useEffect(() => {
-    validateToken();
-  }, [token]);
-
   const validateToken = async () => {
     try {
       const response = await invitationAPI.validateToken(token);
@@ -38,6 +34,11 @@ const RegisterByInvitation = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    validateToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

@@ -7,6 +7,7 @@ const PedidoItem = require('./PedidoItem');
 const Invitacion = require('./Invitacion');
 const Solicitud = require('./Solicitud');
 const ConfiguracionPago = require('./ConfiguracionPago');
+const ConfiguracionGlobal = require('./ConfiguracionGlobal');
 
 // Definir relaciones
 
@@ -67,5 +68,6 @@ module.exports = {
   PedidoItem,
   Invitacion,
   Solicitud,
-  ConfiguracionPago
+  ConfiguracionPago,
+  ConfiguracionGlobal
 };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, Package, Grid, BarChart3, LogOut, Store, FileText, QrCode } from 'lucide-react';
+import { ShoppingBag, Package, Grid, BarChart3, LogOut, Store, FileText, QrCode, Clock, Settings } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { pedidoAPI } from '../../services/api';
 import socketService from '../../services/socket';
@@ -193,6 +193,26 @@ const AdminDashboard = () => {
             <h3 className="text-lg font-semibold mb-2">Código QR</h3>
             <p className="text-sm text-purple-100">Ver y descargar QR del menú</p>
           </Link>
+
+          <Link
+            to="/admin/horarios"
+            className="bg-gradient-to-br from-indigo-500 to-blue-600 rounded-lg shadow p-6 hover:shadow-md transition text-white"
+          >
+            <Clock className="mb-4" size={32} />
+            <h3 className="text-lg font-semibold mb-2">Horarios</h3>
+            <p className="text-sm text-indigo-100">Configurar horarios de atención</p>
+          </Link>
+
+          {user?.rol === 'superadmin' && (
+            <Link
+              to="/admin/mantenimiento"
+              className="bg-gradient-to-br from-gray-700 to-gray-900 rounded-lg shadow p-6 hover:shadow-md transition text-white"
+            >
+              <Settings className="mb-4" size={32} />
+              <h3 className="text-lg font-semibold mb-2">Mantenimiento</h3>
+              <p className="text-sm text-gray-300">Activar modo mantenimiento</p>
+            </Link>
+          )}
         </div>
 
         {/* Pedidos recientes */}

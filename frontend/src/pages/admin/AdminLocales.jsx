@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Plus, Edit, Trash2, Store, Users, UserPlus, Copy } from 'lucide-react';
+import { ArrowLeft, Plus, Edit, Trash2, Store, Users, UserPlus } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../context/AuthContext';
 import { localAPI, invitationAPI } from '../../services/api';

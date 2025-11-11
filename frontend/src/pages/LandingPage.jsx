@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Store, Mail, User, Phone, MessageSquare, CheckCircle, ArrowRight } from 'lucide-react';
+import { Mail, User, Phone, MessageSquare, CheckCircle, ArrowRight, QrCode, Zap, TrendingUp } from 'lucide-react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import BrandLogo from '../components/BrandLogo';
+import PhoneMockup from '../components/PhoneMockup';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
@@ -10,7 +12,7 @@ const LandingPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [expanded, setExpanded] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     nombreNegocio: '',
     nombreContacto: '',
@@ -73,89 +75,83 @@ const LandingPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50">
-      {/* Hero Section */}
-      <section className="container mx-auto px-4 py-16">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              Digitaliza tu <span className="text-primary">Restaurante</span>
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Sistema completo de menú digital con pedidos en tiempo real, gestión de productos y seguimiento de órdenes. 
-              Todo lo que necesitas en una sola plataforma.
-            </p>
-          </div>
-
-          {/* Features Grid */}
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
-              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
-                <Store className="text-primary" size={24} />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Menú Digital</h3>
-              <p className="text-gray-600">
-                Catálogo interactivo con fotos, descripciones y precios actualizados en tiempo real.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
-              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
-                <CheckCircle className="text-orange-500" size={24} />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Pedidos Online</h3>
-              <p className="text-gray-600">
-                Recibe y gestiona pedidos desde cualquier dispositivo con notificaciones instantáneas.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
-              <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
-                <MessageSquare className="text-yellow-600" size={24} />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Multi-Local</h3>
-              <p className="text-gray-600">
-                Administra múltiples sucursales desde un solo panel de control centralizado.
-              </p>
-            </div>
-          </div>
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 bg-white shadow-sm z-40">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+          <BrandLogo size="sm" showText={true} />
+          <button
+            onClick={() => navigate('/admin/login')}
+            className="px-6 py-2 rounded-lg font-semibold text-gray-700 hover:bg-gray-100 transition border border-gray-300"
+          >
+            Iniciar sesión
+          </button>
         </div>
-      </section>
+      </header>
 
-      {/* Form Section */}
-      <section className="container mx-auto px-4 pb-16">
-        <div className="max-w-xl mx-auto">
-          <div className="bg-white rounded-xl shadow-xl overflow-hidden">
-            <div className="bg-gradient-to-r from-primary to-orange-500 p-6 text-white text-center">
-              <h2 className="text-2xl font-bold mb-1">Comienza Hoy</h2>
-              <p className="text-red-100 text-sm">Completa el formulario y nos pondremos en contacto</p>
-            </div>
-
-            <form onSubmit={handleSubmit} className="p-6">
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <Store size={16} className="inline mr-1" />
-                    Nombre del Negocio *
-                  </label>
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-amber-400 via-orange-400 to-red-500 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 py-20 md:py-32 grid md:grid-cols-2 gap-12 items-center">
+          {/* Left Content */}
+          <div className="text-white">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+              Tu restaurante
+              <br />
+              <span className="text-yellow-300">100% digital</span>
+            </h1>
+            <p className="text-2xl md:text-3xl mb-8 text-white/90">
+              Menú QR, pedidos online y mucho más
+            </p>
+            
+            <div className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Input principal siempre visible */}
+                <div className="bg-white rounded-xl p-2 shadow-2xl flex items-center">
                   <input
                     type="text"
                     name="nombreNegocio"
                     value={formData.nombreNegocio}
                     onChange={handleInputChange}
-                    onFocus={() => setExpanded(true)}
-                    placeholder="Ej: Pizzería Roma"
+                    placeholder="¿Cómo se llama tu negocio?"
+                    className="flex-1 px-4 py-4 text-gray-900 text-lg focus:outline-none rounded-lg"
+                    onFocus={() => setShowForm(true)}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition"
                   />
+                  <button 
+                    type="submit"
+                    disabled={loading}
+                    className="bg-primary text-white px-8 py-4 rounded-lg font-bold hover:opacity-90 transition flex items-center space-x-2 disabled:opacity-50"
+                  >
+                    {loading ? (
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    ) : (
+                      <>
+                        <span>Empezar</span>
+                        <ArrowRight size={20} />
+                      </>
+                    )}
+                  </button>
                 </div>
 
-                {expanded && (
-                  <div className="space-y-4 animate-fadeIn">
+                {/* Formulario expandible con animación */}
+                <div className={`transition-all duration-500 ease-in-out overflow-hidden ${
+                  showForm ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'
+                }`}>
+                  <div className="bg-white rounded-xl p-6 shadow-2xl space-y-4">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-xl font-bold text-gray-900">Completa tus datos</h3>
+                      <button 
+                        type="button"
+                        onClick={() => setShowForm(false)}
+                        className="text-gray-400 hover:text-gray-600 transition"
+                      >
+                        ✕
+                      </button>
+                    </div>
 
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
                           <User size={16} className="inline mr-1" />
                           Tu Nombre *
                         </label>
@@ -166,12 +162,12 @@ const LandingPage = () => {
                           onChange={handleInputChange}
                           placeholder="Nombre completo"
                           required
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
                           <Mail size={16} className="inline mr-1" />
                           Email *
                         </label>
@@ -182,14 +178,14 @@ const LandingPage = () => {
                           onChange={handleInputChange}
                           placeholder="tu@email.com"
                           required
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition"
                         />
                       </div>
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
                           <Phone size={16} className="inline mr-1" />
                           Teléfono
                         </label>
@@ -199,19 +195,19 @@ const LandingPage = () => {
                           value={formData.telefono}
                           onChange={handleInputChange}
                           placeholder="+54 11 1234-5678"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
                           Tipo de Negocio
                         </label>
                         <select
                           name="tipoNegocio"
                           value={formData.tipoNegocio}
                           onChange={handleInputChange}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition"
                         >
                           <option value="">Selecciona...</option>
                           <option value="restaurante">Restaurante</option>
@@ -226,7 +222,7 @@ const LandingPage = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
                         <MessageSquare size={16} className="inline mr-1" />
                         Mensaje (Opcional)
                       </label>
@@ -236,47 +232,83 @@ const LandingPage = () => {
                         onChange={handleInputChange}
                         placeholder="Cuéntanos sobre tu negocio..."
                         rows={3}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition"
                       />
                     </div>
+
+                    <p className="text-center text-xs text-gray-500">
+                      Al enviar, aceptas que nos pongamos en contacto contigo
+                    </p>
                   </div>
-                )}
-              </div>
+                </div>
+              </form>
 
-              <button
-                type="submit"
-                disabled={loading || !expanded}
-                className="w-full mt-6 bg-primary text-white py-3 rounded-lg font-semibold hover:opacity-90 transition disabled:opacity-50 flex items-center justify-center space-x-2"
-              >
-                {loading ? (
-                  <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                    <span>Enviando...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Enviar Solicitud</span>
-                    <ArrowRight size={20} />
-                  </>
-                )}
-              </button>
-
-              <p className="text-center text-sm text-gray-500 mt-4">
-                Al enviar, aceptas que nos pongamos en contacto contigo
+              <p className="text-white/80 text-sm text-center">
+                Sin permanencia • Prueba gratis 30 días
               </p>
-            </form>
+            </div>
           </div>
 
-          <div className="text-center mt-8">
-            <button
-              onClick={() => navigate('/admin/login')}
-              className="text-gray-600 hover:text-primary transition"
-            >
-              ¿Ya tienes una cuenta? <span className="font-semibold">Inicia Sesión</span>
-            </button>
+          {/* Right Phone Mockup */}
+          <div className="relative hidden md:flex items-center justify-center">
+            <PhoneMockup />
+          </div>
+        </div>
+
+        {/* Wave */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+            <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="white"/>
+          </svg>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Todo lo que necesitas
+            </h2>
+            <p className="text-xl text-gray-600">
+              Digitaliza tu restaurante en minutos
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center p-8 hover:scale-105 transition-transform duration-300">
+              <div className="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <QrCode className="text-primary" size={48} />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">Menú QR</h3>
+              <p className="text-gray-600 text-lg">
+                Clientes escanean el código QR y ven tu menú completo al instante. Actualízalo en tiempo real.
+              </p>
+            </div>
+
+            <div className="text-center p-8 hover:scale-105 transition-transform duration-300">
+              <div className="w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Zap className="text-orange-500" size={48} />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">Pedidos Rápidos</h3>
+              <p className="text-gray-600 text-lg">
+                Recibe pedidos directo en tu dispositivo. Notificaciones en tiempo real y gestión simple.
+              </p>
+            </div>
+
+            <div className="text-center p-8 hover:scale-105 transition-transform duration-300">
+              <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <TrendingUp className="text-green-600" size={48} />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">Crece tu Negocio</h3>
+              <p className="text-gray-600 text-lg">
+                Estadísticas de ventas, productos más pedidos y análisis para tomar mejores decisiones.
+              </p>
+            </div>
           </div>
         </div>
       </section>
+
     </div>
   );
 };
