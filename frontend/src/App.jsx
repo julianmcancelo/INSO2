@@ -23,6 +23,8 @@ import AdminSolicitudes from './pages/admin/AdminSolicitudes';
 import AdminProductos from './pages/admin/AdminProductos';
 import AdminPedidos from './pages/admin/AdminPedidos';
 import AdminCategorias from './pages/admin/AdminCategorias';
+import AdminQRCode from './pages/admin/AdminQRCode';
+import QRLabel from './pages/admin/QRLabel';
 import PrivateRoute from './components/PrivateRoute';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
@@ -72,9 +74,9 @@ function App() {
                 <Route path="/register/:token" element={<RegisterByInvitation />} />
                 
                 {/* Rutas del Cliente */}
-                <Route path="/:slug" element={<MenuPage />} />
-                <Route path="/:slug/confirmacion" element={<ConfirmacionPage />} />
-                <Route path="/:slug/pedido/:pedidoId" element={<SeguimientoPedidoPage />} />
+                <Route path="/menu/:localId" element={<MenuPage />} />
+                <Route path="/menu/:localId/confirmacion" element={<ConfirmacionPage />} />
+                <Route path="/menu/:localId/pedido/:pedidoId" element={<SeguimientoPedidoPage />} />
 
                 {/* Rutas del Admin */}
                 <Route path="/admin/login" element={<AdminLogin />} />
@@ -84,6 +86,8 @@ function App() {
                 <Route path="/admin/productos" element={<PrivateRoute><AdminProductos /></PrivateRoute>} />
                 <Route path="/admin/pedidos" element={<PrivateRoute><AdminPedidos /></PrivateRoute>} />
                 <Route path="/admin/categorias" element={<PrivateRoute><AdminCategorias /></PrivateRoute>} />
+                <Route path="/admin/qr" element={<PrivateRoute><AdminQRCode /></PrivateRoute>} />
+                <Route path="/admin/qr-label" element={<PrivateRoute><QRLabel /></PrivateRoute>} />
 
                 {/* Landing Page */}
                 <Route path="/" element={<LandingPage />} />

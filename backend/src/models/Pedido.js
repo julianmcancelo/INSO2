@@ -31,7 +31,7 @@ const Pedido = sequelize.define('Pedido', {
     allowNull: true
   },
   tipoEntrega: {
-    type: DataTypes.ENUM('mesa', 'llevar', 'delivery'),
+    type: DataTypes.ENUM('mesa', 'takeaway', 'delivery'),
     allowNull: false,
     defaultValue: 'mesa',
     comment: 'Tipo de entrega del pedido'
@@ -45,6 +45,34 @@ const Pedido = sequelize.define('Pedido', {
     type: DataTypes.TEXT,
     allowNull: true,
     comment: 'Dirección de entrega (si es delivery)'
+  },
+  referenciaEntrega: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+    comment: 'Referencia de la dirección (ej: Casa azul, timbre 3B)'
+  },
+  metodoPago: {
+    type: DataTypes.ENUM('efectivo', 'transferencia', 'mercadopago'),
+    allowNull: false,
+    defaultValue: 'efectivo',
+    comment: 'Método de pago seleccionado'
+  },
+  recargoMetodoPago: {
+    type: DataTypes.DECIMAL(5, 2),
+    allowNull: true,
+    defaultValue: 0,
+    comment: 'Porcentaje de recargo por método de pago'
+  },
+  montoRecargo: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: true,
+    defaultValue: 0,
+    comment: 'Monto del recargo aplicado'
+  },
+  comprobanteTransferencia: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+    comment: 'Imagen del comprobante de transferencia en Base64'
   },
   estado: {
     type: DataTypes.ENUM('pendiente', 'preparando', 'listo', 'entregado', 'cancelado'),

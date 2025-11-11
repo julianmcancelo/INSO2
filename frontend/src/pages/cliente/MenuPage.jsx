@@ -7,26 +7,28 @@ import { useCart } from '../../context/CartContext';
 import { localAPI, categoriaAPI, productoAPI } from '../../services/api';
 import ProductoCard from '../../components/cliente/ProductoCard';
 import CartModal from '../../components/cliente/CartModal';
+import BienvenidaModal from '../../components/cliente/BienvenidaModal';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
 const MenuPage = () => {
-  const { slug } = useParams();
+  const { localId } = useParams();
   const { local, setLocal, loading: localLoading, setLoading: setLocalLoading } = useLocal();
-  const { getTotalItems, openCart, isCartOpen } = useCart();
+  const { getTotalItems, openCart, isCartOpen, clienteInfo, setClienteData } = useCart();
   
   const [categorias, setCategorias] = useState([]);
   const [productos, setProductos] = useState([]);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
+  const [showBienvenida, setShowBienvenida] = useState(false);
 
   const cargarDatos = useCallback(async () => {
     try {
       setLoading(true);
       setLocalLoading(true);
 
-      // Cargar local
-      const localResponse = await localAPI.getBySlug(slug);
+      // Cargar local por ID
+      const localResponse = await localAPI.getById(localId);
       setLocal(localResponse.data.local);
 
       // Cargar categorías
@@ -44,11 +46,24 @@ const MenuPage = () => {
       setLoading(false);
       setLocalLoading(false);
     }
-  }, [slug, setLocal, setLocalLoading]);
+  }, [localId, setLocal, setLocalLoading]);
 
   useEffect(() => {
     cargarDatos();
   }, [cargarDatos]);
+
+  useEffect(() => {
+    // Mostrar modal de bienvenida si no hay datos del cliente
+    if (local && !clienteInfo) {
+      setShowBienvenida(true);
+    }
+  }, [local, clienteInfo]);
+
+  const handleBienvenidaComplete = (data) => {
+    setClienteData(data);
+    setShowBienvenida(false);
+    toast.success(`¡Hola ${data.nombreCliente}! Bienvenido a ${local.nombre}`);
+  };
 
   const productosFiltrados = productos.filter(p => {
     const matchCategoria = !categoriaSeleccionada || p.categoriaId === categoriaSeleccionada;
@@ -72,7 +87,7 @@ const MenuPage = () => {
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Local no encontrado</h2>
-          <p className="text-gray-600">El local "{slug}" no existe</p>
+          <p className="text-gray-600">El local con ID "{localId}" no existe</p>
         </div>
       </div>
     );
@@ -185,6 +200,14 @@ const MenuPage = () => {
 
       {/* Modal del carrito */}
       <CartModal isOpen={isCartOpen} />
+
+      {/* Modal de bienvenida */}
+      {showBienvenida && local && (
+        <BienvenidaModal 
+          local={local} 
+          onComplete={handleBienvenidaComplete} 
+        />
+      )}
     </div>
   );
 };

@@ -1,36 +1,121 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { User, Phone, MapPin, Home, Bike } from 'lucide-react';
+import { User, Phone, MapPin, Home, Bike, Wallet, CreditCard, DollarSign, Upload, X } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useLocal } from '../../context/LocalContext';
-import { pedidoAPI } from '../../services/api';
+import { pedidoAPI, configuracionPagoAPI } from '../../services/api';
+import DireccionAutocomplete from '../../components/cliente/DireccionAutocomplete';
 
 const ConfirmacionPage = () => {
   const navigate = useNavigate();
-  const { slug } = useParams();
-  const { cart, getTotal, clearCart } = useCart();
+  const { localId } = useParams();
+  const { cart, getTotal, clearCart, clienteInfo } = useCart();
   const { local } = useLocal();
 
   const [formData, setFormData] = useState({
-    clienteNombre: '',
-    clienteTelefono: '',
-    tipoEntrega: 'mesa',
+    clienteNombre: clienteInfo?.nombreCliente || '',
+    clienteTelefono: clienteInfo?.telefonoCliente || '',
+    tipoEntrega: clienteInfo?.tipoEntrega || 'mesa',
     numeroMesa: '',
-    direccionEntrega: '',
-    notasCliente: ''
+    direccionEntrega: clienteInfo?.direccion || '',
+    referenciaEntrega: clienteInfo?.referencia || '',
+    notasCliente: '',
+    metodoPago: 'efectivo'
   });
   const [loading, setLoading] = useState(false);
+  const [recargoInfo, setRecargoInfo] = useState({
+    porcentaje: 0,
+    monto: 0,
+    total: 0
+  });
+  const [comprobanteTransferencia, setComprobanteTransferencia] = useState(null);
+  const [previewComprobante, setPreviewComprobante] = useState(null);
 
   useEffect(() => {
     if (cart.length === 0) {
-      navigate(`/${slug}`);
+      navigate(`/menu/${localId}`);
     }
-  }, [cart, navigate, slug]);
+  }, [cart, navigate, localId]);
+
+  // Pre-llenar datos del cliente si existen
+  useEffect(() => {
+    if (clienteInfo) {
+      setFormData(prev => ({
+        ...prev,
+        clienteNombre: clienteInfo.nombreCliente || prev.clienteNombre,
+        clienteTelefono: clienteInfo.telefonoCliente || prev.clienteTelefono,
+        tipoEntrega: clienteInfo.tipoEntrega || prev.tipoEntrega,
+        direccionEntrega: clienteInfo.direccion || prev.direccionEntrega,
+        referenciaEntrega: clienteInfo.referencia || prev.referenciaEntrega
+      }));
+    }
+  }, [clienteInfo]);
+
+  // Calcular recargo cuando cambia el método de pago
+  useEffect(() => {
+    const calcularRecargo = async () => {
+      if (!local) return;
+
+      try {
+        const subtotal = getTotal();
+        const response = await configuracionPagoAPI.calcularRecargo(local.id, {
+          metodoPago: formData.metodoPago,
+          subtotal
+        });
+
+        setRecargoInfo({
+          porcentaje: response.data.porcentajeRecargo,
+          monto: parseFloat(response.data.montoRecargo),
+          total: parseFloat(response.data.total)
+        });
+      } catch (error) {
+        console.error('Error al calcular recargo:', error);
+        // Si hay error, usar subtotal sin recargo
+        setRecargoInfo({
+          porcentaje: 0,
+          monto: 0,
+          total: getTotal()
+        });
+      }
+    };
+
+    calcularRecargo();
+  }, [formData.metodoPago, local, getTotal]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleComprobanteChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Validar que sea una imagen
+    if (!file.type.startsWith('image/')) {
+      toast.error('Por favor selecciona una imagen válida');
+      return;
+    }
+
+    // Validar tamaño (máximo 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('La imagen no debe superar los 5MB');
+      return;
+    }
+
+    // Convertir a Base64
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setComprobanteTransferencia(reader.result);
+      setPreviewComprobante(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const removeComprobante = () => {
+    setComprobanteTransferencia(null);
+    setPreviewComprobante(null);
   };
 
   const handleSubmit = async (e) => {
@@ -51,6 +136,11 @@ const ConfirmacionPage = () => {
       return;
     }
 
+    if (formData.metodoPago === 'transferencia' && !comprobanteTransferencia) {
+      toast.error('Por favor sube el comprobante de transferencia');
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -66,6 +156,10 @@ const ConfirmacionPage = () => {
       const response = await pedidoAPI.create({
         localId: local.id,
         ...formData,
+        total: recargoInfo.total,
+        recargoMetodoPago: recargoInfo.porcentaje,
+        montoRecargo: recargoInfo.monto,
+        comprobanteTransferencia: comprobanteTransferencia || null,
         items
       });
 
@@ -73,7 +167,7 @@ const ConfirmacionPage = () => {
       clearCart();
       
       // Navegar a página de seguimiento
-      navigate(`/${slug}/pedido/${response.data.pedido.id}`);
+      navigate(`/menu/${localId}/pedido/${response.data.pedido.id}`);
 
     } catch (error) {
       console.error('Error al crear pedido:', error);
@@ -98,14 +192,26 @@ const ConfirmacionPage = () => {
                 <span className="text-gray-700">
                   {item.cantidad}x {item.producto.nombre}
                 </span>
-                <span className="font-medium">${item.subtotal.toFixed(2)}</span>
+                <span className="font-medium">${parseFloat(item.subtotal).toFixed(2)}</span>
               </div>
             ))}
           </div>
-          <div className="border-t mt-4 pt-4">
-            <div className="flex justify-between text-xl font-bold">
+          <div className="border-t mt-4 pt-4 space-y-2">
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-600">Subtotal</span>
+              <span className="font-medium">${parseFloat(getTotal()).toFixed(2)}</span>
+            </div>
+            {recargoInfo.porcentaje > 0 && (
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600">
+                  Recargo {formData.metodoPago} ({recargoInfo.porcentaje}%)
+                </span>
+                <span className="font-medium text-orange-600">+${recargoInfo.monto.toFixed(2)}</span>
+              </div>
+            )}
+            <div className="flex justify-between text-xl font-bold pt-2 border-t">
               <span>Total</span>
-              <span className="text-primary">${getTotal().toFixed(2)}</span>
+              <span className="text-primary">${recargoInfo.total.toFixed(2)}</span>
             </div>
           </div>
         </div>
@@ -211,19 +317,134 @@ const ConfirmacionPage = () => {
 
           {/* Dirección (si es delivery) */}
           {formData.tipoEntrega === 'delivery' && (
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Dirección de Entrega *
+            <>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Dirección de Entrega *
+                </label>
+                <DireccionAutocomplete
+                  value={formData.direccionEntrega}
+                  onChange={(value) => setFormData(prev => ({ ...prev, direccionEntrega: value }))}
+                  placeholder="Buscar dirección en el mapa..."
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Referencia (opcional)
+                </label>
+                <input
+                  type="text"
+                  name="referenciaEntrega"
+                  value={formData.referenciaEntrega}
+                  onChange={handleInputChange}
+                  placeholder="Ej: Casa azul, timbre 3B"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary focus:border-transparent"
+                />
+              </div>
+            </>
+          )}
+
+          {/* Método de Pago */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-3">
+              <Wallet size={18} className="inline mr-2" />
+              Método de Pago *
+            </label>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <button
+                type="button"
+                onClick={() => setFormData(prev => ({ ...prev, metodoPago: 'efectivo' }))}
+                className={`p-4 rounded-lg border-2 transition flex flex-col items-center space-y-2 ${
+                  formData.metodoPago === 'efectivo'
+                    ? 'border-primary bg-primary bg-opacity-10'
+                    : 'border-gray-300 hover:border-gray-400'
+                }`}
+              >
+                <DollarSign size={32} className={formData.metodoPago === 'efectivo' ? 'text-primary' : 'text-gray-600'} />
+                <span className="font-medium">Efectivo</span>
+                <span className="text-xs text-gray-500">Pago al recibir</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setFormData(prev => ({ ...prev, metodoPago: 'transferencia' }))}
+                className={`p-4 rounded-lg border-2 transition flex flex-col items-center space-y-2 ${
+                  formData.metodoPago === 'transferencia'
+                    ? 'border-primary bg-primary bg-opacity-10'
+                    : 'border-gray-300 hover:border-gray-400'
+                }`}
+              >
+                <Home size={32} className={formData.metodoPago === 'transferencia' ? 'text-primary' : 'text-gray-600'} />
+                <span className="font-medium">Transferencia</span>
+                <span className="text-xs text-gray-500">CBU/Alias</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setFormData(prev => ({ ...prev, metodoPago: 'mercadopago' }))}
+                className={`p-4 rounded-lg border-2 transition flex flex-col items-center space-y-2 ${
+                  formData.metodoPago === 'mercadopago'
+                    ? 'border-primary bg-primary bg-opacity-10'
+                    : 'border-gray-300 hover:border-gray-400'
+                }`}
+              >
+                <CreditCard size={32} className={formData.metodoPago === 'mercadopago' ? 'text-primary' : 'text-gray-600'} />
+                <span className="font-medium">Mercado Pago</span>
+                <span className="text-xs text-gray-500">Link de pago</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Comprobante de Transferencia */}
+          {formData.metodoPago === 'transferencia' && (
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                <Upload size={18} className="inline mr-2" />
+                Comprobante de Transferencia *
               </label>
-              <textarea
-                name="direccionEntrega"
-                value={formData.direccionEntrega}
-                onChange={handleInputChange}
-                placeholder="Calle, número, piso, departamento"
-                rows={3}
-                required
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary focus:border-transparent"
-              />
+              
+              {!previewComprobante ? (
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleComprobanteChange}
+                    className="hidden"
+                    id="comprobante-upload"
+                  />
+                  <label
+                    htmlFor="comprobante-upload"
+                    className="cursor-pointer flex flex-col items-center space-y-2"
+                  >
+                    <Upload size={48} className="text-gray-400" />
+                    <span className="text-sm text-gray-600">
+                      Haz clic para subir el comprobante
+                    </span>
+                    <span className="text-xs text-gray-500">
+                      JPG, PNG o PDF (máx. 5MB)
+                    </span>
+                  </label>
+                </div>
+              ) : (
+                <div className="relative border-2 border-primary rounded-lg p-4">
+                  <button
+                    type="button"
+                    onClick={removeComprobante}
+                    className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition"
+                  >
+                    <X size={16} />
+                  </button>
+                  <img
+                    src={previewComprobante}
+                    alt="Comprobante"
+                    className="w-full h-48 object-contain rounded"
+                  />
+                  <p className="text-sm text-green-600 text-center mt-2">
+                    ✓ Comprobante cargado correctamente
+                  </p>
+                </div>
+              )}
             </div>
           )}
 
@@ -246,7 +467,7 @@ const ConfirmacionPage = () => {
           <div className="flex space-x-4">
             <button
               type="button"
-              onClick={() => navigate(`/${slug}`)}
+              onClick={() => navigate(`/menu/${localId}`)}
               className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-300 transition"
             >
               Volver al Menú

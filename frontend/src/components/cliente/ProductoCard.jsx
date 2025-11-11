@@ -53,7 +53,7 @@ const ProductoCard = ({ producto }) => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-2xl font-bold text-primary">
-                ${producto.precio.toFixed(2)}
+                ${parseFloat(producto.precio).toFixed(2)}
               </p>
               {producto.tiempoPreparacion && (
                 <p className="text-xs text-gray-500">

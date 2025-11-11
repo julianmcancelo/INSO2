@@ -1,13 +1,26 @@
 const nodemailer = require('nodemailer');
 
-// Configurar transporter de Gmail
-const transporter = nodemailer.createTransporter({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER, // Tu email de Gmail
-    pass: process.env.EMAIL_PASSWORD // App Password de Gmail
-  }
-});
+// Configurar transporter de Gmail (solo si las credenciales están configuradas)
+let transporter = null;
+
+if (process.env.EMAIL_USER && process.env.EMAIL_PASSWORD) {
+  transporter = nodemailer.createTransporter({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD
+    }
+  });
+} else {
+  console.warn('⚠️  Configuración de email no encontrada. Las funciones de email no estarán disponibles.');
+  // Crear un transporter mock para desarrollo
+  transporter = {
+    sendMail: async () => {
+      console.log('📧 Mock email - Email no enviado (configura EMAIL_USER y EMAIL_PASSWORD)');
+      return { messageId: 'mock-id' };
+    }
+  };
+}
 
 /**
  * Enviar email de invitación

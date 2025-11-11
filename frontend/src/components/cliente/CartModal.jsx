@@ -5,7 +5,7 @@ import { useCart } from '../../context/CartContext';
 
 const CartModal = ({ isOpen }) => {
   const navigate = useNavigate();
-  const { slug } = useParams();
+  const { localId } = useParams();
   const { cart, closeCart, updateQuantity, removeFromCart, getTotal, clearCart } = useCart();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
 
@@ -15,7 +15,7 @@ const CartModal = ({ isOpen }) => {
     if (cart.length === 0) return;
     setIsCheckingOut(true);
     closeCart();
-    navigate(`/${slug}/confirmacion`);
+    navigate(`/menu/${localId}/confirmacion`);
   };
 
   return (
@@ -78,7 +78,7 @@ const CartModal = ({ isOpen }) => {
                                 </button>
                               </div>
                               <p className="mt-1 text-sm text-gray-500">
-                                ${item.producto.precio.toFixed(2)} c/u
+                                ${parseFloat(item.producto.precio).toFixed(2)} c/u
                               </p>
 
                               {/* Personalizaciones */}
@@ -121,7 +121,7 @@ const CartModal = ({ isOpen }) => {
                               </div>
 
                               <p className="ml-4 text-gray-900 font-medium">
-                                ${item.subtotal.toFixed(2)}
+                                ${parseFloat(item.subtotal).toFixed(2)}
                               </p>
                             </div>
                           </div>
@@ -138,7 +138,7 @@ const CartModal = ({ isOpen }) => {
               <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                 <div className="flex justify-between text-base font-medium text-gray-900 mb-4">
                   <p>Total</p>
-                  <p className="text-2xl">${getTotal().toFixed(2)}</p>
+                  <p className="text-2xl">${parseFloat(getTotal()).toFixed(2)}</p>
                 </div>
 
                 <button

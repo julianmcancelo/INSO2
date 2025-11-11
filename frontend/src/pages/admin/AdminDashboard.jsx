@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, Package, Grid, BarChart3, LogOut, Store, FileText } from 'lucide-react';
+import { ShoppingBag, Package, Grid, BarChart3, LogOut, Store, FileText, QrCode } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { pedidoAPI } from '../../services/api';
 import socketService from '../../services/socket';
@@ -135,7 +135,7 @@ const AdminDashboard = () => {
         )}
 
         {/* Accesos rápidos */}
-        <div className={`grid grid-cols-1 md:grid-cols-${user?.rol === 'superadmin' ? '2' : '3'} lg:grid-cols-${user?.rol === 'superadmin' ? '5' : '3'} gap-6 mb-8`}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
           {user?.rol === 'superadmin' && (
             <>
               <Link
@@ -183,6 +183,15 @@ const AdminDashboard = () => {
             <Grid className="text-primary mb-4" size={32} />
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Categorías</h3>
             <p className="text-sm text-gray-600">Organizar categorías del menú</p>
+          </Link>
+
+          <Link
+            to="/admin/qr"
+            className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg shadow p-6 hover:shadow-md transition text-white"
+          >
+            <QrCode className="mb-4" size={32} />
+            <h3 className="text-lg font-semibold mb-2">Código QR</h3>
+            <p className="text-sm text-purple-100">Ver y descargar QR del menú</p>
           </Link>
         </div>
 

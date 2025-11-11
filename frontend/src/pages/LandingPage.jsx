@@ -10,6 +10,7 @@ const LandingPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [formData, setFormData] = useState({
     nombreNegocio: '',
     nombreContacto: '',
@@ -123,15 +124,15 @@ const LandingPage = () => {
 
       {/* Form Section */}
       <section className="container mx-auto px-4 pb-16">
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
-            <div className="bg-gradient-to-r from-primary to-orange-500 p-8 text-white text-center">
-              <h2 className="text-3xl font-bold mb-2">Comienza Hoy</h2>
-              <p className="text-red-100">Completa el formulario y nos pondremos en contacto</p>
+        <div className="max-w-xl mx-auto">
+          <div className="bg-white rounded-xl shadow-xl overflow-hidden">
+            <div className="bg-gradient-to-r from-primary to-orange-500 p-6 text-white text-center">
+              <h2 className="text-2xl font-bold mb-1">Comienza Hoy</h2>
+              <p className="text-red-100 text-sm">Completa el formulario y nos pondremos en contacto</p>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-8">
-              <div className="space-y-6">
+            <form onSubmit={handleSubmit} className="p-6">
+              <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     <Store size={16} className="inline mr-1" />
@@ -142,104 +143,110 @@ const LandingPage = () => {
                     name="nombreNegocio"
                     value={formData.nombreNegocio}
                     onChange={handleInputChange}
+                    onFocus={() => setExpanded(true)}
                     placeholder="Ej: Pizzería Roma"
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition"
                   />
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <User size={16} className="inline mr-1" />
-                      Tu Nombre *
-                    </label>
-                    <input
-                      type="text"
-                      name="nombreContacto"
-                      value={formData.nombreContacto}
-                      onChange={handleInputChange}
-                      placeholder="Nombre completo"
-                      required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                    />
-                  </div>
+                {expanded && (
+                  <div className="space-y-4 animate-fadeIn">
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <Mail size={16} className="inline mr-1" />
-                      Email *
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      placeholder="tu@email.com"
-                      required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                    />
-                  </div>
-                </div>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <User size={16} className="inline mr-1" />
+                          Tu Nombre *
+                        </label>
+                        <input
+                          type="text"
+                          name="nombreContacto"
+                          value={formData.nombreContacto}
+                          onChange={handleInputChange}
+                          placeholder="Nombre completo"
+                          required
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        />
+                      </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <Phone size={16} className="inline mr-1" />
-                      Teléfono
-                    </label>
-                    <input
-                      type="tel"
-                      name="telefono"
-                      value={formData.telefono}
-                      onChange={handleInputChange}
-                      placeholder="+54 11 1234-5678"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                    />
-                  </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <Mail size={16} className="inline mr-1" />
+                          Email *
+                        </label>
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          placeholder="tu@email.com"
+                          required
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        />
+                      </div>
+                    </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Tipo de Negocio
-                    </label>
-                    <select
-                      name="tipoNegocio"
-                      value={formData.tipoNegocio}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                    >
-                      <option value="">Selecciona...</option>
-                      <option value="restaurante">Restaurante</option>
-                      <option value="cafeteria">Cafetería</option>
-                      <option value="pizzeria">Pizzería</option>
-                      <option value="hamburgueseria">Hamburguesería</option>
-                      <option value="parrilla">Parrilla</option>
-                      <option value="bar">Bar</option>
-                      <option value="otro">Otro</option>
-                    </select>
-                  </div>
-                </div>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <Phone size={16} className="inline mr-1" />
+                          Teléfono
+                        </label>
+                        <input
+                          type="tel"
+                          name="telefono"
+                          value={formData.telefono}
+                          onChange={handleInputChange}
+                          placeholder="+54 11 1234-5678"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        />
+                      </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <MessageSquare size={16} className="inline mr-1" />
-                    Mensaje (Opcional)
-                  </label>
-                  <textarea
-                    name="mensaje"
-                    value={formData.mensaje}
-                    onChange={handleInputChange}
-                    placeholder="Cuéntanos sobre tu negocio..."
-                    rows={4}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  />
-                </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Tipo de Negocio
+                        </label>
+                        <select
+                          name="tipoNegocio"
+                          value={formData.tipoNegocio}
+                          onChange={handleInputChange}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        >
+                          <option value="">Selecciona...</option>
+                          <option value="restaurante">Restaurante</option>
+                          <option value="cafeteria">Cafetería</option>
+                          <option value="pizzeria">Pizzería</option>
+                          <option value="hamburgueseria">Hamburguesería</option>
+                          <option value="parrilla">Parrilla</option>
+                          <option value="bar">Bar</option>
+                          <option value="otro">Otro</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <MessageSquare size={16} className="inline mr-1" />
+                        Mensaje (Opcional)
+                      </label>
+                      <textarea
+                        name="mensaje"
+                        value={formData.mensaje}
+                        onChange={handleInputChange}
+                        placeholder="Cuéntanos sobre tu negocio..."
+                        rows={3}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
 
               <button
                 type="submit"
-                disabled={loading}
-                className="w-full mt-8 bg-primary text-white py-4 rounded-lg font-bold text-lg hover:opacity-90 transition disabled:opacity-50 flex items-center justify-center space-x-2"
+                disabled={loading || !expanded}
+                className="w-full mt-6 bg-primary text-white py-3 rounded-lg font-semibold hover:opacity-90 transition disabled:opacity-50 flex items-center justify-center space-x-2"
               >
                 {loading ? (
                   <>

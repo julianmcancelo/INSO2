@@ -88,7 +88,7 @@ const ProductoModal = ({ producto, isOpen, onClose, onAgregar }) => {
                             {opcion.nombre}
                             {opcion.precio > 0 && (
                               <span className="text-primary ml-1">
-                                +${opcion.precio.toFixed(2)}
+                                +${parseFloat(opcion.precio).toFixed(2)}
                               </span>
                             )}
                           </span>
@@ -144,7 +144,7 @@ const ProductoModal = ({ producto, isOpen, onClose, onAgregar }) => {
               onClick={handleAgregar}
               className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary text-base font-medium text-white hover:opacity-90 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
             >
-              Agregar ${(producto.precio * cantidad).toFixed(2)}
+              Agregar ${(parseFloat(producto.precio) * cantidad).toFixed(2)}
             </button>
             <button
               onClick={onClose}

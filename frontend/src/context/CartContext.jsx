@@ -13,8 +13,9 @@ export const useCart = () => {
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [clienteInfo, setClienteInfo] = useState(null);
 
-  // Cargar carrito del localStorage al iniciar
+  // Cargar carrito y datos del cliente del localStorage al iniciar
   useEffect(() => {
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
@@ -23,6 +24,16 @@ export const CartProvider = ({ children }) => {
       } catch (error) {
         console.error('Error al cargar carrito:', error);
         localStorage.removeItem('cart');
+      }
+    }
+
+    const savedClienteInfo = localStorage.getItem('clienteInfo');
+    if (savedClienteInfo) {
+      try {
+        setClienteInfo(JSON.parse(savedClienteInfo));
+      } catch (error) {
+        console.error('Error al cargar info del cliente:', error);
+        localStorage.removeItem('clienteInfo');
       }
     }
   }, []);
@@ -96,6 +107,16 @@ export const CartProvider = ({ children }) => {
   const openCart = () => setIsCartOpen(true);
   const closeCart = () => setIsCartOpen(false);
 
+  const setClienteData = (data) => {
+    setClienteInfo(data);
+    localStorage.setItem('clienteInfo', JSON.stringify(data));
+  };
+
+  const clearClienteData = () => {
+    setClienteInfo(null);
+    localStorage.removeItem('clienteInfo');
+  };
+
   const value = {
     cart,
     addToCart,
@@ -106,7 +127,10 @@ export const CartProvider = ({ children }) => {
     getTotalItems,
     isCartOpen,
     openCart,
-    closeCart
+    closeCart,
+    clienteInfo,
+    setClienteData,
+    clearClienteData
   };
 
   return (

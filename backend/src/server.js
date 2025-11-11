@@ -14,6 +14,7 @@ const solicitudRoutes = require('./routes/solicitud.routes');
 const categoriaRoutes = require('./routes/categoria.routes');
 const productoRoutes = require('./routes/producto.routes');
 const pedidoRoutes = require('./routes/pedido.routes');
+const configuracionPagoRoutes = require('./routes/configuracionPago');
 
 const app = express();
 const server = http.createServer(app);
@@ -55,6 +56,7 @@ app.use('/api/solicitudes', solicitudRoutes);
 app.use('/api/categorias', categoriaRoutes);
 app.use('/api/productos', productoRoutes);
 app.use('/api/pedidos', pedidoRoutes);
+app.use('/api/configuracion-pago', configuracionPagoRoutes);
 
 // Manejador de errores global
 app.use((err, req, res, next) => {

@@ -9,7 +9,7 @@ services:
       MYSQL_USER: menuadmin
       MYSQL_PASSWORD: menupass123
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./backend/database/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -38,7 +38,7 @@ services:
       DB_PASSWORD: menupass123
       DB_NAME: menu_digital
       JWT_SECRET: tu_secreto_jwt_menu_digital_cambiame_en_produccion
-      FRONTEND_URL: http://localhost:3000
+      FRONTEND_URL: http://localhost:3001
     ports:
       - "5000:5000"
     volumes:
@@ -62,7 +62,7 @@ services:
       REACT_APP_SOCKET_URL: http://localhost:5000
       WDS_SOCKET_PORT: 0
     ports:
-      - "3000:3000"
+      - "3001:3000"
     volumes:
       - ./frontend:/app
       - /app/node_modules

@@ -97,4 +97,11 @@ export const invitationAPI = {
   delete: (id) => api.delete(`/invitations/${id}`)
 };
 
+// API de Configuración de Pago
+export const configuracionPagoAPI = {
+  getByLocal: (localId) => api.get(`/configuracion-pago/${localId}`),
+  calcularRecargo: (localId, data) => api.post(`/configuracion-pago/${localId}/calcular-recargo`, data),
+  update: (localId, data) => api.put(`/configuracion-pago/${localId}`, data)
+};
+
 export default api;

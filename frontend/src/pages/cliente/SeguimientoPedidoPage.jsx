@@ -6,7 +6,7 @@ import socketService from '../../services/socket';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
 const SeguimientoPedidoPage = () => {
-  const { pedidoId, slug } = useParams();
+  const { pedidoId, localId } = useParams();
   const navigate = useNavigate();
   const [pedido, setPedido] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -92,7 +92,7 @@ const SeguimientoPedidoPage = () => {
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Pedido no encontrado</h2>
           <button
-            onClick={() => navigate(`/${slug}`)}
+            onClick={() => navigate(`/menu/${localId}`)}
             className="text-primary hover:underline"
           >
             Volver al menú
@@ -179,7 +179,7 @@ const SeguimientoPedidoPage = () => {
 
         {/* Botón volver */}
         <button
-          onClick={() => navigate(`/${slug}`)}
+          onClick={() => navigate(`/menu/${localId}`)}
           className="w-full bg-primary text-white py-3 rounded-lg font-medium hover:opacity-90 transition"
         >
           Volver al Menú

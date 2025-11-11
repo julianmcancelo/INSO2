@@ -4,12 +4,15 @@ import { ArrowLeft, Plus, Edit, Trash2, ToggleLeft, ToggleRight } from 'lucide-r
 import { toast } from 'react-toastify';
 import { useAuth } from '../../context/AuthContext';
 import { productoAPI, categoriaAPI } from '../../services/api';
+import ProductoFormModal from '../../components/admin/ProductoFormModal';
 
 const AdminProductos = () => {
   const { user } = useAuth();
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [productoEditar, setProductoEditar] = useState(null);
 
   const cargarDatos = useCallback(async () => {
     if (!user?.localId) return;
@@ -67,6 +70,25 @@ const AdminProductos = () => {
     }
   };
 
+  const abrirModalNuevo = () => {
+    setProductoEditar(null);
+    setShowModal(true);
+  };
+
+  const abrirModalEditar = (producto) => {
+    setProductoEditar(producto);
+    setShowModal(true);
+  };
+
+  const cerrarModal = () => {
+    setShowModal(false);
+    setProductoEditar(null);
+  };
+
+  const handleSuccessModal = () => {
+    cargarDatos();
+  };
+
   const productosPorCategoria = categorias.map(cat => ({
     ...cat,
     productos: productos.filter(p => p.categoriaId === cat.id)
@@ -83,7 +105,10 @@ const AdminProductos = () => {
               </Link>
               <h1 className="text-3xl font-bold text-gray-900">Productos</h1>
             </div>
-            <button className="flex items-center space-x-2 bg-primary text-white px-4 py-2 rounded-lg hover:opacity-90">
+            <button 
+              onClick={abrirModalNuevo}
+              className="flex items-center space-x-2 bg-primary text-white px-4 py-2 rounded-lg hover:opacity-90"
+            >
               <Plus size={18} />
               <span>Nuevo Producto</span>
             </button>
@@ -109,7 +134,10 @@ const AdminProductos = () => {
         ) : productos.length === 0 ? (
           <div className="bg-white rounded-lg shadow p-12 text-center">
             <p className="text-gray-500 mb-4">No hay productos creados</p>
-            <button className="bg-primary text-white px-6 py-2 rounded-lg hover:opacity-90">
+            <button 
+              onClick={abrirModalNuevo}
+              className="bg-primary text-white px-6 py-2 rounded-lg hover:opacity-90"
+            >
               Crear Primer Producto
             </button>
           </div>
@@ -173,7 +201,10 @@ const AdminProductos = () => {
                             </button>
 
                             <div className="flex space-x-2">
-                              <button className="text-blue-600 hover:text-blue-800">
+                              <button 
+                                onClick={() => abrirModalEditar(producto)}
+                                className="text-blue-600 hover:text-blue-800"
+                              >
                                 <Edit size={18} />
                               </button>
                               <button
@@ -194,6 +225,16 @@ const AdminProductos = () => {
           </div>
         )}
       </main>
+
+      {/* Modal de Producto */}
+      {showModal && (
+        <ProductoFormModal
+          producto={productoEditar}
+          categorias={categorias}
+          onClose={cerrarModal}
+          onSuccess={handleSuccessModal}
+        />
+      )}
     </div>
   );
 };

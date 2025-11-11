@@ -6,6 +6,7 @@ const Pedido = require('./Pedido');
 const PedidoItem = require('./PedidoItem');
 const Invitacion = require('./Invitacion');
 const Solicitud = require('./Solicitud');
+const ConfiguracionPago = require('./ConfiguracionPago');
 
 // Definir relaciones
 
@@ -53,6 +54,10 @@ Solicitud.belongsTo(Local, { foreignKey: 'localCreado', as: 'local' });
 // Solicitud revisada por un Usuario (superadmin)
 Solicitud.belongsTo(Usuario, { foreignKey: 'revisadoPor', as: 'revisor' });
 
+// Local tiene una ConfiguracionPago
+Local.hasOne(ConfiguracionPago, { foreignKey: 'localId', as: 'configuracionPago' });
+ConfiguracionPago.belongsTo(Local, { foreignKey: 'localId', as: 'local' });
+
 module.exports = {
   Local,
   Usuario,
@@ -61,5 +66,6 @@ module.exports = {
   Pedido,
   PedidoItem,
   Invitacion,
-  Solicitud
+  Solicitud,
+  ConfiguracionPago
 };
