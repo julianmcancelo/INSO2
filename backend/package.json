@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
+    "recreate-tables": "node scripts/recreate-tables.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
