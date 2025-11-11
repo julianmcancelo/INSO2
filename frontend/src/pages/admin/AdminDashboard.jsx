@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, Package, Grid, BarChart3, LogOut, Store, FileText, QrCode, Clock, Settings, TrendingUp, Users, DollarSign, Sparkles } from 'lucide-react';
+import { ShoppingBag, Package, Grid, LogOut, Store, FileText, QrCode, Clock, Settings, Users, DollarSign } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { pedidoAPI } from '../../services/api';
 import socketService from '../../services/socket';
@@ -127,51 +127,62 @@ const AdminDashboard = () => {
 
         {/* Estadísticas - Solo para usuarios con local */}
         {estadisticas && user?.localId && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
-              <div className="flex items-center justify-between mb-3">
-                <div className="text-orange-600">
-                  <ShoppingBag size={24} />
-                </div>
-              </div>
-              <p className="text-sm text-gray-600 mb-1">Total Pedidos Hoy</p>
-              <p className="text-3xl font-bold text-gray-900">{estadisticas.totalPedidos}</p>
+          <div className="mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <BarChart3 size={20} className="text-orange-600" />
+              <h2 className="text-lg font-bold text-gray-900">Estadísticas de Hoy</h2>
             </div>
-
-            <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
-              <div className="flex items-center justify-between mb-3">
-                <div className="text-yellow-600">
-                  <Clock size={24} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-gradient-to-br from-orange-50 to-red-50 p-6 rounded-xl border border-orange-100">
+              <div className="bg-white rounded-lg shadow-sm p-5 border border-gray-200">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="text-orange-600">
+                    <ShoppingBag size={24} />
+                  </div>
                 </div>
+                <p className="text-sm text-gray-600 mb-1">Total Pedidos</p>
+                <p className="text-3xl font-bold text-gray-900">{estadisticas.totalPedidos}</p>
               </div>
-              <p className="text-sm text-gray-600 mb-1">Pendientes</p>
-              <p className="text-3xl font-bold text-gray-900">{estadisticas.pendientes}</p>
-            </div>
 
-            <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
-              <div className="flex items-center justify-between mb-3">
-                <div className="text-blue-600">
-                  <Package size={24} />
+              <div className="bg-white rounded-lg shadow-sm p-5 border border-gray-200">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="text-yellow-600">
+                    <Clock size={24} />
+                  </div>
                 </div>
+                <p className="text-sm text-gray-600 mb-1">Pendientes</p>
+                <p className="text-3xl font-bold text-gray-900">{estadisticas.pendientes}</p>
               </div>
-              <p className="text-sm text-gray-600 mb-1">En Preparación</p>
-              <p className="text-3xl font-bold text-gray-900">{estadisticas.preparando}</p>
-            </div>
 
-            <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
-              <div className="flex items-center justify-between mb-3">
-                <div className="text-green-600">
-                  <DollarSign size={24} />
+              <div className="bg-white rounded-lg shadow-sm p-5 border border-gray-200">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="text-blue-600">
+                    <Package size={24} />
+                  </div>
                 </div>
+                <p className="text-sm text-gray-600 mb-1">En Preparación</p>
+                <p className="text-3xl font-bold text-gray-900">{estadisticas.preparando}</p>
               </div>
-              <p className="text-sm text-gray-600 mb-1">Ventas Hoy</p>
-              <p className="text-3xl font-bold text-gray-900">${estadisticas.totalVentas.toFixed(0)}</p>
+
+              <div className="bg-white rounded-lg shadow-sm p-5 border border-gray-200">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="text-green-600">
+                    <DollarSign size={24} />
+                  </div>
+                </div>
+                <p className="text-sm text-gray-600 mb-1">Ventas Hoy</p>
+                <p className="text-3xl font-bold text-gray-900">${estadisticas.totalVentas.toFixed(0)}</p>
+              </div>
             </div>
           </div>
         )}
 
         {/* Accesos rápidos */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
+        <div className="mb-8">
+          <div className="flex items-center gap-2 mb-4">
+            <Grid size={20} className="text-orange-600" />
+            <h2 className="text-lg font-bold text-gray-900">Accesos Rápidos</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {user?.rol === 'superadmin' && (
             <>
               <Link
@@ -280,6 +291,7 @@ const AdminDashboard = () => {
               <p className="text-sm text-gray-600">Modo mantenimiento</p>
             </Link>
           )}
+          </div>
         </div>
 
         {/* Pedidos recientes - Solo para usuarios con local */}

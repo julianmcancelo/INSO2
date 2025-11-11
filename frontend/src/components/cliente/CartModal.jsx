@@ -19,11 +19,13 @@ const CartModal = ({ isOpen }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden" onClick={closeCart}>
-      <div className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+    <div className="fixed inset-0 z-50 overflow-hidden">
+      {/* Overlay - solo visible en desktop */}
+      <div className="absolute inset-0 bg-black bg-opacity-50 transition-opacity hidden md:block" onClick={closeCart}></div>
 
-      <div className="fixed inset-y-0 right-0 pl-10 max-w-full flex">
-        <div className="w-screen max-w-md" onClick={(e) => e.stopPropagation()}>
+      {/* Modal - fullscreen en mobile, sidebar en desktop */}
+      <div className="fixed inset-0 md:inset-y-0 md:right-0 md:left-auto md:pl-10 md:max-w-full flex">
+        <div className="w-full md:w-screen md:max-w-md" onClick={(e) => e.stopPropagation()}>
           <div className="h-full flex flex-col bg-white shadow-xl">
             {/* Header */}
             <div className="flex-1 py-6 overflow-y-auto px-4 sm:px-6">

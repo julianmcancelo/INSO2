@@ -219,7 +219,7 @@ const ProductoFormModal = ({ producto, categorias, onClose, onSuccess }) => {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <ImageIcon size={16} className="inline mr-1" />
-                Imagen del Producto
+                Imagen del Producto <span className="text-gray-400 text-xs">(Opcional)</span>
               </label>
               
               {imagePreview ? (
@@ -238,10 +238,10 @@ const ProductoFormModal = ({ producto, categorias, onClose, onSuccess }) => {
                   </button>
                 </div>
               ) : (
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-primary transition">
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-orange-500 transition cursor-pointer relative">
                   <ImageIcon size={48} className="mx-auto text-gray-400 mb-3" />
                   <p className="text-sm text-gray-600 mb-2">
-                    Haz clic para seleccionar una imagen
+                    Haz clic para seleccionar una imagen (opcional)
                   </p>
                   <p className="text-xs text-gray-500">
                     JPG, PNG o GIF (máx. 5MB)

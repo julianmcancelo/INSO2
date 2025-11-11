@@ -69,8 +69,8 @@ const AdminQRCode = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="bg-white shadow">
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -87,16 +87,18 @@ const AdminQRCode = () => {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-6">
           {/* Visualización del QR */}
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-              <QrCode size={24} className="mr-2 text-primary" />
+          <div className="bg-white rounded-xl shadow-md p-8 border border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <div className="bg-gradient-to-br from-orange-100 to-red-100 p-2 rounded-lg">
+                <QrCode size={24} className="text-orange-600" />
+              </div>
               Tu Código QR
             </h2>
 
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-8 mb-6">
-              <div ref={qrRef} className="bg-white p-6 rounded-lg shadow-md inline-block">
+            <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-xl p-8 mb-6 flex items-center justify-center">
+              <div ref={qrRef} className="bg-white p-6 rounded-xl shadow-lg">
                 <QRCodeSVG
                   value={menuUrl}
                   size={256}
@@ -115,7 +117,7 @@ const AdminQRCode = () => {
             <div className="space-y-3">
               <button
                 onClick={downloadQR}
-                className="w-full bg-primary text-white py-3 rounded-lg font-medium hover:opacity-90 transition flex items-center justify-center space-x-2"
+                className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 rounded-lg font-medium hover:from-orange-600 hover:to-red-600 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
               >
                 <Download size={20} />
                 <span>Descargar QR</span>
@@ -123,7 +125,7 @@ const AdminQRCode = () => {
 
               <button
                 onClick={printLabel}
-                className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition flex items-center justify-center space-x-2"
+                className="w-full bg-white border-2 border-gray-300 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-50 transition flex items-center justify-center gap-2"
               >
                 <Printer size={20} />
                 <span>Imprimir Etiqueta</span>
@@ -133,29 +135,29 @@ const AdminQRCode = () => {
 
           {/* Información y URL */}
           <div className="space-y-6">
-            <div className="bg-white rounded-lg shadow-lg p-6">
+            <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
               <h3 className="text-xl font-bold text-gray-900 mb-4">¿Cómo usar el QR?</h3>
               <div className="space-y-4 text-gray-700">
-                <div className="flex items-start space-x-3">
-                  <div className="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 text-sm font-bold">
+                <div className="flex items-start gap-3">
+                  <div className="bg-gradient-to-br from-orange-500 to-red-500 text-white rounded-full w-7 h-7 flex items-center justify-center flex-shrink-0 text-sm font-bold shadow-md">
                     1
                   </div>
                   <p>Descarga o imprime el código QR</p>
                 </div>
-                <div className="flex items-start space-x-3">
-                  <div className="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 text-sm font-bold">
+                <div className="flex items-start gap-3">
+                  <div className="bg-gradient-to-br from-orange-500 to-red-500 text-white rounded-full w-7 h-7 flex items-center justify-center flex-shrink-0 text-sm font-bold shadow-md">
                     2
                   </div>
                   <p>Colócalo en lugares visibles: mesas, entrada, ventanas</p>
                 </div>
-                <div className="flex items-start space-x-3">
-                  <div className="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 text-sm font-bold">
+                <div className="flex items-start gap-3">
+                  <div className="bg-gradient-to-br from-orange-500 to-red-500 text-white rounded-full w-7 h-7 flex items-center justify-center flex-shrink-0 text-sm font-bold shadow-md">
                     3
                   </div>
                   <p>Tus clientes lo escanean con su celular</p>
                 </div>
-                <div className="flex items-start space-x-3">
-                  <div className="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 text-sm font-bold">
+                <div className="flex items-start gap-3">
+                  <div className="bg-gradient-to-br from-orange-500 to-red-500 text-white rounded-full w-7 h-7 flex items-center justify-center flex-shrink-0 text-sm font-bold shadow-md">
                     4
                   </div>
                   <p>Acceden directamente a tu menú digital y pueden hacer pedidos</p>
@@ -163,17 +165,17 @@ const AdminQRCode = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-lg p-6">
+            <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
               <h3 className="text-xl font-bold text-gray-900 mb-4">URL del Menú</h3>
               <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                <p className="text-sm text-gray-600 mb-2">Enlace directo:</p>
-                <div className="flex items-center space-x-2">
-                  <code className="flex-1 bg-white px-3 py-2 rounded border border-gray-300 text-sm break-all">
+                <p className="text-sm text-gray-600 mb-2 font-medium">Enlace directo:</p>
+                <div className="flex items-center gap-2">
+                  <code className="flex-1 bg-white px-3 py-2 rounded-lg border border-gray-300 text-sm break-all">
                     {menuUrl}
                   </code>
                   <button
                     onClick={copyToClipboard}
-                    className="bg-gray-200 hover:bg-gray-300 p-2 rounded transition"
+                    className="bg-orange-100 hover:bg-orange-200 text-orange-600 p-2 rounded-lg transition"
                     title="Copiar URL"
                   >
                     {copied ? <Check size={20} className="text-green-600" /> : <Copy size={20} />}
@@ -185,16 +187,18 @@ const AdminQRCode = () => {
                 href={menuUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full bg-gray-200 text-gray-800 py-3 rounded-lg font-medium hover:bg-gray-300 transition flex items-center justify-center space-x-2"
+                className="w-full bg-white border-2 border-gray-300 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-50 transition flex items-center justify-center gap-2"
               >
                 <ExternalLink size={20} />
                 <span>Ver Menú</span>
               </a>
             </div>
 
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg shadow p-6 border border-blue-200">
-              <h3 className="text-lg font-bold text-blue-900 mb-2">💡 Consejo</h3>
-              <p className="text-blue-800 text-sm">
+            <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-xl shadow-md p-6 border border-orange-200">
+              <h3 className="text-lg font-bold text-orange-900 mb-2 flex items-center gap-2">
+                <span>💡</span> Consejo
+              </h3>
+              <p className="text-orange-800 text-sm">
                 Imprime varias etiquetas y colócalas en diferentes ubicaciones. 
                 Cuanto más visible sea el QR, más clientes usarán tu menú digital.
               </p>
