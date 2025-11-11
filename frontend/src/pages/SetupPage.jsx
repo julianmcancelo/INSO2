@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Lock, Mail } from 'lucide-react';
+import { User, Lock, Mail, Sparkles, CheckCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import BrandLogo from '../components/BrandLogo';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
@@ -56,10 +57,10 @@ const SetupPage = () => {
 
       toast.success('¡Sistema configurado exitosamente!');
       
-      // Redirigir al admin dashboard
+      // Redirigir al login
       setTimeout(() => {
-        navigate('/admin');
-      }, 1000);
+        navigate('/admin/login');
+      }, 1500);
 
     } catch (error) {
       console.error('Error:', error);
@@ -70,28 +71,38 @@ const SetupPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50 flex items-center justify-center py-8 sm:py-12 px-4">
       <div className="max-w-md w-full">
+        {/* Logo y Header */}
         <div className="text-center mb-8">
-          <div className="bg-primary rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
-            <User className="text-white" size={40} />
+          <div className="flex justify-center mb-6">
+            <BrandLogo size="lg" />
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Bienvenido a Menú Digital
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 rounded-full mb-4">
+            <Sparkles size={18} />
+            <span className="text-sm font-semibold">Configuración Inicial</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+            Bienvenido a Cartita
           </h1>
-          <p className="text-gray-600">
-            Crea tu cuenta de superadministrador
+          <p className="text-gray-600 text-sm sm:text-base">
+            Crea tu cuenta de administrador para comenzar
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-xl p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Crear Superadministrador</h2>
+        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="bg-gradient-to-br from-orange-500 to-red-500 p-2 rounded-lg">
+              <User className="text-white" size={24} />
+            </div>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Crear Administrador</h2>
+          </div>
           
-          <div className="space-y-4">
+          <div className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <User size={16} className="inline mr-1" />
-                Nombre Completo *
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <User size={16} className="inline mr-2 text-orange-500" />
+                Nombre Completo
               </label>
               <input
                 type="text"
@@ -100,30 +111,30 @@ const SetupPage = () => {
                 onChange={handleInputChange}
                 placeholder="Tu nombre completo"
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-3 text-gray-900 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <Mail size={16} className="inline mr-1" />
-                Email *
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <Mail size={16} className="inline mr-2 text-orange-500" />
+                Email
               </label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                placeholder="tu@email.com"
+                placeholder="admin@turestaurante.com"
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-3 text-gray-900 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <Lock size={16} className="inline mr-1" />
-                Contraseña *
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <Lock size={16} className="inline mr-2 text-orange-500" />
+                Contraseña
               </label>
               <input
                 type="password"
@@ -133,14 +144,14 @@ const SetupPage = () => {
                 placeholder="Mínimo 6 caracteres"
                 required
                 minLength={6}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-3 text-gray-900 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <Lock size={16} className="inline mr-1" />
-                Confirmar Contraseña *
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <CheckCircle size={16} className="inline mr-2 text-orange-500" />
+                Confirmar Contraseña
               </label>
               <input
                 type="password"
@@ -149,7 +160,7 @@ const SetupPage = () => {
                 onChange={handleInputChange}
                 placeholder="Repite tu contraseña"
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-3 text-gray-900 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
               />
             </div>
           </div>
@@ -157,10 +168,26 @@ const SetupPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-6 bg-primary text-white py-3 rounded-lg font-medium hover:opacity-90 transition disabled:opacity-50"
+            className="w-full mt-8 bg-gradient-to-r from-orange-500 to-red-500 text-white py-3.5 rounded-xl font-semibold hover:from-orange-600 hover:to-red-600 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            {loading ? 'Configurando...' : 'Crear Cuenta'}
+            {loading ? (
+              <>
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                <span>Configurando sistema...</span>
+              </>
+            ) : (
+              <>
+                <Sparkles size={20} />
+                <span>Crear Cuenta y Comenzar</span>
+              </>
+            )}
           </button>
+
+          <div className="mt-6 p-4 bg-orange-50 border border-orange-200 rounded-xl">
+            <p className="text-xs text-gray-600 text-center">
+              Esta cuenta tendrá acceso completo al sistema de administración
+            </p>
+          </div>
         </form>
       </div>
     </div>
