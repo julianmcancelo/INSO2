@@ -90,7 +90,7 @@ const PhoneMockup = ({ className = '' }) => {
 
           {/* QR Code Badge */}
           <div 
-            className="absolute right-6 bottom-6 w-24 h-24 bg-white p-2 rounded-xl"
+            className="absolute right-6 bottom-6 w-24 h-24 bg-white p-2 rounded-xl hidden md:block"
             style={{ filter: 'drop-shadow(0 10px 24px rgba(0,0,0,.25))' }}
           >
             <canvas 
