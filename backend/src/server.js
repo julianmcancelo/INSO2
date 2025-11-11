@@ -1,9 +1,11 @@
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
+const helmet = require('helmet');
 const { Server } = require('socket.io');
 const { sequelize } = require('./config/database');
 const socketHandler = require('./sockets/socketHandler');
+const { generalLimiter } = require('./middleware/rateLimiter');
 
 // Importar rutas
 const setupRoutes = require('./routes/setup.routes');
@@ -56,6 +58,16 @@ app.use(cors({
   },
   credentials: true
 }));
+
+// Seguridad: Helmet para headers HTTP seguros
+app.use(helmet({
+  contentSecurityPolicy: false, // Deshabilitado para permitir imágenes Base64
+  crossOriginEmbedderPolicy: false
+}));
+
+// Rate limiting general
+app.use(generalLimiter);
+
 app.use(express.json({ limit: '50mb' })); // Aumentado para imágenes Base64
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 

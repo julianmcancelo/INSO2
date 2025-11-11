@@ -1,5 +1,6 @@
 const { Usuario, Local } = require('../models');
 const { generateToken } = require('../config/jwt');
+const { logFailedLogin, logSuccessfulLogin, logUserCreation, logUserDeletion } = require('../utils/securityLogger');
 
 /**
  * Login de usuario administrador
@@ -19,18 +20,23 @@ exports.login = async (req, res) => {
       include: [{ model: Local, as: 'local' }]
     });
     
+    const ip = req.ip || req.connection.remoteAddress;
+    
     if (!usuario) {
+      logFailedLogin(email, ip, 'Usuario no encontrado');
       return res.status(401).json({ error: 'Credenciales inválidas' });
     }
 
     // Verificar contraseña
     const passwordValido = await usuario.compararPassword(password);
     if (!passwordValido) {
+      logFailedLogin(email, ip, 'Contraseña incorrecta');
       return res.status(401).json({ error: 'Credenciales inválidas' });
     }
 
     // Verificar que esté activo
     if (!usuario.activo) {
+      logFailedLogin(email, ip, 'Usuario inactivo');
       return res.status(401).json({ error: 'Usuario inactivo' });
     }
 
@@ -40,6 +46,9 @@ exports.login = async (req, res) => {
       localId: usuario.localId,
       rol: usuario.rol
     });
+
+    // Log de login exitoso
+    logSuccessfulLogin(usuario.id, email, ip);
 
     res.json({
       success: true,
