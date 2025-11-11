@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, Package, Grid, LogOut, Store, FileText, QrCode, Clock, Settings, Users, DollarSign } from 'lucide-react';
+import { ShoppingBag, Package, Grid, LogOut, Store, FileText, QrCode, Clock, Settings, Users, DollarSign, TrendingUp } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { pedidoAPI } from '../../services/api';
 import socketService from '../../services/socket';
@@ -129,7 +129,7 @@ const AdminDashboard = () => {
         {estadisticas && user?.localId && (
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-4">
-              <BarChart3 size={20} className="text-orange-600" />
+              <TrendingUp size={20} className="text-orange-600" />
               <h2 className="text-lg font-bold text-gray-900">Estadísticas de Hoy</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-gradient-to-br from-orange-50 to-red-50 p-6 rounded-xl border border-orange-100">
