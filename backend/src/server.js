@@ -21,17 +21,37 @@ const passwordRoutes = require('./routes/password');
 const app = express();
 const server = http.createServer(app);
 
+// Lista de orígenes permitidos
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://cartitaapp.vercel.app',
+  'https://www.cartita.digital',
+  'https://cartita.digital',
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
 // Configuración de Socket.IO
 const io = new Server(server, {
   cors: {
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-    methods: ['GET', 'POST', 'PUT', 'DELETE']
+    origin: allowedOrigins,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
   }
 });
 
-// Middleware
+// Middleware CORS
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: function (origin, callback) {
+    // Permitir requests sin origin (como mobile apps o curl)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.log('❌ Origen bloqueado por CORS:', origin);
+      callback(new Error('No permitido por CORS'));
+    }
+  },
   credentials: true
 }));
 app.use(express.json({ limit: '50mb' })); // Aumentado para imágenes Base64
