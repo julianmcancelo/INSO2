@@ -52,14 +52,14 @@ const LandingPage = () => {
   if (submitted) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-white rounded-2xl shadow-2xl p-8 text-center">
-          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <CheckCircle className="text-green-600" size={48} />
+        <div className="max-w-md w-full bg-white rounded-2xl shadow-2xl p-6 sm:p-8 text-center">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <CheckCircle className="text-green-600 w-10 h-10 sm:w-12 sm:h-12" />
           </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
             ¡Solicitud Recibida!
           </h2>
-          <p className="text-gray-600 mb-6">
+          <p className="text-sm sm:text-base text-gray-600 mb-6">
             Hemos recibido tu solicitud para <strong>{formData.nombreNegocio}</strong>.
             Te contactaremos pronto a <strong>{formData.email}</strong> con los siguientes pasos.
           </p>
@@ -78,11 +78,11 @@ const LandingPage = () => {
     <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 bg-white shadow-sm z-40">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 py-3 sm:py-4 flex items-center justify-between">
           <BrandLogo size="sm" showText={true} />
           <button
             onClick={() => navigate('/admin/login')}
-            className="px-6 py-2 rounded-lg font-semibold text-gray-700 hover:bg-gray-100 transition border border-gray-300"
+            className="px-4 sm:px-6 py-2 rounded-lg text-sm sm:text-base font-semibold text-gray-700 hover:bg-gray-100 transition border border-gray-300"
           >
             Iniciar sesión
           </button>
@@ -90,44 +90,44 @@ const LandingPage = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-amber-400 via-orange-400 to-red-500 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 py-20 md:py-32 grid md:grid-cols-2 gap-12 items-center">
+      <section className="bg-gradient-to-br from-amber-400 via-orange-400 to-red-500 relative overflow-hidden pt-20 sm:pt-24">
+        <div className="max-w-7xl mx-auto px-4 py-12 sm:py-20 md:py-32 grid md:grid-cols-2 gap-8 sm:gap-12 items-center">
           {/* Left Content */}
           <div className="text-white">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-4 sm:mb-6 leading-tight">
               Tu restaurante
               <br />
               <span className="text-yellow-300">100% digital</span>
             </h1>
-            <p className="text-2xl md:text-3xl mb-8 text-white/90">
+            <p className="text-xl sm:text-2xl md:text-3xl mb-6 sm:mb-8 text-white/90">
               Menú QR, pedidos online y mucho más
             </p>
             
             <div className="space-y-4">
               <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Input principal siempre visible */}
-                <div className="bg-white rounded-xl p-2 shadow-2xl flex items-center">
+                <div className="bg-white rounded-xl p-1.5 sm:p-2 shadow-2xl flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-0">
                   <input
                     type="text"
                     name="nombreNegocio"
                     value={formData.nombreNegocio}
                     onChange={handleInputChange}
                     placeholder="¿Cómo se llama tu negocio?"
-                    className="flex-1 px-4 py-4 text-gray-900 text-lg focus:outline-none rounded-lg"
+                    className="flex-1 px-3 sm:px-4 py-3 sm:py-4 text-gray-900 text-base sm:text-lg focus:outline-none rounded-lg"
                     onFocus={() => setShowForm(true)}
                     required
                   />
                   <button 
                     type="submit"
                     disabled={loading}
-                    className="bg-primary text-white px-8 py-4 rounded-lg font-bold hover:opacity-90 transition flex items-center space-x-2 disabled:opacity-50"
+                    className="bg-primary text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold hover:opacity-90 transition flex items-center justify-center space-x-2 disabled:opacity-50 text-sm sm:text-base"
                   >
                     {loading ? (
                       <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
                     ) : (
                       <>
                         <span>Empezar</span>
-                        <ArrowRight size={20} />
+                        <ArrowRight size={18} className="sm:w-5 sm:h-5" />
                       </>
                     )}
                   </button>
@@ -137,9 +137,9 @@ const LandingPage = () => {
                 <div className={`transition-all duration-500 ease-in-out overflow-hidden ${
                   showForm ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'
                 }`}>
-                  <div className="bg-white rounded-xl p-6 shadow-2xl space-y-4">
+                  <div className="bg-white rounded-xl p-4 sm:p-6 shadow-2xl space-y-4">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-xl font-bold text-gray-900">Completa tus datos</h3>
+                      <h3 className="text-lg sm:text-xl font-bold text-gray-900">Completa tus datos</h3>
                       <button 
                         type="button"
                         onClick={() => setShowForm(false)}
@@ -243,7 +243,7 @@ const LandingPage = () => {
                 </div>
               </form>
 
-              <p className="text-white/80 text-sm text-center">
+              <p className="text-white/80 text-xs sm:text-sm text-center">
                 Sin permanencia • Prueba gratis 30 días
               </p>
             </div>
@@ -264,44 +264,44 @@ const LandingPage = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white">
+      <section className="py-12 sm:py-16 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               Todo lo que necesitas
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-lg sm:text-xl text-gray-600">
               Digitaliza tu restaurante en minutos
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center p-8 hover:scale-105 transition-transform duration-300">
-              <div className="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <QrCode className="text-primary" size={48} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
+            <div className="text-center p-6 sm:p-8 hover:scale-105 transition-transform duration-300">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                <QrCode className="text-primary w-10 h-10 sm:w-12 sm:h-12" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">Menú QR</h3>
-              <p className="text-gray-600 text-lg">
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">Menú QR</h3>
+              <p className="text-gray-600 text-base sm:text-lg">
                 Clientes escanean el código QR y ven tu menú completo al instante. Actualízalo en tiempo real.
               </p>
             </div>
 
-            <div className="text-center p-8 hover:scale-105 transition-transform duration-300">
-              <div className="w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Zap className="text-orange-500" size={48} />
+            <div className="text-center p-6 sm:p-8 hover:scale-105 transition-transform duration-300">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                <Zap className="text-orange-500 w-10 h-10 sm:w-12 sm:h-12" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">Pedidos Rápidos</h3>
-              <p className="text-gray-600 text-lg">
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">Pedidos Rápidos</h3>
+              <p className="text-gray-600 text-base sm:text-lg">
                 Recibe pedidos directo en tu dispositivo. Notificaciones en tiempo real y gestión simple.
               </p>
             </div>
 
-            <div className="text-center p-8 hover:scale-105 transition-transform duration-300">
-              <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <TrendingUp className="text-green-600" size={48} />
+            <div className="text-center p-6 sm:p-8 hover:scale-105 transition-transform duration-300">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                <TrendingUp className="text-green-600 w-10 h-10 sm:w-12 sm:h-12" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">Crece tu Negocio</h3>
-              <p className="text-gray-600 text-lg">
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">Crece tu Negocio</h3>
+              <p className="text-gray-600 text-base sm:text-lg">
                 Estadísticas de ventas, productos más pedidos y análisis para tomar mejores decisiones.
               </p>
             </div>
