@@ -247,13 +247,6 @@ const AdminLogin = () => {
               <span className="font-medium text-gray-700">Iniciar sesión con Google</span>
             </button>
           </form>
-
-          {/* Demo credentials */}
-          <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <p className="text-sm font-medium text-blue-900 mb-1">🔐 Credenciales de Demo:</p>
-            <p className="text-xs text-blue-700 font-mono">Email: admin@restaurante.com</p>
-            <p className="text-xs text-blue-700 font-mono">Password: admin123</p>
-          </div>
         </div>
       </div>
     </div>
