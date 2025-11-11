@@ -11,4 +11,7 @@ router.get('/verify/:token', passwordController.verificarToken);
 // Resetear contraseña con token
 router.post('/reset/:token', passwordController.resetearPassword);
 
+// Resetear contraseña directamente con email
+router.post('/reset-by-email', passwordController.resetearPasswordPorEmail);
+
 module.exports = router;

@@ -119,3 +119,35 @@ exports.verificarToken = async (req, res) => {
     res.status(500).json({ valid: false, error: 'Error al verificar el token' });
   }
 };
+
+// Resetear contraseña directamente con email (sin token)
+exports.resetearPasswordPorEmail = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email y contraseña son requeridos' });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
+    }
+
+    // Buscar usuario por email
+    const usuario = await Usuario.findOne({ where: { email } });
+
+    if (!usuario) {
+      return res.status(404).json({ error: 'No existe un usuario con ese email' });
+    }
+
+    // Actualizar contraseña
+    usuario.password = password;
+    await usuario.save();
+
+    res.json({ message: 'Contraseña actualizada exitosamente' });
+
+  } catch (error) {
+    console.error('Error al resetear contraseña:', error);
+    res.status(500).json({ error: 'Error al resetear la contraseña' });
+  }
+};
