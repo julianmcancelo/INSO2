@@ -17,6 +17,8 @@ import MenuPage from './pages/cliente/MenuPage';
 import ConfirmacionPage from './pages/cliente/ConfirmacionPage';
 import SeguimientoPedidoPage from './pages/cliente/SeguimientoPedidoPage';
 import AdminLogin from './pages/admin/AdminLogin';
+import ForgotPassword from './pages/admin/ForgotPassword';
+import ResetPassword from './pages/admin/ResetPassword';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminLocales from './pages/admin/AdminLocales';
 import AdminSolicitudes from './pages/admin/AdminSolicitudes';
@@ -135,6 +137,8 @@ function AppContent() {
 
               {/* Rutas del Admin */}
               <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password/:token" element={<ResetPassword />} />
               <Route path="/admin" element={<PrivateRoute><AdminDashboard /></PrivateRoute>} />
               <Route path="/admin/locales" element={<PrivateRoute><AdminLocales /></PrivateRoute>} />
               <Route path="/admin/solicitudes" element={<PrivateRoute><AdminSolicitudes /></PrivateRoute>} />

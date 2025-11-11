@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Eye, EyeOff, BarChart3, Users, Clock } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../context/AuthContext';
@@ -198,12 +198,12 @@ const AdminLogin = () => {
 
             {/* Olvidaste contraseña */}
             <div className="flex justify-end">
-              <button
-                type="button"
+              <Link
+                to="/admin/forgot-password"
                 className="text-sm font-medium text-primary hover:underline"
               >
                 ¿Olvidaste tu contraseña?
-              </button>
+              </Link>
             </div>
 
             {/* Botón Submit */}

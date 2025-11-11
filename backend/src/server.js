@@ -16,6 +16,7 @@ const categoriaRoutes = require('./routes/categoria.routes');
 const productoRoutes = require('./routes/producto.routes');
 const pedidoRoutes = require('./routes/pedido.routes');
 const configuracionPagoRoutes = require('./routes/configuracionPago');
+const passwordRoutes = require('./routes/password');
 
 const app = express();
 const server = http.createServer(app);
@@ -59,6 +60,7 @@ app.use('/api/categorias', categoriaRoutes);
 app.use('/api/productos', productoRoutes);
 app.use('/api/pedidos', pedidoRoutes);
 app.use('/api/configuracion-pago', configuracionPagoRoutes);
+app.use('/api/password', passwordRoutes);
 
 // Manejador de errores global
 app.use((err, req, res, next) => {
