@@ -4,10 +4,11 @@ const Local = require('../src/models/Local');
 const Categoria = require('../src/models/Categoria');
 const Producto = require('../src/models/Producto');
 const Pedido = require('../src/models/Pedido');
-const ItemPedido = require('../src/models/ItemPedido');
+const PedidoItem = require('../src/models/PedidoItem');
 const Solicitud = require('../src/models/Solicitud');
-const Configuracion = require('../src/models/Configuracion');
+const ConfiguracionGlobal = require('../src/models/ConfiguracionGlobal');
 const ConfiguracionPago = require('../src/models/ConfiguracionPago');
+const Invitacion = require('../src/models/Invitacion');
 
 async function recreateTables() {
   try {
@@ -28,10 +29,11 @@ async function recreateTables() {
     console.log('   - categorias');
     console.log('   - productos');
     console.log('   - pedidos');
-    console.log('   - items_pedido');
+    console.log('   - pedido_items');
     console.log('   - solicitudes');
-    console.log('   - configuracion');
+    console.log('   - configuracion_global');
     console.log('   - configuracion_pago');
+    console.log('   - invitaciones');
     
     console.log('\n✨ Proceso completado. Ahora puedes ejecutar el setup inicial.');
     
