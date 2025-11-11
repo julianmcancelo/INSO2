@@ -7,12 +7,14 @@ Todos los contenedores están corriendo correctamente:
 - **MySQL Database** (menu-db): Puerto 3307 → 3306
 - **Backend API** (menu-backend): Puerto 5000
 - **Frontend React** (menu-frontend): Puerto 3001 → 3000
+- **phpMyAdmin** (menu-phpmyadmin): Puerto 8080 → 80
 
 ## 🚀 Acceso a la Aplicación
 
 - **Frontend**: http://localhost:3001
 - **Backend API**: http://localhost:5000
 - **MySQL**: localhost:3307
+- **phpMyAdmin**: http://localhost:8080
 
 ## 📋 Comandos Útiles
 
@@ -82,6 +84,17 @@ Se cambiaron los siguientes puertos para evitar conflictos:
 
 La base de datos se inicializa automáticamente con el script `backend/database/init.sql`.
 
+### Acceso con phpMyAdmin
+Accede a http://localhost:8080 con las siguientes credenciales:
+- **Usuario**: `menuadmin`
+- **Contraseña**: `menupass123`
+- **Servidor**: `mysql` (ya configurado)
+
+También puedes usar el usuario root:
+- **Usuario**: `root`
+- **Contraseña**: `rootpass123`
+
+### Acceso por línea de comandos
 Para conectarte directamente a MySQL:
 ```bash
 mysql -h 127.0.0.1 -P 3307 -u menuadmin -p

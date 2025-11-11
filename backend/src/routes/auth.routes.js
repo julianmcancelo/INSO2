@@ -8,6 +8,11 @@ router.post('/login', authController.login);
 
 // Rutas protegidas
 router.get('/me', protect, authController.getMe);
-router.post('/usuarios', protect, authorize('superadmin', 'admin'), authController.createUsuario);
+
+// Gestión de usuarios (solo superadmin)
+router.get('/usuarios', protect, authorize('superadmin'), authController.getUsuarios);
+router.post('/usuarios', protect, authorize('superadmin'), authController.createUsuario);
+router.put('/usuarios/:id', protect, authorize('superadmin'), authController.updateUsuario);
+router.delete('/usuarios/:id', protect, authorize('superadmin'), authController.deleteUsuario);
 
 module.exports = router;

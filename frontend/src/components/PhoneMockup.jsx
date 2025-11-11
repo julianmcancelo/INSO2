@@ -10,8 +10,8 @@ const PhoneMockup = ({ className = '' }) => {
         qrCanvasRef.current,
         'https://cartita.digital',
         { 
-          width: 90, 
-          margin: 1, 
+          width: 80, 
+          margin: 0, 
           color: { 
             dark: '#0f172a', 
             light: '#ffffff' 
@@ -90,12 +90,12 @@ const PhoneMockup = ({ className = '' }) => {
 
           {/* QR Code Badge */}
           <div 
-            className="absolute right-6 bottom-6 w-24 h-24 bg-white p-2 rounded-xl hidden md:block"
+            className="absolute right-6 bottom-6 w-24 h-24 bg-white p-2 rounded-xl hidden md:flex items-center justify-center"
             style={{ filter: 'drop-shadow(0 10px 24px rgba(0,0,0,.25))' }}
           >
             <canvas 
               ref={qrCanvasRef} 
-              className="w-full h-full"
+              className="w-20 h-20"
             ></canvas>
           </div>
         </div>

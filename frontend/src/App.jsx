@@ -21,6 +21,7 @@ import ForgotPassword from './pages/admin/ForgotPassword';
 import ResetPassword from './pages/admin/ResetPassword';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminLocales from './pages/admin/AdminLocales';
+import AdminUsuarios from './pages/admin/AdminUsuarios';
 import AdminSolicitudes from './pages/admin/AdminSolicitudes';
 import AdminProductos from './pages/admin/AdminProductos';
 import AdminPedidos from './pages/admin/AdminPedidos';
@@ -141,6 +142,7 @@ function AppContent() {
               <Route path="/reset-password/:token" element={<ResetPassword />} />
               <Route path="/admin" element={<PrivateRoute><AdminDashboard /></PrivateRoute>} />
               <Route path="/admin/locales" element={<PrivateRoute><AdminLocales /></PrivateRoute>} />
+              <Route path="/admin/usuarios" element={<PrivateRoute><AdminUsuarios /></PrivateRoute>} />
               <Route path="/admin/solicitudes" element={<PrivateRoute><AdminSolicitudes /></PrivateRoute>} />
               <Route path="/admin/productos" element={<PrivateRoute><AdminProductos /></PrivateRoute>} />
               <Route path="/admin/pedidos" element={<PrivateRoute><AdminPedidos /></PrivateRoute>} />

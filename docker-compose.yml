@@ -74,6 +74,24 @@ services:
     networks:
       - menu-network
 
+  # phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: menu-phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: menuadmin
+      PMA_PASSWORD: menupass123
+      MYSQL_ROOT_PASSWORD: rootpass123
+    ports:
+      - "8080:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - menu-network
+
 volumes:
   mysql_data:
 

@@ -51,20 +51,30 @@ const SetupPage = () => {
         password: formData.password
       });
 
+      console.log('✅ Setup exitoso:', response.data);
+
       // Guardar token y usuario
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.usuario));
 
-      toast.success('¡Sistema configurado exitosamente!');
+      toast.success('¡Sistema configurado exitosamente! Redirigiendo...');
       
-      // Redirigir al login
+      // Redirigir al dashboard del admin
       setTimeout(() => {
-        navigate('/admin/login');
+        navigate('/admin');
+        window.location.reload(); // Recargar para que el AuthContext tome el nuevo token
       }, 1500);
 
     } catch (error) {
-      console.error('Error:', error);
-      toast.error(error.response?.data?.error || 'Error al configurar el sistema');
+      console.error('❌ Error en setup:', error);
+      console.error('Response:', error.response);
+      
+      const errorMessage = error.response?.data?.error || 
+                          error.response?.data?.message || 
+                          error.message || 
+                          'Error al configurar el sistema';
+      
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }

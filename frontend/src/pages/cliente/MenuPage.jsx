@@ -94,9 +94,9 @@ const MenuPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-orange-50 to-red-50">
       {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-40">
+      <header className="bg-white/90 backdrop-blur-md shadow-lg sticky top-0 z-40 border-b border-gray-200">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -117,11 +117,11 @@ const MenuPage = () => {
 
             <button
               onClick={openCart}
-              className="relative bg-primary text-white p-3 rounded-full hover:opacity-90 transition"
+              className="relative bg-gradient-to-r from-orange-500 to-red-500 text-white p-3 rounded-full hover:from-orange-600 hover:to-red-600 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
             >
               <ShoppingCart size={24} />
               {getTotalItems() > 0 && (
-                <span className="badge-notification bg-red-600 text-white">
+                <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center ring-2 ring-white">
                   {getTotalItems()}
                 </span>
               )}
@@ -131,13 +131,13 @@ const MenuPage = () => {
           {/* Búsqueda */}
           <div className="mt-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-500" size={20} />
               <input
                 type="text"
                 placeholder="Buscar productos..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all shadow-sm"
               />
             </div>
           </div>
@@ -145,15 +145,15 @@ const MenuPage = () => {
       </header>
 
       {/* Filtro de categorías */}
-      <div className="bg-white border-b sticky top-[140px] z-30">
+      <div className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-[140px] z-30 shadow-md">
         <div className="container mx-auto px-4">
-          <div className="flex space-x-2 overflow-x-auto py-3 scrollbar-hide">
+          <div className="flex space-x-3 overflow-x-auto py-4 scrollbar-hide">
             <button
               onClick={() => setCategoriaSeleccionada(null)}
-              className={`px-4 py-2 rounded-full whitespace-nowrap transition ${
+              className={`px-6 py-2.5 rounded-full whitespace-nowrap transition-all font-medium shadow-md ${
                 !categoriaSeleccionada
-                  ? 'bg-primary text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg transform scale-105'
+                  : 'bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200'
               }`}
             >
               Todos
@@ -162,10 +162,10 @@ const MenuPage = () => {
               <button
                 key={cat.id}
                 onClick={() => setCategoriaSeleccionada(cat.id)}
-                className={`px-4 py-2 rounded-full whitespace-nowrap transition ${
+                className={`px-6 py-2.5 rounded-full whitespace-nowrap transition-all font-medium shadow-md ${
                   categoriaSeleccionada === cat.id
-                    ? 'bg-primary text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg transform scale-105'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200'
                 }`}
               >
                 {cat.nombre}
@@ -176,19 +176,26 @@ const MenuPage = () => {
       </div>
 
       {/* Productos */}
-      <main className="container mx-auto px-4 py-6">
+      <main className="container mx-auto px-4 py-8">
         {productosPorCategoria.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-gray-600">No se encontraron productos</p>
+          <div className="text-center py-16">
+            <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md mx-auto">
+              <p className="text-gray-600 text-lg">No se encontraron productos</p>
+            </div>
           </div>
         ) : (
           productosPorCategoria.map(cat => (
-            <div key={cat.id} className="mb-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">{cat.nombre}</h2>
-              {cat.descripcion && (
-                <p className="text-gray-600 mb-4">{cat.descripcion}</p>
-              )}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div key={cat.id} className="mb-10">
+              <div className="mb-6">
+                <h2 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+                  <span className="w-1.5 h-8 bg-gradient-to-b from-orange-500 to-red-500 rounded-full"></span>
+                  {cat.nombre}
+                </h2>
+                {cat.descripcion && (
+                  <p className="text-gray-600 ml-4">{cat.descripcion}</p>
+                )}
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {cat.productos.map(producto => (
                   <ProductoCard key={producto.id} producto={producto} />
                 ))}

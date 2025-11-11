@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, Package, Grid, BarChart3, LogOut, Store, FileText, QrCode, Clock, Settings } from 'lucide-react';
+import { ShoppingBag, Package, Grid, BarChart3, LogOut, Store, FileText, QrCode, Clock, Settings, TrendingUp, Users, DollarSign, Sparkles } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { pedidoAPI } from '../../services/api';
 import socketService from '../../services/socket';
+import BrandLogo from '../../components/BrandLogo';
 
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
@@ -45,21 +46,33 @@ const AdminDashboard = () => {
   }, [user, cargarDatos]);
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+      <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Panel de Administración</h1>
-            <div className="flex items-center space-x-2 sm:space-x-4">
-              <span className="text-sm sm:text-base text-gray-600 hidden sm:inline">
-                {user?.nombre} ({user?.rol})
-              </span>
+            <div className="flex items-center gap-4">
+              <BrandLogo size="sm" showText={true} />
+              <div className="hidden md:block">
+                <h1 className="text-xl font-bold text-gray-900">Panel de Administración</h1>
+                <p className="text-sm text-gray-500">Bienvenido, {user?.nombre}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-orange-100 to-red-100 px-4 py-2 rounded-lg">
+                <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                  {user?.nombre?.charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-gray-900">{user?.nombre}</p>
+                  <p className="text-xs text-orange-600 capitalize">{user?.rol}</p>
+                </div>
+              </div>
               <button
                 onClick={logout}
-                className="flex items-center space-x-1 sm:space-x-2 bg-red-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-red-700 text-sm sm:text-base"
+                className="flex items-center gap-2 bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-lg hover:from-red-600 hover:to-red-700 transition-all shadow-md hover:shadow-lg text-sm font-medium"
               >
-                <LogOut size={16} className="sm:w-[18px] sm:h-[18px]" />
+                <LogOut size={16} />
                 <span>Salir</span>
               </button>
             </div>
@@ -70,189 +83,248 @@ const AdminDashboard = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Mensaje para superadmin sin local */}
         {user?.rol === 'superadmin' && !user?.localId && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-            <h3 className="text-lg font-semibold text-blue-900 mb-2">
-              Bienvenido, Superadministrador
-            </h3>
-            <p className="text-blue-700 mb-4">
-              Comienza creando locales para gestionar diferentes negocios de forma independiente.
-            </p>
-            <Link
-              to="/admin/locales"
-              className="inline-flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-            >
-              <Store size={18} />
-              <span>Gestionar Locales</span>
-            </Link>
+          <div className="bg-white rounded-2xl p-8 mb-8 shadow-lg border border-gray-200">
+            <div className="flex flex-col gap-6">
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                  Panel de Control Principal
+                </h3>
+                <p className="text-gray-600">
+                  Administra los negocios y usuarios de la plataforma desde este panel central.
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Link
+                  to="/admin/locales"
+                  className="flex items-center gap-4 bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 px-6 py-5 rounded-xl hover:shadow-md transition-all group"
+                >
+                  <div className="bg-blue-500 p-3 rounded-xl group-hover:scale-110 transition-transform">
+                    <Store size={24} className="text-white" />
+                  </div>
+                  <div className="text-left">
+                    <p className="font-bold text-gray-900 text-lg">Negocios</p>
+                    <p className="text-sm text-gray-600">Administrar locales</p>
+                  </div>
+                </Link>
+
+                <Link
+                  to="/admin/usuarios"
+                  className="flex items-center gap-4 bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-200 px-6 py-5 rounded-xl hover:shadow-md transition-all group"
+                >
+                  <div className="bg-purple-500 p-3 rounded-xl group-hover:scale-110 transition-transform">
+                    <Users size={24} className="text-white" />
+                  </div>
+                  <div className="text-left">
+                    <p className="font-bold text-gray-900 text-lg">Usuarios</p>
+                    <p className="text-sm text-gray-600">Gestionar accesos</p>
+                  </div>
+                </Link>
+              </div>
+            </div>
           </div>
         )}
 
-        {/* Estadísticas */}
-        {estadisticas && (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div className="bg-white rounded-lg shadow p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Total Pedidos Hoy</p>
-                  <p className="text-3xl font-bold text-gray-900">{estadisticas.totalPedidos}</p>
+        {/* Estadísticas - Solo para usuarios con local */}
+        {estadisticas && user?.localId && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
+              <div className="flex items-center justify-between mb-3">
+                <div className="text-orange-600">
+                  <ShoppingBag size={24} />
                 </div>
-                <ShoppingBag className="text-blue-500" size={40} />
               </div>
+              <p className="text-sm text-gray-600 mb-1">Total Pedidos Hoy</p>
+              <p className="text-3xl font-bold text-gray-900">{estadisticas.totalPedidos}</p>
             </div>
 
-            <div className="bg-white rounded-lg shadow p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Pendientes</p>
-                  <p className="text-3xl font-bold text-yellow-600">{estadisticas.pendientes}</p>
+            <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
+              <div className="flex items-center justify-between mb-3">
+                <div className="text-yellow-600">
+                  <Clock size={24} />
                 </div>
-                <Package className="text-yellow-500" size={40} />
               </div>
+              <p className="text-sm text-gray-600 mb-1">Pendientes</p>
+              <p className="text-3xl font-bold text-gray-900">{estadisticas.pendientes}</p>
             </div>
 
-            <div className="bg-white rounded-lg shadow p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">En Preparación</p>
-                  <p className="text-3xl font-bold text-blue-600">{estadisticas.preparando}</p>
+            <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
+              <div className="flex items-center justify-between mb-3">
+                <div className="text-blue-600">
+                  <Package size={24} />
                 </div>
-                <Package className="text-blue-500" size={40} />
               </div>
+              <p className="text-sm text-gray-600 mb-1">En Preparación</p>
+              <p className="text-3xl font-bold text-gray-900">{estadisticas.preparando}</p>
             </div>
 
-            <div className="bg-white rounded-lg shadow p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Ventas Hoy</p>
-                  <p className="text-3xl font-bold text-green-600">
-                    ${estadisticas.totalVentas.toFixed(0)}
-                  </p>
+            <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
+              <div className="flex items-center justify-between mb-3">
+                <div className="text-green-600">
+                  <DollarSign size={24} />
                 </div>
-                <BarChart3 className="text-green-500" size={40} />
               </div>
+              <p className="text-sm text-gray-600 mb-1">Ventas Hoy</p>
+              <p className="text-3xl font-bold text-gray-900">${estadisticas.totalVentas.toFixed(0)}</p>
             </div>
           </div>
         )}
 
         {/* Accesos rápidos */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
           {user?.rol === 'superadmin' && (
             <>
               <Link
                 to="/admin/solicitudes"
-                className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg shadow p-6 hover:shadow-md transition text-white"
+                className="bg-white rounded-lg shadow p-6 hover:shadow-md transition border border-gray-200"
               >
-                <FileText className="mb-4" size={32} />
-                <h3 className="text-lg font-semibold mb-2">Solicitudes</h3>
-                <p className="text-sm text-green-100">Revisar nuevas solicitudes</p>
+                <div className="text-orange-600 mb-4">
+                  <FileText size={32} />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Solicitudes</h3>
+                <p className="text-sm text-gray-600">Revisar nuevas solicitudes</p>
               </Link>
               
               <Link
                 to="/admin/locales"
-                className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow p-6 hover:shadow-md transition text-white"
+                className="bg-white rounded-lg shadow p-6 hover:shadow-md transition border border-gray-200"
               >
-                <Store className="mb-4" size={32} />
-                <h3 className="text-lg font-semibold mb-2">Gestionar Locales</h3>
-                <p className="text-sm text-blue-100">Crear y administrar locales</p>
+                <div className="text-orange-600 mb-4">
+                  <Store size={32} />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Negocios</h3>
+                <p className="text-sm text-gray-600">Crear y administrar locales</p>
+              </Link>
+
+              <Link
+                to="/admin/usuarios"
+                className="bg-white rounded-lg shadow p-6 hover:shadow-md transition border border-gray-200"
+              >
+                <div className="text-orange-600 mb-4">
+                  <Users size={32} />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Usuarios</h3>
+                <p className="text-sm text-gray-600">Gestionar administradores</p>
               </Link>
             </>
           )}
           
-          <Link
-            to="/admin/pedidos"
-            className="bg-white rounded-lg shadow p-6 hover:shadow-md transition"
-          >
-            <ShoppingBag className="text-primary mb-4" size={32} />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Gestionar Pedidos</h3>
-            <p className="text-sm text-gray-600">Ver y administrar todos los pedidos</p>
-          </Link>
+          {user?.localId && (
+            <>
+              <Link
+                to="/admin/pedidos"
+                className="bg-white rounded-lg shadow p-6 hover:shadow-md transition border border-gray-200"
+              >
+                <div className="text-orange-600 mb-4">
+                  <ShoppingBag size={32} />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Pedidos</h3>
+                <p className="text-sm text-gray-600">Ver y administrar pedidos</p>
+              </Link>
 
-          <Link
-            to="/admin/productos"
-            className="bg-white rounded-lg shadow p-6 hover:shadow-md transition"
-          >
-            <Package className="text-primary mb-4" size={32} />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Productos</h3>
-            <p className="text-sm text-gray-600">Administrar productos y precios</p>
-          </Link>
+              <Link
+                to="/admin/productos"
+                className="bg-white rounded-lg shadow p-6 hover:shadow-md transition border border-gray-200"
+              >
+                <div className="text-orange-600 mb-4">
+                  <Package size={32} />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Productos</h3>
+                <p className="text-sm text-gray-600">Administrar productos</p>
+              </Link>
 
-          <Link
-            to="/admin/categorias"
-            className="bg-white rounded-lg shadow p-6 hover:shadow-md transition"
-          >
-            <Grid className="text-primary mb-4" size={32} />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Categorías</h3>
-            <p className="text-sm text-gray-600">Organizar categorías del menú</p>
-          </Link>
+              <Link
+                to="/admin/categorias"
+                className="bg-white rounded-lg shadow p-6 hover:shadow-md transition border border-gray-200"
+              >
+                <div className="text-orange-600 mb-4">
+                  <Grid size={32} />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Categorías</h3>
+                <p className="text-sm text-gray-600">Organizar el menú</p>
+              </Link>
 
-          <Link
-            to="/admin/qr"
-            className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg shadow p-6 hover:shadow-md transition text-white"
-          >
-            <QrCode className="mb-4" size={32} />
-            <h3 className="text-lg font-semibold mb-2">Código QR</h3>
-            <p className="text-sm text-purple-100">Ver y descargar QR del menú</p>
-          </Link>
+              <Link
+                to="/admin/qr"
+                className="bg-white rounded-lg shadow p-6 hover:shadow-md transition border border-gray-200"
+              >
+                <div className="text-orange-600 mb-4">
+                  <QrCode size={32} />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Código QR</h3>
+                <p className="text-sm text-gray-600">Descargar QR del menú</p>
+              </Link>
 
-          <Link
-            to="/admin/horarios"
-            className="bg-gradient-to-br from-indigo-500 to-blue-600 rounded-lg shadow p-6 hover:shadow-md transition text-white"
-          >
-            <Clock className="mb-4" size={32} />
-            <h3 className="text-lg font-semibold mb-2">Horarios</h3>
-            <p className="text-sm text-indigo-100">Configurar horarios de atención</p>
-          </Link>
+              <Link
+                to="/admin/horarios"
+                className="bg-white rounded-lg shadow p-6 hover:shadow-md transition border border-gray-200"
+              >
+                <div className="text-orange-600 mb-4">
+                  <Clock size={32} />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Horarios</h3>
+                <p className="text-sm text-gray-600">Configurar atención</p>
+              </Link>
+            </>
+          )}
 
           {user?.rol === 'superadmin' && (
             <Link
               to="/admin/mantenimiento"
-              className="bg-gradient-to-br from-gray-700 to-gray-900 rounded-lg shadow p-6 hover:shadow-md transition text-white"
+              className="bg-white rounded-lg shadow p-6 hover:shadow-md transition border border-gray-200"
             >
-              <Settings className="mb-4" size={32} />
-              <h3 className="text-lg font-semibold mb-2">Mantenimiento</h3>
-              <p className="text-sm text-gray-300">Activar modo mantenimiento</p>
+              <div className="text-gray-600 mb-4">
+                <Settings size={32} />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Mantenimiento</h3>
+              <p className="text-sm text-gray-600">Modo mantenimiento</p>
             </Link>
           )}
         </div>
 
-        {/* Pedidos recientes */}
-        <div className="bg-white rounded-lg shadow">
-          <div className="p-6 border-b">
-            <h2 className="text-xl font-semibold text-gray-900">Pedidos Recientes</h2>
-          </div>
-          <div className="divide-y">
-            {pedidosRecientes.length === 0 ? (
-              <div className="p-6 text-center text-gray-500">
-                No hay pedidos recientes
-              </div>
-            ) : (
-              pedidosRecientes.map(pedido => (
-                <div key={pedido.id} className="p-6 hover:bg-gray-50">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-semibold text-gray-900">{pedido.numeroPedido}</p>
-                      <p className="text-sm text-gray-600">{pedido.clienteNombre}</p>
-                      <p className="text-sm text-gray-500">
-                        {pedido.tipoEntrega} {pedido.numeroMesa && `- Mesa ${pedido.numeroMesa}`}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold text-primary">${pedido.total}</p>
-                      <span className={`inline-block px-2 py-1 text-xs rounded-full ${
-                        pedido.estado === 'pendiente' ? 'bg-yellow-100 text-yellow-800' :
-                        pedido.estado === 'preparando' ? 'bg-blue-100 text-blue-800' :
-                        pedido.estado === 'listo' ? 'bg-green-100 text-green-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
-                        {pedido.estado}
-                      </span>
+        {/* Pedidos recientes - Solo para usuarios con local */}
+        {user?.localId && (
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-100">
+            <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-orange-50 rounded-t-2xl">
+              <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                <ShoppingBag size={24} className="text-orange-600" />
+                Pedidos Recientes
+              </h2>
+            </div>
+            <div className="divide-y">
+              {pedidosRecientes.length === 0 ? (
+                <div className="p-6 text-center text-gray-500">
+                  No hay pedidos recientes
+                </div>
+              ) : (
+                pedidosRecientes.map(pedido => (
+                  <div key={pedido.id} className="p-6 hover:bg-gray-50">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="font-semibold text-gray-900">{pedido.numeroPedido}</p>
+                        <p className="text-sm text-gray-600">{pedido.clienteNombre}</p>
+                        <p className="text-sm text-gray-500">
+                          {pedido.tipoEntrega} {pedido.numeroMesa && `- Mesa ${pedido.numeroMesa}`}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-primary">${pedido.total}</p>
+                        <span className={`inline-block px-2 py-1 text-xs rounded-full ${
+                          pedido.estado === 'pendiente' ? 'bg-yellow-100 text-yellow-800' :
+                          pedido.estado === 'preparando' ? 'bg-blue-100 text-blue-800' :
+                          pedido.estado === 'listo' ? 'bg-green-100 text-green-800' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
+                          {pedido.estado}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
-            )}
+                ))
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </main>
     </div>
   );

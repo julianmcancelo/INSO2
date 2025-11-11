@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Mail, User, Phone, MessageSquare, CheckCircle, ArrowRight, QrCode, Zap, TrendingUp } from 'lucide-react';
+import { Mail, User, Phone, MessageSquare, CheckCircle, ArrowRight, QrCode, Zap, TrendingUp, LogOut, LayoutDashboard, ChevronDown } from 'lucide-react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import BrandLogo from '../components/BrandLogo';
 import PhoneMockup from '../components/PhoneMockup';
+import { useAuth } from '../context/AuthContext';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const [formData, setFormData] = useState({
     nombreNegocio: '',
     nombreContacto: '',
@@ -80,12 +83,67 @@ const LandingPage = () => {
       <header className="fixed top-0 left-0 right-0 bg-white shadow-sm z-40">
         <div className="max-w-7xl mx-auto px-4 py-3 sm:py-4 flex items-center justify-between">
           <BrandLogo size="sm" showText={true} />
-          <button
-            onClick={() => navigate('/admin/login')}
-            className="px-4 sm:px-6 py-2 rounded-lg text-sm sm:text-base font-semibold text-gray-700 hover:bg-gray-100 transition border border-gray-300"
-          >
-            Iniciar sesión
-          </button>
+          
+          {user ? (
+            <div className="relative">
+              <button
+                onClick={() => setShowUserMenu(!showUserMenu)}
+                className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg text-sm sm:text-base font-semibold text-gray-700 hover:bg-gray-100 transition border border-gray-300"
+              >
+                <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                  {user.nombre?.charAt(0).toUpperCase()}
+                </div>
+                <span className="hidden sm:inline">{user.nombre}</span>
+                <ChevronDown size={16} className={`transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
+              </button>
+
+              {showUserMenu && (
+                <>
+                  <div 
+                    className="fixed inset-0 z-10" 
+                    onClick={() => setShowUserMenu(false)}
+                  />
+                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-20">
+                    <div className="px-4 py-3 border-b border-gray-100">
+                      <p className="text-sm font-semibold text-gray-900">{user.nombre}</p>
+                      <p className="text-xs text-gray-500">{user.email}</p>
+                      <p className="text-xs text-orange-600 font-medium mt-1 capitalize">{user.rol}</p>
+                    </div>
+                    
+                    <button
+                      onClick={() => {
+                        setShowUserMenu(false);
+                        navigate('/admin');
+                      }}
+                      className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                    >
+                      <LayoutDashboard size={16} />
+                      Dashboard
+                    </button>
+                    
+                    <button
+                      onClick={() => {
+                        setShowUserMenu(false);
+                        logout();
+                        toast.success('Sesión cerrada correctamente');
+                      }}
+                      className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+                    >
+                      <LogOut size={16} />
+                      Cerrar sesión
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          ) : (
+            <button
+              onClick={() => navigate('/admin/login')}
+              className="px-4 sm:px-6 py-2 rounded-lg text-sm sm:text-base font-semibold text-gray-700 hover:bg-gray-100 transition border border-gray-300"
+            >
+              Iniciar sesión
+            </button>
+          )}
         </div>
       </header>
 
