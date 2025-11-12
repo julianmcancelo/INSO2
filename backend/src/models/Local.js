@@ -56,19 +56,57 @@ const Local = sequelize.define('Local', {
     type: DataTypes.JSON,
     allowNull: true,
     defaultValue: {},
-    comment: 'Horarios de atención del local'
+    comment: 'Horarios de atención del local',
+    get() {
+      const value = this.getDataValue('horarioAtencion');
+      // Si es string, parsearlo a objeto
+      if (typeof value === 'string') {
+        try {
+          return JSON.parse(value);
+        } catch (e) {
+          return {};
+        }
+      }
+      return value || {};
+    },
+    set(value) {
+      // Asegurar que se guarde como objeto, no como string
+      this.setDataValue('horarioAtencion', value);
+    }
   },
   datosBancarios: {
     type: DataTypes.JSON,
     allowNull: true,
     defaultValue: {},
-    comment: 'Datos bancarios para transferencias (CBU, Alias, Titular, Banco)'
+    comment: 'Datos bancarios para transferencias (CBU, Alias, Titular, Banco)',
+    get() {
+      const value = this.getDataValue('datosBancarios');
+      if (typeof value === 'string') {
+        try {
+          return JSON.parse(value);
+        } catch (e) {
+          return {};
+        }
+      }
+      return value || {};
+    }
   },
   configuracion: {
     type: DataTypes.JSON,
     allowNull: true,
     defaultValue: {},
-    comment: 'Configuraciones personalizadas (acepta delivery, tiempo estimado, etc.)'
+    comment: 'Configuración adicional del local',
+    get() {
+      const value = this.getDataValue('configuracion');
+      if (typeof value === 'string') {
+        try {
+          return JSON.parse(value);
+        } catch (e) {
+          return {};
+        }
+      }
+      return value || {};
+    }
   },
   activo: {
     type: DataTypes.BOOLEAN,
