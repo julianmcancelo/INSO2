@@ -13,7 +13,7 @@ services:
     container_name: cartita-backend
     restart: unless-stopped
     environment:
-      NODE_ENV: development
+      NODE_ENV: ${NODE_ENV:-development}
       PORT: 5000
       # Variables de Neon - Se cargan desde .env
       DB_DIALECT: ${DB_DIALECT:-postgres}
