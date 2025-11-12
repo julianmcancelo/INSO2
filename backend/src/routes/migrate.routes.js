@@ -41,29 +41,38 @@ router.post('/recreate-tables', async (req, res) => {
 // Endpoint para verificar estructura de tablas
 router.get('/verify-structure', async (req, res) => {
   try {
-    const [localesColumns] = await sequelize.query(`
-      SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE, COLUMN_DEFAULT, COLUMN_COMMENT
-      FROM INFORMATION_SCHEMA.COLUMNS
-      WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'locales'
-      ORDER BY ORDINAL_POSITION
-    `);
+    // Query compatible con PostgreSQL (Neon) y MySQL
+    const isPostgres = sequelize.getDialect() === 'postgres';
+    
+    const columnQuery = isPostgres 
+      ? `SELECT column_name, data_type, is_nullable, column_default
+         FROM information_schema.columns
+         WHERE table_name = $1
+         ORDER BY ordinal_position`
+      : `SELECT COLUMN_NAME as column_name, DATA_TYPE as data_type, 
+         IS_NULLABLE as is_nullable, COLUMN_DEFAULT as column_default
+         FROM INFORMATION_SCHEMA.COLUMNS
+         WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?
+         ORDER BY ORDINAL_POSITION`;
 
-    const [pedidosColumns] = await sequelize.query(`
-      SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE, COLUMN_DEFAULT, COLUMN_COMMENT
-      FROM INFORMATION_SCHEMA.COLUMNS
-      WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'pedidos'
-      ORDER BY ORDINAL_POSITION
-    `);
+    const [localesColumns] = await sequelize.query(columnQuery, {
+      bind: ['locales'],
+      replacements: ['locales']
+    });
 
-    const [usuariosColumns] = await sequelize.query(`
-      SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE, COLUMN_DEFAULT, COLUMN_COMMENT
-      FROM INFORMATION_SCHEMA.COLUMNS
-      WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'usuarios'
-      ORDER BY ORDINAL_POSITION
-    `);
+    const [pedidosColumns] = await sequelize.query(columnQuery, {
+      bind: ['pedidos'],
+      replacements: ['pedidos']
+    });
+
+    const [usuariosColumns] = await sequelize.query(columnQuery, {
+      bind: ['usuarios'],
+      replacements: ['usuarios']
+    });
 
     res.json({
       success: true,
+      dialect: sequelize.getDialect(),
       tables: {
         locales: localesColumns,
         pedidos: pedidosColumns,
