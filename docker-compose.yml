@@ -1,32 +1,10 @@
 version: '3.9'
 
-services:
-  # MySQL Database
-  mysql:
-    image: mysql:8.0
-    container_name: cartita-db
-    restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpass123
-      MYSQL_DATABASE: menu_digital
-      MYSQL_USER: menuadmin
-      MYSQL_PASSWORD: menupass123
-    ports:
-      - "3307:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-      - ./backend/database/init.sql:/docker-entrypoint-initdb.d/init.sql
-    command: --default-authentication-plugin=mysql_native_password --max_connections=200
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpass123"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    networks:
-      - menu-network
+# Docker Compose para desarrollo con Neon (PostgreSQL)
+# Uso: docker-compose -f docker-compose.neon.yml up -d
 
-  # Backend API (Node.js + Express) - Development
+services:
+  # Backend API (Node.js + Express) - Development con Neon
   backend:
     build:
       context: ./backend
@@ -37,23 +15,24 @@ services:
     environment:
       NODE_ENV: development
       PORT: 5000
-      DB_DIALECT: mysql
-      DB_HOST: mysql
-      DB_PORT: 3306
-      DB_USER: menuadmin
-      DB_PASSWORD: menupass123
-      DB_NAME: menu_digital
-      JWT_SECRET: tu_secreto_jwt_menu_digital_cambiame_en_produccion
-      FRONTEND_URL: http://localhost:3001
+      # Variables de Neon - Se cargan desde .env
+      DB_DIALECT: ${DB_DIALECT:-postgres}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      JWT_SECRET: ${JWT_SECRET}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3001}
+      EMAIL_USER: ${EMAIL_USER}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD}
+      SUPERADMIN_EMAIL: ${SUPERADMIN_EMAIL}
     ports:
       - "5000:5000"
     volumes:
       - ./backend:/app
       - /app/node_modules
       - backend_logs:/app/logs
-    depends_on:
-      mysql:
-        condition: service_healthy
     command: npm run dev
     healthcheck:
       test: ["CMD", "node", "-e", "require('http').get('http://localhost:5000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
@@ -69,51 +48,50 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-      target: development  # Usar stage de desarrollo
+      target: development
     container_name: cartita-frontend
     restart: unless-stopped
     environment:
       REACT_APP_API_URL: http://localhost:5000
       REACT_APP_SOCKET_URL: http://localhost:5000
+      # Hot reload para Windows
+      CHOKIDAR_USEPOLLING: true
       WDS_SOCKET_PORT: 0
-      CHOKIDAR_USEPOLLING: true  # Para hot reload en Windows
     ports:
       - "3001:3000"
     volumes:
-      - ./frontend:/app
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
       - /app/node_modules
-      - /app/build
     depends_on:
-      - backend
-    stdin_open: true
-    tty: true
-    command: npm start
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
     networks:
       - menu-network
 
-  # phpMyAdmin
+  # phpMyAdmin para administrar MySQL remoto
   phpmyadmin:
-    image: phpmyadmin:latest
+    image: phpmyadmin/phpmyadmin:latest
     container_name: cartita-phpmyadmin
     restart: unless-stopped
     environment:
-      PMA_HOST: mysql
-      PMA_PORT: 3306
-      PMA_USER: menuadmin
-      PMA_PASSWORD: menupass123
-      MYSQL_ROOT_PASSWORD: rootpass123
+      PMA_HOST: ${DB_HOST}
+      PMA_PORT: ${DB_PORT:-3306}
+      PMA_USER: ${DB_USER}
+      PMA_PASSWORD: ${DB_PASSWORD}
       UPLOAD_LIMIT: 50M
     ports:
       - "8080:80"
-    depends_on:
-      mysql:
-        condition: service_healthy
     networks:
       - menu-network
 
 volumes:
-  mysql_data:
-    driver: local
   backend_logs:
     driver: local
 
