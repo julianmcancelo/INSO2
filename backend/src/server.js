@@ -37,7 +37,22 @@ const allowedOrigins = [
 // Configuración de Socket.IO
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      // Permitir requests sin origin
+      if (!origin) return callback(null, true);
+      
+      // Verificar lista de permitidos
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        return callback(null, true);
+      }
+      
+      // Permitir dominios de Vercel y cartita.digital
+      if (origin.includes('.vercel.app') || origin.includes('cartita.digital')) {
+        return callback(null, true);
+      }
+      
+      callback(new Error('No permitido por CORS'));
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
   }
@@ -49,12 +64,18 @@ app.use(cors({
     // Permitir requests sin origin (como mobile apps o curl)
     if (!origin) return callback(null, true);
     
+    // Verificar si está en la lista de orígenes permitidos
     if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      console.log('❌ Origen bloqueado por CORS:', origin);
-      callback(new Error('No permitido por CORS'));
+      return callback(null, true);
     }
+    
+    // Permitir todos los dominios de Vercel (preview y production)
+    if (origin.includes('.vercel.app') || origin.includes('cartita.digital')) {
+      return callback(null, true);
+    }
+    
+    console.log('❌ Origen bloqueado por CORS:', origin);
+    callback(new Error('No permitido por CORS'));
   },
   credentials: true
 }));
