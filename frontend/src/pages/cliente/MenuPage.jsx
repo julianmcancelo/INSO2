@@ -297,6 +297,13 @@ const MenuPage = () => {
             </div>
           ))
         )}
+
+        {/* Footer */}
+        <div className="mt-12 pt-8 border-t border-gray-200 text-center">
+          <p className="text-sm text-gray-600">
+            Armado con ♥ por el equipo de Ingeniería 2
+          </p>
+        </div>
       </main>
 
       {/* Modal del carrito */}
