@@ -13,9 +13,12 @@ if (process.env.EMAIL_USER && process.env.EMAIL_PASSWORD) {
         pass: process.env.EMAIL_PASSWORD
       }
     });
+    console.log('✅ Transporter de email configurado en passwordController');
   } catch (error) {
-    console.error('Error al configurar email en passwordController:', error);
+    console.error('❌ Error al configurar email en passwordController:', error);
   }
+} else {
+  console.log('⚠️ EMAIL_USER o EMAIL_PASSWORD no están configurados');
 }
 
 // Solicitar recuperación de contraseña
@@ -37,6 +40,8 @@ exports.solicitarRecuperacion = async (req, res) => {
       });
     }
 
+    console.log('👤 Usuario encontrado:', usuario.email);
+
     // Generar token de recuperación
     const resetToken = crypto.randomBytes(32).toString('hex');
     const resetTokenHash = crypto.createHash('sha256').update(resetToken).digest('hex');
@@ -46,9 +51,13 @@ exports.solicitarRecuperacion = async (req, res) => {
     usuario.resetPasswordExpires = new Date(Date.now() + 3600000); // 1 hora
     await usuario.save();
 
+    console.log('🔑 Token generado y guardado');
+
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+    console.log('🔗 URL de recuperación:', resetUrl);
 
     // Enviar email de recuperación
+    console.log('📧 Intentando enviar email... Transporter:', transporter ? 'configurado' : 'NO configurado');
     if (transporter) {
       try {
         await transporter.sendMail({
