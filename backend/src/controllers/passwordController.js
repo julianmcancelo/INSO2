@@ -14,11 +14,14 @@ if (process.env.EMAIL_USER && process.env.EMAIL_PASSWORD) {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASSWORD
       },
+      connectionTimeout: 10000, // 10 segundos
+      greetingTimeout: 10000,
+      socketTimeout: 10000,
       tls: {
         rejectUnauthorized: false
       }
     });
-    console.log('✅ Transporter de email configurado en passwordController (puerto 465/SSL)');
+    console.log('✅ Transporter de email configurado en passwordController (puerto 465/SSL con timeouts)');
   } catch (error) {
     console.error('❌ Error al configurar email en passwordController:', error);
   }
@@ -71,6 +74,11 @@ exports.solicitarRecuperacion = async (req, res) => {
     // Enviar email de forma asíncrona (sin bloquear la respuesta)
     console.log('📧 Intentando enviar email... Transporter:', transporter ? 'configurado' : 'NO configurado');
     if (transporter) {
+      // Crear timeout para el envío de email
+      const emailTimeout = setTimeout(() => {
+        console.log('⏱️ Timeout de email alcanzado (15 segundos)');
+      }, 15000);
+
       // Enviar email sin await para no bloquear
       transporter.sendMail({
         from: `"Cartita" <${process.env.EMAIL_USER}>`,
@@ -117,10 +125,14 @@ exports.solicitarRecuperacion = async (req, res) => {
         `
       })
       .then(() => {
+        clearTimeout(emailTimeout);
         console.log('✅ Email de recuperación enviado a:', email);
       })
       .catch((emailError) => {
-        console.error('❌ Error al enviar email:', emailError);
+        clearTimeout(emailTimeout);
+        console.error('❌ Error al enviar email:', emailError.message || emailError);
+        console.error('Código de error:', emailError.code);
+        console.error('Comando:', emailError.command);
       });
     } else {
       console.log('⚠️ Email no configurado. Link de recuperación:', resetUrl);

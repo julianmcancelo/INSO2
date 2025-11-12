@@ -16,11 +16,14 @@ if (process.env.EMAIL_USER && process.env.EMAIL_PASSWORD) {
           user: process.env.EMAIL_USER,
           pass: process.env.EMAIL_PASSWORD
         },
+        connectionTimeout: 10000, // 10 segundos
+        greetingTimeout: 10000,
+        socketTimeout: 10000,
         tls: {
           rejectUnauthorized: false
         }
       });
-      console.log('✅ Transporter de email configurado (puerto 465/SSL)');
+      console.log('✅ Transporter de email configurado (puerto 465/SSL con timeouts)');
     } else {
       console.error('❌ nodemailer.createTransporter no es una función');
       throw new Error('createTransporter no disponible');
