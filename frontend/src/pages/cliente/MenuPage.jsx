@@ -297,14 +297,16 @@ const MenuPage = () => {
             </div>
           ))
         )}
+      </main>
 
-        {/* Footer */}
-        <div className="mt-12 pt-8 border-t border-gray-200 text-center">
+      {/* Footer - Siempre visible */}
+      <footer className="bg-white border-t border-gray-200 py-6 mt-8">
+        <div className="container mx-auto px-3 sm:px-4 text-center">
           <p className="text-sm text-gray-600">
             Armado con ♥ por el equipo de Ingeniería 2
           </p>
         </div>
-      </main>
+      </footer>
 
       {/* Modal del carrito */}
       <CartModal isOpen={isCartOpen} />
