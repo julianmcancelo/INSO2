@@ -1,34 +1,41 @@
-const nodemailer = require('nodemailer');
-
 // Configurar transporter de Gmail (solo si las credenciales están configuradas)
 let transporter = null;
 
-try {
-  if (process.env.EMAIL_USER && process.env.EMAIL_PASSWORD) {
-    transporter = nodemailer.createTransporter({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD
-      }
-    });
-    console.log('✅ Transporter de email configurado');
-  } else {
-    console.warn('⚠️  Configuración de email no encontrada. Las funciones de email no estarán disponibles.');
-    // Crear un transporter mock para desarrollo
+if (process.env.EMAIL_USER && process.env.EMAIL_PASSWORD) {
+  try {
+    // Importar nodemailer dinámicamente
+    const nodemailer = require('nodemailer');
+    
+    // Verificar que createTransport existe
+    if (typeof nodemailer.createTransport === 'function') {
+      transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASSWORD
+        }
+      });
+      console.log('✅ Transporter de email configurado');
+    } else {
+      console.error('❌ nodemailer.createTransporter no es una función');
+      throw new Error('createTransporter no disponible');
+    }
+  } catch (error) {
+    console.error('❌ Error al configurar nodemailer:', error.message);
+    // Crear un transporter mock
     transporter = {
       sendMail: async () => {
-        console.log('📧 Mock email - Email no enviado (configura EMAIL_USER y EMAIL_PASSWORD)');
+        console.log('📧 Mock email - Email no enviado (error en configuración)');
         return { messageId: 'mock-id' };
       }
     };
   }
-} catch (error) {
-  console.error('❌ Error al configurar nodemailer:', error);
+} else {
+  console.warn('⚠️  Configuración de email no encontrada. Las funciones de email no estarán disponibles.');
   // Crear un transporter mock para desarrollo
   transporter = {
     sendMail: async () => {
-      console.log('📧 Mock email - Email no enviado (error en configuración)');
+      console.log('📧 Mock email - Email no enviado (configura EMAIL_USER y EMAIL_PASSWORD)');
       return { messageId: 'mock-id' };
     }
   };
