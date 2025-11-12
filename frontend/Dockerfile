@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Instalar dependencias
-RUN npm ci && npm cache clean --force
+RUN npm install && npm cache clean --force
 
 # Stage 2: Builder (para producción)
 FROM node:20-alpine AS builder
