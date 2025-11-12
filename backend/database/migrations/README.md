@@ -16,27 +16,48 @@ Si estás viendo el error `Unknown column 'local.datosBancarios'` en producción
 - **Descripción**: Agrega el campo JSON `datosBancarios` a la tabla `locales`
 - **Tablas afectadas**: `locales`
 
-## 🚀 Cómo Aplicar Migraciones en Producción (Render.com)
+## 🚀 Cómo Aplicar Migraciones en Producción
 
-### Opción 1: Usar el archivo consolidado (RECOMENDADO)
+### ⚠️ IMPORTANTE: Base de Datos en Producción
 
-1. **Acceder a la base de datos en Render.com**
-   - Ve a tu Dashboard de Render
-   - Selecciona tu servicio de PostgreSQL/MySQL
-   - Click en "Connect" → "External Connection"
-   - Copia las credenciales
+**Producción usa Neon (PostgreSQL)**, no MySQL. Usa el archivo correcto:
+- ✅ **Para Producción (Neon/PostgreSQL)**: `PRODUCTION_MIGRATION_POSTGRESQL.sql`
+- ❌ **Para Desarrollo (MySQL)**: `PRODUCTION_MIGRATION.sql`
 
-2. **Conectar con un cliente MySQL**
+### Opción 1: Desde Neon Dashboard (RECOMENDADO)
+
+1. **Acceder a Neon Console**
+   - Ve a https://console.neon.tech/
+   - Inicia sesión con tu cuenta
+   - Selecciona tu proyecto
+
+2. **Abrir SQL Editor**
+   - Click en "SQL Editor" en el menú lateral
+   - O ve directamente a la pestaña "SQL Editor"
+
+3. **Ejecutar las migraciones**
+   - Copia el contenido completo de `PRODUCTION_MIGRATION_POSTGRESQL.sql`
+   - Pégalo en el editor
+   - Click en "Run" o presiona Ctrl+Enter
+   - Espera a que se ejecute completamente
+
+### Opción 2: Desde terminal con psql
+
+1. **Obtener la connection string de Neon**
+   - En Neon Dashboard → "Connection Details"
+   - Copia la "Connection string"
+
+2. **Conectar y ejecutar**
    ```bash
-   mysql -h [HOST] -u [USER] -p[PASSWORD] -P [PORT] [DATABASE]
+   psql "postgresql://[user]:[password]@[host]/[database]?sslmode=require" -f PRODUCTION_MIGRATION_POSTGRESQL.sql
    ```
 
-3. **Ejecutar el archivo de migración**
-   ```sql
-   source PRODUCTION_MIGRATION.sql;
-   ```
+### Opción 3: Desde Render Dashboard
 
-   O copiar y pegar el contenido del archivo `PRODUCTION_MIGRATION.sql` en el cliente MySQL.
+1. Ve a tu servicio de base de datos en Render
+2. Si tienes acceso a Shell/Console PostgreSQL
+3. Copia y pega el contenido de `PRODUCTION_MIGRATION_POSTGRESQL.sql`
+4. Ejecuta
 
 ### Opción 2: Ejecutar migraciones individuales
 
@@ -60,6 +81,21 @@ source 002_add_datosBancarios_to_locales.sql;
 
 Después de ejecutar las migraciones, verifica que se aplicaron correctamente:
 
+### Para PostgreSQL (Producción):
+```sql
+-- Ver estructura de tablas
+\d productos
+\d locales
+\d categorias
+\d pedidos
+
+-- Verificar datosBancarios específicamente
+SELECT column_name, data_type, is_nullable 
+FROM information_schema.columns 
+WHERE table_name = 'locales' AND column_name = 'datosBancarios';
+```
+
+### Para MySQL (Desarrollo):
 ```sql
 -- Verificar campos LONGTEXT
 DESCRIBE productos;
