@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { User, Phone, MapPin, Home, Bike, Wallet, CreditCard, DollarSign, Upload, X, Clock, AlertCircle } from 'lucide-react';
+import { User, Phone, MapPin, Home, Bike, Wallet, CreditCard, DollarSign, Upload, X } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useLocal } from '../../context/LocalContext';
 import { pedidoAPI, configuracionPagoAPI } from '../../services/api';
