@@ -39,7 +39,7 @@ const Producto = sequelize.define('Producto', {
     comment: 'Precio del producto'
   },
   imagenBase64: {
-    type: DataTypes.TEXT,
+    type: DataTypes.TEXT('long'),
     allowNull: true,
     comment: 'Imagen del producto en Base64'
   },

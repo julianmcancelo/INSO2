@@ -24,7 +24,7 @@ const Local = sequelize.define('Local', {
     comment: 'Descripción del local'
   },
   logoBase64: {
-    type: DataTypes.TEXT,
+    type: DataTypes.TEXT('long'),
     allowNull: true,
     comment: 'Logo en formato Base64'
   },

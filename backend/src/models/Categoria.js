@@ -25,7 +25,7 @@ const Categoria = sequelize.define('Categoria', {
     allowNull: true
   },
   iconoBase64: {
-    type: DataTypes.TEXT,
+    type: DataTypes.TEXT('long'),
     allowNull: true,
     comment: 'Icono de la categoría en Base64'
   },

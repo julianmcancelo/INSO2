@@ -70,7 +70,7 @@ const Pedido = sequelize.define('Pedido', {
     comment: 'Monto del recargo aplicado'
   },
   comprobanteTransferencia: {
-    type: DataTypes.TEXT,
+    type: DataTypes.TEXT('long'),
     allowNull: true,
     comment: 'Imagen del comprobante de transferencia en Base64'
   },
