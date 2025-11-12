@@ -1,8 +1,11 @@
+version: '3.9'
+
 services:
   # MySQL Database
   mysql:
     image: mysql:8.0
-    container_name: menu-db
+    container_name: cartita-db
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: rootpass123
       MYSQL_DATABASE: menu_digital
@@ -13,21 +16,24 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
       - ./backend/database/init.sql:/docker-entrypoint-initdb.d/init.sql
-    command: --default-authentication-plugin=mysql_native_password
+    command: --default-authentication-plugin=mysql_native_password --max_connections=200
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpass123"]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 30s
     networks:
       - menu-network
 
-  # Backend API (Node.js + Express)
+  # Backend API (Node.js + Express) - Development
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: menu-backend
+      target: builder  # Usar stage de desarrollo
+    container_name: cartita-backend
+    restart: unless-stopped
     environment:
       NODE_ENV: development
       PORT: 5000
@@ -44,28 +50,39 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
+      - backend_logs:/app/logs
     depends_on:
       mysql:
         condition: service_healthy
     command: npm run dev
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:5000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     networks:
       - menu-network
 
-  # Frontend (React)
+  # Frontend (React) - Development
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: menu-frontend
+      target: development  # Usar stage de desarrollo
+    container_name: cartita-frontend
+    restart: unless-stopped
     environment:
       REACT_APP_API_URL: http://localhost:5000
       REACT_APP_SOCKET_URL: http://localhost:5000
       WDS_SOCKET_PORT: 0
+      CHOKIDAR_USEPOLLING: true  # Para hot reload en Windows
     ports:
       - "3001:3000"
     volumes:
       - ./frontend:/app
       - /app/node_modules
+      - /app/build
     depends_on:
       - backend
     stdin_open: true
@@ -77,13 +94,15 @@ services:
   # phpMyAdmin
   phpmyadmin:
     image: phpmyadmin:latest
-    container_name: menu-phpmyadmin
+    container_name: cartita-phpmyadmin
+    restart: unless-stopped
     environment:
       PMA_HOST: mysql
       PMA_PORT: 3306
       PMA_USER: menuadmin
       PMA_PASSWORD: menupass123
       MYSQL_ROOT_PASSWORD: rootpass123
+      UPLOAD_LIMIT: 50M
     ports:
       - "8080:80"
     depends_on:
@@ -94,7 +113,13 @@ services:
 
 volumes:
   mysql_data:
+    driver: local
+  backend_logs:
+    driver: local
 
 networks:
   menu-network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
