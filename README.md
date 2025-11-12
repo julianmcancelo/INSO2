@@ -103,6 +103,39 @@ docker-compose build --no-cache
 docker exec -it menu-db psql -U menuadmin -d menu_digital
 ```
 
+## 🗄️ Opciones de Base de Datos
+
+### Opción 1: Neon (PostgreSQL) - **RECOMENDADO** ✅
+
+Usa la misma base de datos para desarrollo y producción:
+
+```bash
+# 1. Crear cuenta en Neon: https://console.neon.tech
+# 2. Copiar connection string
+# 3. Configurar backend/.env con credenciales de Neon
+# 4. Levantar con docker-compose.neon.yml
+
+docker-compose -f docker-compose.neon.yml up -d
+```
+
+**Ventajas:**
+- ✅ Misma BD en desarrollo y producción
+- ✅ Sin diferencias MySQL vs PostgreSQL
+- ✅ Tier gratuito generoso (0.5 GB)
+- ✅ Branching de base de datos
+- ✅ Backups automáticos
+
+📖 **Guía completa**: [DESARROLLO_CON_NEON.md](DESARROLLO_CON_NEON.md)
+
+### Opción 2: MySQL Local (Docker)
+
+Usa MySQL local con Docker:
+
+```bash
+# Usar docker-compose.yml estándar
+docker-compose up -d
+```
+
 ## 📊 Esquema de Base de Datos
 
 - **locales**: Información del local (nombre, logo, colores)
