@@ -4,21 +4,78 @@
 
 ### Justificación de la Elección
 
-Para el desarrollo de Cartita, se optó por la metodología ágil **SCRUM** debido a las características específicas del proyecto y las necesidades del cliente.
+Para el desarrollo de **Cartita**, un sistema de gestión integral para restaurantes con menú digital QR, se seleccionó la metodología ágil **SCRUM** como marco de trabajo principal. Esta decisión se fundamenta en las características específicas del proyecto y las necesidades del sector gastronómico.
 
 #### Razones para elegir SCRUM:
 
-**1. Iteraciones claras:**
-Este proyecto tiene fases bien definidas (análisis, diseño, desarrollo, pruebas, despliegue, mantenimiento) que pueden transformarse en sprints, permitiendo que se entreguen funcionalidades clave de forma incremental, como el sistema de autenticación, el menú digital QR, el sistema de pedidos en tiempo real, y la recuperación de contraseñas.
+**1. Iteraciones claras y entregas incrementales:**
 
-**2. Flexibilidad:**
-Dado que las funcionalidades finales podrían ajustarse en base al feedback de los administradores de restaurantes durante las pruebas de usabilidad, SCRUM facilita adaptarse a estos cambios gracias a su enfoque en revisiones y adaptaciones constantes. Por ejemplo, durante el desarrollo se identificó la necesidad de cambiar de Gmail SMTP a SendGrid debido a limitaciones de infraestructura, y SCRUM permitió adaptar rápidamente el sprint para implementar esta solución alternativa.
+El proyecto Cartita requiere múltiples módulos interdependientes: autenticación de usuarios, gestión de menú, sistema de pedidos en tiempo real, y panel administrativo. SCRUM permite dividir estas funcionalidades complejas en sprints manejables de 1-2 semanas, donde cada iteración entrega valor tangible al cliente.
 
-**3. Enfoque en entregas de valor:**
-Las funcionalidades como el menú digital para clientes, el sistema de pedidos en tiempo real y la gestión de productos son de alta prioridad para los usuarios. SCRUM asegura que los elementos más críticos se desarrollen y entreguen primero, permitiendo que el restaurante pueda comenzar a operar digitalmente lo antes posible.
+Por ejemplo, en el Sprint 1 se entregó un sistema de autenticación funcional que permitió a los administradores acceder al panel, mientras que en el Sprint 3 se implementó el sistema de pedidos con WebSockets. Esta aproximación incremental permitió que los restaurantes pudieran comenzar a probar funcionalidades básicas mientras se desarrollaban las más avanzadas, reduciendo el riesgo y permitiendo validación temprana.
 
-**4. Colaboración con el cliente:**
-La interacción constante con los responsables del restaurante en las reuniones iniciales y pruebas se alinea con el rol del Product Owner en SCRUM, quien define las prioridades y asegura que las necesidades del negocio estén al centro del desarrollo. Las ceremonias de Sprint Review permitieron obtener feedback valioso sobre el diseño del menú, la experiencia de usuario y las funcionalidades requeridas.
+**2. Flexibilidad ante cambios de requisitos:**
+
+La industria gastronómica tiene necesidades dinámicas que pueden cambiar según la operación diaria del restaurante. Durante el desarrollo de Cartita, surgieron varios cambios importantes:
+
+- **Cambio en horarios de atención:** Inicialmente se planificó un campo de texto simple, pero el feedback del cliente reveló la necesidad de un sistema JSON flexible que permita horarios diferentes por día de la semana.
+- **Problema de infraestructura:** Al desplegar en Render, se descubrió que los puertos SMTP estaban bloqueados. SCRUM permitió adaptar rápidamente el sprint para investigar alternativas (SendGrid) sin afectar otras funcionalidades en desarrollo.
+- **Mejoras de UX:** Los usuarios solicitaron un footer visible y mejor visualización de horarios, cambios que se incorporaron inmediatamente en el siguiente sprint.
+
+Esta flexibilidad es crucial en proyectos donde los requisitos no están 100% definidos al inicio, como es común en startups y nuevos emprendimientos digitales.
+
+**3. Enfoque en entregas de valor al usuario final:**
+
+SCRUM prioriza las funcionalidades según su valor para el negocio. En Cartita, se identificaron las siguientes prioridades:
+
+**Alta prioridad (Must Have):**
+- Menú digital accesible por QR (core del negocio)
+- Sistema de pedidos en tiempo real (diferenciador clave)
+- Panel administrativo para gestión de productos
+
+**Media prioridad (Should Have):**
+- Recuperación de contraseñas
+- Personalización de colores y logo
+- Horarios de atención visibles
+
+**Baja prioridad (Nice to Have):**
+- Reportes avanzados
+- Integración de pagos
+- Notificaciones push
+
+Este enfoque aseguró que, incluso si el tiempo se agotaba, las funcionalidades esenciales para operar el restaurante digitalmente estaban completas y funcionales.
+
+**4. Colaboración continua con stakeholders:**
+
+El desarrollo de Cartita involucró interacción constante con:
+
+- **Dueños de restaurantes:** Como Product Owners, definieron prioridades basadas en necesidades reales del negocio (ej: "necesitamos que los pedidos lleguen instantáneamente a la cocina").
+- **Meseros y personal:** Como usuarios finales, proporcionaron feedback sobre la usabilidad del panel de pedidos.
+- **Clientes finales:** Validaron la experiencia del menú digital desde sus dispositivos móviles.
+
+Las ceremonias de **Sprint Review** fueron fundamentales para demostrar avances tangibles cada 1-2 semanas, obteniendo feedback inmediato que se incorporaba en el siguiente sprint. Por ejemplo, después de mostrar el diseño inicial del menú digital, los stakeholders solicitaron una búsqueda más prominente y filtros por categoría, funcionalidades que se agregaron en el siguiente sprint.
+
+**5. Gestión de riesgos técnicos:**
+
+El proyecto Cartita involucra tecnologías complejas (WebSockets, Docker, deployment en cloud). SCRUM permitió identificar y mitigar riesgos tempranamente:
+
+- **Riesgo:** Problemas de performance con muchos pedidos simultáneos
+  - **Mitigación:** Sprint dedicado a optimización y pruebas de carga
+- **Riesgo:** Incompatibilidad entre desarrollo y producción
+  - **Mitigación:** Docker desde el inicio para garantizar consistencia
+- **Riesgo:** Bloqueos de infraestructura (SMTP en Render)
+  - **Mitigación:** Retrospectivas que identificaron la necesidad de investigar limitaciones de plataforma antes de implementar
+
+**6. Adaptación al tamaño del equipo:**
+
+Con un equipo pequeño (2-3 desarrolladores), SCRUM proporciona la estructura necesaria sin la sobrecarga de metodologías más pesadas. Las ceremonias se adaptaron:
+
+- **Daily Standup:** 15 minutos diarios para sincronización
+- **Sprint Planning:** 2 horas al inicio de cada sprint
+- **Sprint Review:** 1 hora para demostración al cliente
+- **Retrospective:** 1 hora para mejora continua del proceso
+
+Esta estructura ligera pero efectiva mantuvo al equipo alineado sin consumir tiempo excesivo en ceremonias.
 
 ---
 
