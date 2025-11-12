@@ -6,7 +6,7 @@ import { useCart } from '../../context/CartContext';
 import { useLocal } from '../../context/LocalContext';
 import { pedidoAPI, configuracionPagoAPI } from '../../services/api';
 import DireccionAutocomplete from '../../components/cliente/DireccionAutocomplete';
-import { estaAbierto } from '../../utils/horarios';
+import { verificarHorarioActual } from '../../utils/horarios';
 
 const ConfirmacionPage = () => {
   const navigate = useNavigate();
@@ -40,8 +40,8 @@ const ConfirmacionPage = () => {
     
     // Verificar si el local está abierto
     if (local?.horarioAtencion) {
-      const localAbierto = estaAbierto(local.horarioAtencion);
-      if (!localAbierto) {
+      const horarioStatus = verificarHorarioActual(local.horarioAtencion);
+      if (!horarioStatus.abierto) {
         toast.error('El local está cerrado. No se pueden realizar pedidos en este momento.', {
           position: 'top-center',
           autoClose: 5000,

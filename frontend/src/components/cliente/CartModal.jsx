@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useCart } from '../../context/CartContext';
 import { useLocal } from '../../context/LocalContext';
-import { estaAbierto } from '../../utils/horarios';
+import { verificarHorarioActual } from '../../utils/horarios';
 
 const CartModal = ({ isOpen }) => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const CartModal = ({ isOpen }) => {
 
   if (!isOpen) return null;
 
-  const localAbierto = local?.horarioAtencion ? estaAbierto(local.horarioAtencion) : true;
+  const localAbierto = local?.horarioAtencion ? verificarHorarioActual(local.horarioAtencion).abierto : true;
 
   const handleCheckout = () => {
     if (cart.length === 0) return;
