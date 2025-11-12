@@ -86,38 +86,237 @@ exports.solicitarRecuperacion = async (req, res) => {
         subject: 'Recuperación de Contraseña - Cartita',
         html: `
           <!DOCTYPE html>
-          <html>
+          <html lang="es">
           <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Recuperación de Contraseña - Cartita</title>
             <style>
-              body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-              .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-              .header { background: linear-gradient(135deg, #ef4444 0%, #f59e0b 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
-              .content { background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px; }
-              .button { display: inline-block; background: #ef4444; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; margin: 20px 0; font-weight: bold; }
-              .footer { text-align: center; color: #666; font-size: 12px; margin-top: 30px; }
+              * { margin: 0; padding: 0; box-sizing: border-box; }
+              body { 
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                line-height: 1.6; 
+                color: #333;
+                background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
+                padding: 20px;
+              }
+              .email-wrapper {
+                max-width: 600px;
+                margin: 0 auto;
+                background: white;
+                border-radius: 16px;
+                overflow: hidden;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+              }
+              .header {
+                background: linear-gradient(135deg, #ef4444 0%, #f59e0b 100%);
+                color: white;
+                padding: 40px 30px;
+                text-align: center;
+              }
+              .header h1 {
+                font-size: 28px;
+                font-weight: 700;
+                margin: 0;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+              }
+              .header p {
+                margin-top: 10px;
+                font-size: 16px;
+                opacity: 0.95;
+              }
+              .content {
+                padding: 40px 30px;
+                background: white;
+              }
+              .greeting {
+                font-size: 24px;
+                font-weight: 600;
+                color: #1f2937;
+                margin-bottom: 20px;
+              }
+              .message {
+                font-size: 16px;
+                color: #4b5563;
+                margin-bottom: 15px;
+                line-height: 1.8;
+              }
+              .button-container {
+                text-align: center;
+                margin: 35px 0;
+              }
+              .button {
+                display: inline-block;
+                background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+                color: white !important;
+                padding: 16px 40px;
+                text-decoration: none;
+                border-radius: 12px;
+                font-weight: 700;
+                font-size: 16px;
+                box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+                transition: transform 0.2s;
+              }
+              .button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+              }
+              .link-box {
+                background: #f9fafb;
+                border: 2px dashed #e5e7eb;
+                padding: 20px;
+                border-radius: 12px;
+                margin: 25px 0;
+                text-align: center;
+              }
+              .link-box p {
+                font-size: 13px;
+                color: #6b7280;
+                margin-bottom: 10px;
+                font-weight: 600;
+              }
+              .link-text {
+                font-size: 12px;
+                color: #ef4444;
+                word-break: break-all;
+                font-family: 'Courier New', monospace;
+              }
+              .warning-box {
+                background: #fef3c7;
+                border-left: 4px solid #f59e0b;
+                padding: 15px 20px;
+                border-radius: 8px;
+                margin: 25px 0;
+              }
+              .warning-box p {
+                font-size: 14px;
+                color: #92400e;
+                margin: 0;
+              }
+              .warning-box strong {
+                color: #78350f;
+              }
+              .info-box {
+                background: #eff6ff;
+                border-left: 4px solid #3b82f6;
+                padding: 15px 20px;
+                border-radius: 8px;
+                margin: 25px 0;
+              }
+              .info-box p {
+                font-size: 14px;
+                color: #1e40af;
+                margin: 0;
+              }
+              .divider {
+                height: 1px;
+                background: linear-gradient(90deg, transparent, #e5e7eb, transparent);
+                margin: 30px 0;
+              }
+              .footer {
+                background: #f9fafb;
+                padding: 30px;
+                text-align: center;
+                border-top: 1px solid #e5e7eb;
+              }
+              .footer-text {
+                font-size: 13px;
+                color: #6b7280;
+                margin-bottom: 10px;
+              }
+              .footer-brand {
+                font-size: 14px;
+                color: #ef4444;
+                font-weight: 700;
+                margin-bottom: 5px;
+              }
+              .social-links {
+                margin-top: 15px;
+              }
+              .social-links a {
+                display: inline-block;
+                margin: 0 8px;
+                color: #9ca3af;
+                text-decoration: none;
+                font-size: 12px;
+              }
+              @media only screen and (max-width: 600px) {
+                .email-wrapper { border-radius: 0; }
+                .header { padding: 30px 20px; }
+                .header h1 { font-size: 24px; }
+                .content { padding: 30px 20px; }
+                .greeting { font-size: 20px; }
+                .button { padding: 14px 30px; font-size: 15px; }
+              }
             </style>
           </head>
           <body>
-            <div class="container">
+            <div class="email-wrapper">
+              <!-- Header -->
               <div class="header">
-                <h1>Recuperación de Contraseña</h1>
+                <h1>🔐 Recuperación de Contraseña</h1>
+                <p>Cartita - Tu menú digital</p>
               </div>
+
+              <!-- Content -->
               <div class="content">
-                <h2>Hola ${usuario.nombre},</h2>
-                <p>Recibimos una solicitud para restablecer tu contraseña.</p>
-                <p>Haz click en el siguiente enlace para crear una nueva contraseña:</p>
-                <center>
-                  <a href="${resetUrl}" class="button">Restablecer Contraseña</a>
-                </center>
-                <p>O copia y pega este enlace en tu navegador:</p>
-                <p style="background: white; padding: 15px; border-radius: 5px; word-break: break-all;">
-                  ${resetUrl}
+                <div class="greeting">¡Hola ${usuario.nombre}! 👋</div>
+                
+                <p class="message">
+                  Recibimos una solicitud para restablecer la contraseña de tu cuenta en <strong>Cartita</strong>.
                 </p>
-                <p><strong>Este enlace expirará en 1 hora.</strong></p>
-                <p>Si no solicitaste este cambio, puedes ignorar este mensaje.</p>
+                
+                <p class="message">
+                  Para crear una nueva contraseña, haz clic en el botón de abajo:
+                </p>
+
+                <!-- Button -->
+                <div class="button-container">
+                  <a href="${resetUrl}" class="button">
+                    Restablecer mi Contraseña →
+                  </a>
+                </div>
+
+                <!-- Alternative Link -->
+                <div class="link-box">
+                  <p>¿El botón no funciona? Copia y pega este enlace:</p>
+                  <div class="link-text">${resetUrl}</div>
+                </div>
+
+                <!-- Warning -->
+                <div class="warning-box">
+                  <p>
+                    <strong>⏰ Importante:</strong> Este enlace expirará en <strong>1 hora</strong> por seguridad.
+                  </p>
+                </div>
+
+                <!-- Info -->
+                <div class="info-box">
+                  <p>
+                    <strong>💡 ¿No solicitaste este cambio?</strong> Puedes ignorar este mensaje de forma segura. Tu contraseña no será modificada.
+                  </p>
+                </div>
+
+                <div class="divider"></div>
+
+                <p class="message" style="font-size: 14px; color: #9ca3af;">
+                  Este es un correo automático, por favor no respondas a este mensaje.
+                </p>
               </div>
+
+              <!-- Footer -->
               <div class="footer">
-                <p>© 2025 Cartita - Sistema de gestión para restaurantes</p>
+                <div class="footer-brand">Cartita</div>
+                <p class="footer-text">
+                  Sistema de gestión para restaurantes
+                </p>
+                <p class="footer-text">
+                  © 2025 Cartita. Todos los derechos reservados.
+                </p>
+                <div class="social-links">
+                  <a href="https://cartita.digital">Sitio Web</a> •
+                  <a href="mailto:cartita.digitalok@gmail.com">Soporte</a>
+                </div>
               </div>
             </div>
           </body>
