@@ -25,6 +25,8 @@ const ForgotPassword = () => {
     try {
       const response = await axios.post(`${API_URL}/api/password/forgot`, { 
         email
+      }, {
+        timeout: 30000 // 30 segundos de timeout
       });
       
       setSubmitted(true);
@@ -35,8 +37,17 @@ const ForgotPassword = () => {
         console.log('🔑 Link de recuperación:', response.data.resetUrl);
       }
     } catch (error) {
-      console.error('Error:', error);
-      toast.error(error.response?.data?.error || 'Error al enviar el email');
+      console.error('Error completo:', error);
+      
+      if (error.code === 'ECONNABORTED') {
+        toast.error('La solicitud tardó demasiado. Por favor intenta de nuevo.');
+      } else if (error.response) {
+        toast.error(error.response.data?.error || 'Error al enviar el email');
+      } else if (error.request) {
+        toast.error('No se pudo conectar con el servidor. Verifica tu conexión.');
+      } else {
+        toast.error('Error al procesar la solicitud');
+      }
     } finally {
       setLoading(false);
     }

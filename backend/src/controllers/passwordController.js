@@ -56,68 +56,70 @@ exports.solicitarRecuperacion = async (req, res) => {
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
     console.log('🔗 URL de recuperación:', resetUrl);
 
-    // Enviar email de recuperación
-    console.log('📧 Intentando enviar email... Transporter:', transporter ? 'configurado' : 'NO configurado');
-    if (transporter) {
-      try {
-        await transporter.sendMail({
-          from: `"Cartita" <${process.env.EMAIL_USER}>`,
-          to: email,
-          subject: 'Recuperación de Contraseña - Cartita',
-          html: `
-            <!DOCTYPE html>
-            <html>
-            <head>
-              <style>
-                body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-                .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                .header { background: linear-gradient(135deg, #ef4444 0%, #f59e0b 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
-                .content { background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px; }
-                .button { display: inline-block; background: #ef4444; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; margin: 20px 0; font-weight: bold; }
-                .footer { text-align: center; color: #666; font-size: 12px; margin-top: 30px; }
-              </style>
-            </head>
-            <body>
-              <div class="container">
-                <div class="header">
-                  <h1>Recuperación de Contraseña</h1>
-                </div>
-                <div class="content">
-                  <h2>Hola ${usuario.nombre},</h2>
-                  <p>Recibimos una solicitud para restablecer tu contraseña.</p>
-                  <p>Haz click en el siguiente enlace para crear una nueva contraseña:</p>
-                  <center>
-                    <a href="${resetUrl}" class="button">Restablecer Contraseña</a>
-                  </center>
-                  <p>O copia y pega este enlace en tu navegador:</p>
-                  <p style="background: white; padding: 15px; border-radius: 5px; word-break: break-all;">
-                    ${resetUrl}
-                  </p>
-                  <p><strong>Este enlace expirará en 1 hora.</strong></p>
-                  <p>Si no solicitaste este cambio, puedes ignorar este mensaje.</p>
-                </div>
-                <div class="footer">
-                  <p>© 2025 Cartita - Sistema de gestión para restaurantes</p>
-                </div>
-              </div>
-            </body>
-            </html>
-          `
-        });
-        console.log('✅ Email de recuperación enviado a:', email);
-      } catch (emailError) {
-        console.error('❌ Error al enviar email:', emailError);
-        // No fallar la petición si el email falla
-      }
-    } else {
-      console.log('⚠️ Email no configurado. Link de recuperación:', resetUrl);
-    }
-
+    // Responder inmediatamente al cliente
     res.json({ 
       message: 'Si el email existe, recibirás instrucciones para recuperar tu contraseña',
       // Solo para desarrollo
       resetUrl: process.env.NODE_ENV === 'development' ? resetUrl : undefined
     });
+
+    // Enviar email de forma asíncrona (sin bloquear la respuesta)
+    console.log('📧 Intentando enviar email... Transporter:', transporter ? 'configurado' : 'NO configurado');
+    if (transporter) {
+      // Enviar email sin await para no bloquear
+      transporter.sendMail({
+        from: `"Cartita" <${process.env.EMAIL_USER}>`,
+        to: email,
+        subject: 'Recuperación de Contraseña - Cartita',
+        html: `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <style>
+              body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+              .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+              .header { background: linear-gradient(135deg, #ef4444 0%, #f59e0b 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+              .content { background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px; }
+              .button { display: inline-block; background: #ef4444; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; margin: 20px 0; font-weight: bold; }
+              .footer { text-align: center; color: #666; font-size: 12px; margin-top: 30px; }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <div class="header">
+                <h1>Recuperación de Contraseña</h1>
+              </div>
+              <div class="content">
+                <h2>Hola ${usuario.nombre},</h2>
+                <p>Recibimos una solicitud para restablecer tu contraseña.</p>
+                <p>Haz click en el siguiente enlace para crear una nueva contraseña:</p>
+                <center>
+                  <a href="${resetUrl}" class="button">Restablecer Contraseña</a>
+                </center>
+                <p>O copia y pega este enlace en tu navegador:</p>
+                <p style="background: white; padding: 15px; border-radius: 5px; word-break: break-all;">
+                  ${resetUrl}
+                </p>
+                <p><strong>Este enlace expirará en 1 hora.</strong></p>
+                <p>Si no solicitaste este cambio, puedes ignorar este mensaje.</p>
+              </div>
+              <div class="footer">
+                <p>© 2025 Cartita - Sistema de gestión para restaurantes</p>
+              </div>
+            </div>
+          </body>
+          </html>
+        `
+      })
+      .then(() => {
+        console.log('✅ Email de recuperación enviado a:', email);
+      })
+      .catch((emailError) => {
+        console.error('❌ Error al enviar email:', emailError);
+      });
+    } else {
+      console.log('⚠️ Email no configurado. Link de recuperación:', resetUrl);
+    }
 
   } catch (error) {
     console.error('Error al solicitar recuperación:', error);
