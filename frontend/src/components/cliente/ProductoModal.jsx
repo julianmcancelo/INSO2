@@ -72,7 +72,7 @@ const ProductoModal = ({ producto, isOpen, onClose, onAgregar }) => {
             )}
 
             {/* Opciones */}
-            {producto.opciones && producto.opciones.length > 0 && (
+            {producto.opciones && Array.isArray(producto.opciones) && producto.opciones.length > 0 && (
               <div className="mt-4 space-y-4">
                 {producto.opciones.map((grupo, idx) => (
                   <div key={idx}>

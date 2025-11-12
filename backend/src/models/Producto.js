@@ -62,7 +62,16 @@ const Producto = sequelize.define('Producto', {
     type: DataTypes.JSON,
     allowNull: true,
     defaultValue: [],
-    comment: 'Opciones de personalización (extras, tamaños, etc.)'
+    comment: 'Opciones de personalización (extras, tamaños, etc.)',
+    get() {
+      const value = this.getDataValue('opciones');
+      // Asegurar que siempre sea un array
+      if (!value) return [];
+      if (Array.isArray(value)) return value;
+      // Si es un objeto, intentar convertirlo
+      if (typeof value === 'object') return [];
+      return [];
+    }
   },
   activo: {
     type: DataTypes.BOOLEAN,
