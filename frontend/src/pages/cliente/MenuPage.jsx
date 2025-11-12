@@ -94,6 +94,20 @@ const MenuPage = () => {
     );
   }
 
+  // Si no hay datos del cliente, solo mostrar el modal de bienvenida
+  if (!clienteInfo) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-orange-50 to-red-50 flex items-center justify-center">
+        {showBienvenida && local && (
+          <BienvenidaModal 
+            local={local} 
+            onComplete={handleBienvenidaComplete} 
+          />
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-orange-50 to-red-50">
       {/* Header */}
@@ -215,14 +229,6 @@ const MenuPage = () => {
 
       {/* Modal del carrito */}
       <CartModal isOpen={isCartOpen} />
-
-      {/* Modal de bienvenida */}
-      {showBienvenida && local && (
-        <BienvenidaModal 
-          local={local} 
-          onComplete={handleBienvenidaComplete} 
-        />
-      )}
     </div>
   );
 };
