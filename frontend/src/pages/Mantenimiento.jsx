@@ -60,13 +60,13 @@ useEffect(() => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-400 via-orange-400 to-red-500 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-amber-400 via-orange-400 to-red-500 flex items-center justify-center p-3 sm:p-4">
       <div className="max-w-4xl w-full">
         {/* Logo */}
-        <div className="flex justify-center mb-8 sm:mb-12">
+        <div className="flex justify-center mb-6 sm:mb-8 md:mb-12">
           <div 
             onClick={handleLogoClick}
-            className="bg-white px-6 py-3 sm:px-8 sm:py-4 rounded-2xl shadow-2xl cursor-pointer hover:scale-105 transition-transform relative"
+            className="bg-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 rounded-xl sm:rounded-2xl shadow-2xl cursor-pointer hover:scale-105 transition-transform relative"
           >
             <BrandLogo size="lg" showText={true} />
             {clickCount > 0 && (
@@ -78,25 +78,25 @@ useEffect(() => {
         </div>
 
         {/* Card Principal */}
-        <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl p-6 sm:p-8 md:p-12 text-center">
+        <div className="bg-white rounded-xl sm:rounded-2xl md:rounded-3xl shadow-2xl p-4 sm:p-6 md:p-8 lg:p-12 text-center">
           {/* Icono */}
-          <div className="flex justify-center mb-6 sm:mb-8">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full flex items-center justify-center">
+          <div className="flex justify-center mb-4 sm:mb-6 md:mb-8">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full flex items-center justify-center">
               {tipo === 'countdown' ? (
-                <Rocket className="text-primary w-10 h-10 sm:w-12 sm:h-12" />
+                <Rocket className="text-primary w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
               ) : (
-                <Wrench className="text-primary w-10 h-10 sm:w-12 sm:h-12" />
+                <Wrench className="text-primary w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
               )}
             </div>
           </div>
 
           {/* Título */}
-          <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-gray-900 mb-4">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-gray-900 mb-3 sm:mb-4 px-2">
             {tipo === 'countdown' ? '¡Muy Pronto!' : 'En Mantenimiento'}
           </h1>
 
           {/* Mensaje */}
-          <p className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-8 sm:mb-12 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 md:mb-12 max-w-2xl mx-auto px-2">
             {mensaje || (tipo === 'countdown' 
               ? 'Estamos preparando algo increíble para ti. ¡No te lo pierdas!'
               : 'Estamos trabajando en mejoras para ofrecerte una mejor experiencia.'
@@ -105,37 +105,37 @@ useEffect(() => {
 
           {/* Cuenta Regresiva */}
           {tipo === 'countdown' && fechaLanzamiento && (
-            <div className="mb-8 sm:mb-12">
-              <div className="grid grid-cols-4 gap-2 sm:gap-4 md:gap-8 max-w-2xl mx-auto">
-                <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 border-2 border-orange-200">
-                  <div className="text-2xl sm:text-4xl md:text-6xl font-bold text-primary mb-1 sm:mb-2">
+            <div className="mb-6 sm:mb-8 md:mb-12 px-1">
+              <div className="grid grid-cols-4 gap-1.5 sm:gap-2 md:gap-4 lg:gap-8 max-w-2xl mx-auto">
+                <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg sm:rounded-xl md:rounded-2xl p-2 sm:p-3 md:p-4 lg:p-6 border-2 border-orange-200">
+                  <div className="text-xl sm:text-2xl md:text-4xl lg:text-6xl font-bold text-primary mb-0.5 sm:mb-1 md:mb-2">
                     {String(timeLeft.days).padStart(2, '0')}
                   </div>
-                  <div className="text-xs sm:text-sm md:text-base text-gray-600 font-semibold uppercase">
+                  <div className="text-[10px] sm:text-xs md:text-sm lg:text-base text-gray-600 font-semibold uppercase">
                     Días
                   </div>
                 </div>
-                <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 border-2 border-orange-200">
-                  <div className="text-2xl sm:text-4xl md:text-6xl font-bold text-primary mb-1 sm:mb-2">
+                <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg sm:rounded-xl md:rounded-2xl p-2 sm:p-3 md:p-4 lg:p-6 border-2 border-orange-200">
+                  <div className="text-xl sm:text-2xl md:text-4xl lg:text-6xl font-bold text-primary mb-0.5 sm:mb-1 md:mb-2">
                     {String(timeLeft.hours).padStart(2, '0')}
                   </div>
-                  <div className="text-xs sm:text-sm md:text-base text-gray-600 font-semibold uppercase">
+                  <div className="text-[10px] sm:text-xs md:text-sm lg:text-base text-gray-600 font-semibold uppercase">
                     Horas
                   </div>
                 </div>
-                <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 border-2 border-orange-200">
-                  <div className="text-2xl sm:text-4xl md:text-6xl font-bold text-primary mb-1 sm:mb-2">
+                <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg sm:rounded-xl md:rounded-2xl p-2 sm:p-3 md:p-4 lg:p-6 border-2 border-orange-200">
+                  <div className="text-xl sm:text-2xl md:text-4xl lg:text-6xl font-bold text-primary mb-0.5 sm:mb-1 md:mb-2">
                     {String(timeLeft.minutes).padStart(2, '0')}
                   </div>
-                  <div className="text-xs sm:text-sm md:text-base text-gray-600 font-semibold uppercase">
+                  <div className="text-[10px] sm:text-xs md:text-sm lg:text-base text-gray-600 font-semibold uppercase">
                     Minutos
                   </div>
                 </div>
-                <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 border-2 border-orange-200">
-                  <div className="text-2xl sm:text-4xl md:text-6xl font-bold text-primary mb-1 sm:mb-2">
+                <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg sm:rounded-xl md:rounded-2xl p-2 sm:p-3 md:p-4 lg:p-6 border-2 border-orange-200">
+                  <div className="text-xl sm:text-2xl md:text-4xl lg:text-6xl font-bold text-primary mb-0.5 sm:mb-1 md:mb-2">
                     {String(timeLeft.seconds).padStart(2, '0')}
                   </div>
-                  <div className="text-xs sm:text-sm md:text-base text-gray-600 font-semibold uppercase">
+                  <div className="text-[10px] sm:text-xs md:text-sm lg:text-base text-gray-600 font-semibold uppercase">
                     Segundos
                   </div>
                 </div>
@@ -144,46 +144,46 @@ useEffect(() => {
           )}
 
           {/* Features Preview */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-8 sm:mt-12">
-            <div className="p-4 sm:p-6 bg-gray-50 rounded-xl">
-              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 md:gap-6 mt-6 sm:mt-8 md:mt-12 px-1">
+            <div className="p-3 sm:p-4 md:p-6 bg-gray-50 rounded-lg sm:rounded-xl">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                 <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                 </svg>
               </div>
-              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2">Menú Digital</h3>
+              <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 mb-1 sm:mb-2">Menú Digital</h3>
               <p className="text-xs sm:text-sm text-gray-600">Escanea y ordena desde tu celular</p>
             </div>
 
-            <div className="p-4 sm:p-6 bg-gray-50 rounded-xl">
-              <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="p-3 sm:p-4 md:p-6 bg-gray-50 rounded-lg sm:rounded-xl">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                 <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2">Súper Rápido</h3>
+              <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 mb-1 sm:mb-2">Súper Rápido</h3>
               <p className="text-xs sm:text-sm text-gray-600">Pedidos en tiempo real</p>
             </div>
 
-            <div className="p-4 sm:p-6 bg-gray-50 rounded-xl">
-              <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="p-3 sm:p-4 md:p-6 bg-gray-50 rounded-lg sm:rounded-xl">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                 <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2">Sin Comisiones</h3>
+              <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 mb-1 sm:mb-2">Sin Comisiones</h3>
               <p className="text-xs sm:text-sm text-gray-600">0% de comisión en pedidos</p>
             </div>
           </div>
 
           {/* Contacto */}
-          <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-gray-200">
-            <p className="text-sm sm:text-base text-gray-600 mb-4">
+          <div className="mt-6 sm:mt-8 md:mt-12 pt-4 sm:pt-6 md:pt-8 border-t border-gray-200 px-2">
+            <p className="text-xs sm:text-sm md:text-base text-gray-600 mb-3 sm:mb-4">
               ¿Tienes alguna pregunta?
             </p>
             <a 
               href="mailto:hola@cartita.digital" 
-              className="inline-flex items-center space-x-2 text-primary hover:underline font-semibold text-sm sm:text-base"
+              className="inline-flex items-center space-x-1 sm:space-x-2 text-primary hover:underline font-semibold text-xs sm:text-sm md:text-base"
             >
               <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
