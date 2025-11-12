@@ -158,19 +158,6 @@ Sistema basado en JWT:
 Sincronización instantánea:
 - Nuevos pedidos al admin
 - Cambios de estado a clientes
-- Actualización de disponibilidad
-- Notificaciones en vivo
-
-## 📁 Estructura del Proyecto
-
-```
-INSO2/
-├── backend/
-│   ├── src/
-│   │   ├── config/
-│   │   ├── controllers/
-│   │   ├── middleware/
-│   │   ├── models/
 │   │   ├── routes/
 │   │   ├── sockets/
 │   │   └── server.js
