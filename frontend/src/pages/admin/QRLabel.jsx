@@ -81,13 +81,19 @@ const QRLabel = () => {
       {/* Etiqueta Principal - Tamaño A4 */}
       <div className="qr-page bg-white shadow-2xl rounded-lg overflow-hidden" style={{ width: '210mm', height: '297mm' }}>
         {/* Header con gradiente */}
-        <div className="bg-gradient-to-r from-red-500 to-orange-500 text-white py-10 px-8 text-center">
-          <h1 className="text-6xl font-bold mb-4">
-            {user?.local?.nombre || 'Menú Digital'}
-          </h1>
-          <p className="text-3xl text-red-100 font-medium">
-            Escanea y ordena desde tu celular
-          </p>
+        <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white py-12 px-8 text-center relative overflow-hidden">
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-32 -translate-y-32"></div>
+            <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full translate-x-48 translate-y-48"></div>
+          </div>
+          <div className="relative z-10">
+            <h1 className="text-7xl font-black mb-4 drop-shadow-lg">
+              {user?.local?.nombre || 'Menú Digital'}
+            </h1>
+            <p className="text-4xl text-orange-100 font-bold tracking-wide">
+              🍽️ Escanea y ordena desde tu celular
+            </p>
+          </div>
         </div>
 
         {/* Contenido Principal */}
@@ -105,40 +111,41 @@ const QRLabel = () => {
 
           {/* QR Code Grande */}
           <div className="flex justify-center mb-8">
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl p-10 inline-block">
-              <div className="bg-white p-6 rounded-2xl shadow-xl">
-                <QRCodeSVG
-                  value={menuUrl}
-                  size={350}
-                  level="H"
-                  includeMargin={true}
-                  imageSettings={{
-                    src: "/logo192.png",
-                    height: 50,
-                    width: 50,
-                    excavate: true,
-                  }}
-                />
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-400 to-red-400 rounded-3xl blur-2xl opacity-30"></div>
+              <div className="relative bg-gradient-to-br from-orange-50 via-white to-red-50 rounded-3xl p-12 inline-block border-4 border-orange-200">
+                <div className="bg-white p-8 rounded-2xl shadow-2xl ring-4 ring-orange-100">
+                  <QRCodeSVG
+                    value={menuUrl}
+                    size={380}
+                    level="H"
+                    includeMargin={true}
+                    fgColor="#ea580c"
+                  />
+                </div>
+                <div className="mt-6 text-center">
+                  <p className="text-2xl font-bold text-orange-600">👆 Apunta aquí</p>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Beneficios */}
           <div className="grid grid-cols-3 gap-8 max-w-5xl mx-auto mb-10">
-            <div className="bg-green-50 rounded-xl p-8 border-2 border-green-200">
-              <div className="text-5xl mb-4">📱</div>
-              <h3 className="font-bold text-2xl text-gray-900 mb-3">Sin App</h3>
-              <p className="text-lg text-gray-700">No necesitas descargar nada</p>
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-8 border-3 border-green-300 shadow-lg transform hover:scale-105 transition">
+              <div className="text-6xl mb-4">📱</div>
+              <h3 className="font-black text-2xl text-gray-900 mb-3">Sin App</h3>
+              <p className="text-xl text-gray-700 font-medium">No necesitas descargar nada</p>
             </div>
-            <div className="bg-blue-50 rounded-xl p-8 border-2 border-blue-200">
-              <div className="text-5xl mb-4">⚡</div>
-              <h3 className="font-bold text-2xl text-gray-900 mb-3">Rápido</h3>
-              <p className="text-lg text-gray-700">Acceso instantáneo al menú</p>
+            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8 border-3 border-blue-300 shadow-lg transform hover:scale-105 transition">
+              <div className="text-6xl mb-4">⚡</div>
+              <h3 className="font-black text-2xl text-gray-900 mb-3">Rápido</h3>
+              <p className="text-xl text-gray-700 font-medium">Acceso instantáneo</p>
             </div>
-            <div className="bg-purple-50 rounded-xl p-8 border-2 border-purple-200">
-              <div className="text-5xl mb-4">🛒</div>
-              <h3 className="font-bold text-2xl text-gray-900 mb-3">Fácil</h3>
-              <p className="text-lg text-gray-700">Ordena con un toque</p>
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-8 border-3 border-purple-300 shadow-lg transform hover:scale-105 transition">
+              <div className="text-6xl mb-4">🛒</div>
+              <h3 className="font-black text-2xl text-gray-900 mb-3">Fácil</h3>
+              <p className="text-xl text-gray-700 font-medium">Ordena con un toque</p>
             </div>
           </div>
 
@@ -155,7 +162,17 @@ const QRLabel = () => {
         </div>
 
         {/* Footer decorativo */}
-        <div className="bg-gradient-to-r from-red-500 to-orange-500 h-4"></div>
+        <div className="bg-gradient-to-r from-orange-500 to-red-500 h-6 relative overflow-hidden">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="flex space-x-8 text-white text-sm font-bold opacity-70">
+              <span>✨ Menú Digital</span>
+              <span>•</span>
+              <span>🚀 Pedidos Online</span>
+              <span>•</span>
+              <span>💳 Pagos Seguros</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Botón para cerrar (solo en pantalla) */}
@@ -169,30 +186,47 @@ const QRLabel = () => {
       </div>
 
       {/* Etiquetas pequeñas adicionales (para cortar) */}
-      <div className="qr-page bg-white p-10" style={{ width: '210mm', height: '297mm' }}>
-        <h2 className="text-4xl font-bold text-center mb-10 text-gray-900">
-          Etiquetas para Mesa (Recortar)
-        </h2>
-        <div className="grid grid-cols-2 gap-10 h-full" style={{ gridTemplateRows: 'repeat(2, 1fr)' }}>
+      <div className="qr-page bg-gradient-to-br from-gray-50 to-gray-100 p-10" style={{ width: '210mm', height: '297mm' }}>
+        <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white py-6 px-8 rounded-2xl mb-8 text-center shadow-xl">
+          <h2 className="text-4xl font-black">
+            ✂️ Etiquetas para Mesa (Recortar)
+          </h2>
+          <p className="text-lg mt-2 opacity-90">Coloca una en cada mesa de tu local</p>
+        </div>
+        <div className="grid grid-cols-2 gap-8" style={{ gridTemplateRows: 'repeat(2, 1fr)' }}>
           {[1, 2, 3, 4].map((num) => (
-            <div key={num} className="border-4 border-dashed border-gray-400 rounded-2xl p-8 text-center bg-white flex flex-col justify-center">
-              <h3 className="text-3xl font-bold text-primary mb-4">
-                {user?.local?.nombre}
-              </h3>
-              <p className="text-xl text-gray-700 mb-6 font-medium">
-                Escanea para ver el menú
-              </p>
-              <div className="bg-gray-50 p-6 rounded-xl inline-block mx-auto">
-                <QRCodeSVG
-                  value={menuUrl}
-                  size={200}
-                  level="H"
-                  includeMargin={true}
-                />
+            <div key={num} className="border-4 border-dashed border-orange-400 rounded-3xl p-8 text-center bg-white flex flex-col justify-center shadow-xl relative overflow-hidden">
+              {/* Decoración de fondo */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-orange-100 rounded-full -translate-y-16 translate-x-16 opacity-50"></div>
+              <div className="absolute bottom-0 left-0 w-24 h-24 bg-red-100 rounded-full translate-y-12 -translate-x-12 opacity-50"></div>
+              
+              <div className="relative z-10">
+                <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 px-6 rounded-xl mb-4 inline-block">
+                  <h3 className="text-3xl font-black">
+                    {user?.local?.nombre}
+                  </h3>
+                </div>
+                <p className="text-2xl text-gray-800 mb-6 font-bold">
+                  📱 Escanea el QR
+                </p>
+                <div className="bg-gradient-to-br from-orange-50 to-red-50 p-6 rounded-2xl inline-block mx-auto border-4 border-orange-200 shadow-lg">
+                  <QRCodeSVG
+                    value={menuUrl}
+                    size={220}
+                    level="H"
+                    includeMargin={true}
+                    fgColor="#ea580c"
+                  />
+                </div>
+                <div className="mt-6 bg-gray-50 rounded-xl py-3 px-4">
+                  <p className="text-lg text-gray-700 font-bold">
+                    ✨ Sin app • ⚡ Rápido • 🛒 Fácil
+                  </p>
+                </div>
+                <p className="text-sm text-gray-500 mt-3 font-medium">
+                  Mesa #{num}
+                </p>
               </div>
-              <p className="text-base text-gray-600 mt-6 font-medium">
-                📱 Sin app • ⚡ Rápido • 🛒 Fácil
-              </p>
             </div>
           ))}
         </div>
