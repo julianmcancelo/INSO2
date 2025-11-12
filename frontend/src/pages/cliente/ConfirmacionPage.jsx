@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { User, Phone, MapPin, Home, Bike, Wallet, CreditCard, DollarSign, Upload, X } from 'lucide-react';
+import { User, Phone, MapPin, Home, Bike, Wallet, CreditCard, DollarSign, Upload, X, Clock, AlertCircle } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useLocal } from '../../context/LocalContext';
 import { pedidoAPI, configuracionPagoAPI } from '../../services/api';
 import DireccionAutocomplete from '../../components/cliente/DireccionAutocomplete';
+import { estaAbierto } from '../../utils/horarios';
 
 const ConfirmacionPage = () => {
   const navigate = useNavigate();
@@ -36,7 +37,19 @@ const ConfirmacionPage = () => {
     if (cart.length === 0) {
       navigate(`/menu/${localId}`);
     }
-  }, [cart, navigate, localId]);
+    
+    // Verificar si el local está abierto
+    if (local?.horarioAtencion) {
+      const localAbierto = estaAbierto(local.horarioAtencion);
+      if (!localAbierto) {
+        toast.error('El local está cerrado. No se pueden realizar pedidos en este momento.', {
+          position: 'top-center',
+          autoClose: 5000,
+        });
+        navigate(`/menu/${localId}`);
+      }
+    }
+  }, [cart, navigate, localId, local]);
 
   // Pre-llenar datos del cliente si existen
   useEffect(() => {

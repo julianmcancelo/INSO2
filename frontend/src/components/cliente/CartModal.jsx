@@ -1,18 +1,34 @@
 import React, { useState } from 'react';
-import { X, Plus, Minus, Trash2, ShoppingBag } from 'lucide-react';
+import { X, Plus, Minus, Trash2, ShoppingBag, Clock } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useCart } from '../../context/CartContext';
+import { useLocal } from '../../context/LocalContext';
+import { estaAbierto } from '../../utils/horarios';
 
 const CartModal = ({ isOpen }) => {
   const navigate = useNavigate();
   const { localId } = useParams();
+  const { local } = useLocal();
   const { cart, closeCart, updateQuantity, removeFromCart, getTotal, clearCart } = useCart();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
 
   if (!isOpen) return null;
 
+  const localAbierto = local?.horarioAtencion ? estaAbierto(local.horarioAtencion) : true;
+
   const handleCheckout = () => {
     if (cart.length === 0) return;
+    
+    // Verificar si el local está abierto
+    if (!localAbierto) {
+      toast.error('El local está cerrado en este momento. No se pueden realizar pedidos.', {
+        position: 'top-center',
+        autoClose: 5000,
+      });
+      return;
+    }
+    
     setIsCheckingOut(true);
     closeCart();
     navigate(`/menu/${localId}/confirmacion`);
@@ -138,6 +154,19 @@ const CartModal = ({ isOpen }) => {
             {/* Footer */}
             {cart.length > 0 && (
               <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
+                {/* Alerta si está cerrado */}
+                {!localAbierto && (
+                  <div className="mb-4 bg-red-50 border-2 border-red-200 rounded-lg p-4">
+                    <div className="flex items-center gap-2 text-red-800">
+                      <Clock size={20} className="flex-shrink-0" />
+                      <div>
+                        <p className="font-bold text-sm">Local Cerrado</p>
+                        <p className="text-xs mt-1">No se pueden realizar pedidos en este momento</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 <div className="flex justify-between text-base font-medium text-gray-900 mb-4">
                   <p>Total</p>
                   <p className="text-2xl">${parseFloat(getTotal()).toFixed(2)}</p>
@@ -145,10 +174,14 @@ const CartModal = ({ isOpen }) => {
 
                 <button
                   onClick={handleCheckout}
-                  disabled={isCheckingOut}
-                  className="w-full bg-primary border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:opacity-90 focus:outline-none disabled:opacity-50"
+                  disabled={isCheckingOut || !localAbierto}
+                  className={`w-full border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white focus:outline-none transition-all ${
+                    !localAbierto 
+                      ? 'bg-gray-400 cursor-not-allowed' 
+                      : 'bg-primary hover:opacity-90 disabled:opacity-50'
+                  }`}
                 >
-                  {isCheckingOut ? 'Procesando...' : 'Confirmar Pedido'}
+                  {!localAbierto ? '🔒 Local Cerrado' : (isCheckingOut ? 'Procesando...' : 'Confirmar Pedido')}
                 </button>
 
                 <button
