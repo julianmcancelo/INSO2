@@ -1,5 +1,22 @@
 const crypto = require('crypto');
 const Usuario = require('../models/Usuario');
+const nodemailer = require('nodemailer');
+
+// Configurar transporter de email
+let transporter = null;
+if (process.env.EMAIL_USER && process.env.EMAIL_PASSWORD) {
+  try {
+    transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD
+      }
+    });
+  } catch (error) {
+    console.error('Error al configurar email en passwordController:', error);
+  }
+}
 
 // Solicitar recuperación de contraseña
 exports.solicitarRecuperacion = async (req, res) => {
@@ -29,15 +46,67 @@ exports.solicitarRecuperacion = async (req, res) => {
     usuario.resetPasswordExpires = new Date(Date.now() + 3600000); // 1 hora
     await usuario.save();
 
-    // En producción, aquí enviarías un email con el link
-    // Por ahora, devolvemos el token para testing
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
-    console.log('🔑 Token de recuperación generado:', resetUrl);
+    // Enviar email de recuperación
+    if (transporter) {
+      try {
+        await transporter.sendMail({
+          from: `"Cartita" <${process.env.EMAIL_USER}>`,
+          to: email,
+          subject: 'Recuperación de Contraseña - Cartita',
+          html: `
+            <!DOCTYPE html>
+            <html>
+            <head>
+              <style>
+                body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                .header { background: linear-gradient(135deg, #ef4444 0%, #f59e0b 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+                .content { background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px; }
+                .button { display: inline-block; background: #ef4444; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; margin: 20px 0; font-weight: bold; }
+                .footer { text-align: center; color: #666; font-size: 12px; margin-top: 30px; }
+              </style>
+            </head>
+            <body>
+              <div class="container">
+                <div class="header">
+                  <h1>Recuperación de Contraseña</h1>
+                </div>
+                <div class="content">
+                  <h2>Hola ${usuario.nombre},</h2>
+                  <p>Recibimos una solicitud para restablecer tu contraseña.</p>
+                  <p>Haz click en el siguiente enlace para crear una nueva contraseña:</p>
+                  <center>
+                    <a href="${resetUrl}" class="button">Restablecer Contraseña</a>
+                  </center>
+                  <p>O copia y pega este enlace en tu navegador:</p>
+                  <p style="background: white; padding: 15px; border-radius: 5px; word-break: break-all;">
+                    ${resetUrl}
+                  </p>
+                  <p><strong>Este enlace expirará en 1 hora.</strong></p>
+                  <p>Si no solicitaste este cambio, puedes ignorar este mensaje.</p>
+                </div>
+                <div class="footer">
+                  <p>© 2025 Cartita - Sistema de gestión para restaurantes</p>
+                </div>
+              </div>
+            </body>
+            </html>
+          `
+        });
+        console.log('✅ Email de recuperación enviado a:', email);
+      } catch (emailError) {
+        console.error('❌ Error al enviar email:', emailError);
+        // No fallar la petición si el email falla
+      }
+    } else {
+      console.log('⚠️ Email no configurado. Link de recuperación:', resetUrl);
+    }
 
     res.json({ 
       message: 'Si el email existe, recibirás instrucciones para recuperar tu contraseña',
-      // Solo para desarrollo - ELIMINAR EN PRODUCCIÓN
+      // Solo para desarrollo
       resetUrl: process.env.NODE_ENV === 'development' ? resetUrl : undefined
     });
 
