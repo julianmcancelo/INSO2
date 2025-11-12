@@ -136,9 +136,9 @@ exports.update = async (req, res) => {
       direccion: direccion !== undefined ? direccion : local.direccion,
       telefono: telefono !== undefined ? telefono : local.telefono,
       email: email !== undefined ? email : local.email,
-      horarioAtencion: horarioAtencion || local.horarioAtencion,
+      horarioAtencion: horarioAtencion !== undefined ? horarioAtencion : local.horarioAtencion,
       datosBancarios: datosBancarios !== undefined ? datosBancarios : local.datosBancarios,
-      configuracion: configuracion || local.configuracion,
+      configuracion: configuracion !== undefined ? configuracion : local.configuracion,
       activo: activo !== undefined ? activo : local.activo
     });
 
