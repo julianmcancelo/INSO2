@@ -38,4 +38,45 @@ router.post('/recreate-tables', async (req, res) => {
   }
 });
 
+// Endpoint para verificar estructura de tablas
+router.get('/verify-structure', async (req, res) => {
+  try {
+    const [localesColumns] = await sequelize.query(`
+      SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE, COLUMN_DEFAULT, COLUMN_COMMENT
+      FROM INFORMATION_SCHEMA.COLUMNS
+      WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'locales'
+      ORDER BY ORDINAL_POSITION
+    `);
+
+    const [pedidosColumns] = await sequelize.query(`
+      SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE, COLUMN_DEFAULT, COLUMN_COMMENT
+      FROM INFORMATION_SCHEMA.COLUMNS
+      WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'pedidos'
+      ORDER BY ORDINAL_POSITION
+    `);
+
+    const [usuariosColumns] = await sequelize.query(`
+      SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE, COLUMN_DEFAULT, COLUMN_COMMENT
+      FROM INFORMATION_SCHEMA.COLUMNS
+      WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'usuarios'
+      ORDER BY ORDINAL_POSITION
+    `);
+
+    res.json({
+      success: true,
+      tables: {
+        locales: localesColumns,
+        pedidos: pedidosColumns,
+        usuarios: usuariosColumns
+      }
+    });
+  } catch (error) {
+    console.error('❌ Error al verificar estructura:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
 module.exports = router;
