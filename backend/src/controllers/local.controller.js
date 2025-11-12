@@ -112,6 +112,7 @@ exports.update = async (req, res) => {
       telefono,
       email,
       horarioAtencion,
+      datosBancarios,
       configuracion,
       activo
     } = req.body;
@@ -136,6 +137,7 @@ exports.update = async (req, res) => {
       telefono: telefono !== undefined ? telefono : local.telefono,
       email: email !== undefined ? email : local.email,
       horarioAtencion: horarioAtencion || local.horarioAtencion,
+      datosBancarios: datosBancarios !== undefined ? datosBancarios : local.datosBancarios,
       configuracion: configuracion || local.configuracion,
       activo: activo !== undefined ? activo : local.activo
     });
