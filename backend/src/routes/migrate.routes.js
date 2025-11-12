@@ -55,20 +55,14 @@ router.get('/verify-structure', async (req, res) => {
          WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?
          ORDER BY ORDINAL_POSITION`;
 
-    const [localesColumns] = await sequelize.query(columnQuery, {
-      bind: ['locales'],
-      replacements: ['locales']
-    });
+    const bindParam = isPostgres ? { bind: ['locales'] } : { replacements: ['locales'] };
+    const [localesColumns] = await sequelize.query(columnQuery, bindParam);
 
-    const [pedidosColumns] = await sequelize.query(columnQuery, {
-      bind: ['pedidos'],
-      replacements: ['pedidos']
-    });
+    const bindParam2 = isPostgres ? { bind: ['pedidos'] } : { replacements: ['pedidos'] };
+    const [pedidosColumns] = await sequelize.query(columnQuery, bindParam2);
 
-    const [usuariosColumns] = await sequelize.query(columnQuery, {
-      bind: ['usuarios'],
-      replacements: ['usuarios']
-    });
+    const bindParam3 = isPostgres ? { bind: ['usuarios'] } : { replacements: ['usuarios'] };
+    const [usuariosColumns] = await sequelize.query(columnQuery, bindParam3);
 
     res.json({
       success: true,
