@@ -55,23 +55,36 @@ router.get('/verify-structure', async (req, res) => {
          WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?
          ORDER BY ORDINAL_POSITION`;
 
-    const bindParam = isPostgres ? { bind: ['locales'] } : { replacements: ['locales'] };
-    const [localesColumns] = await sequelize.query(columnQuery, bindParam);
+    // Lista de todas las tablas a verificar
+    const tables = [
+      'usuarios',
+      'locales', 
+      'categorias',
+      'productos',
+      'pedidos',
+      'pedido_items',
+      'solicitudes',
+      'configuracion_global',
+      'configuracion_pagos',
+      'invitaciones'
+    ];
 
-    const bindParam2 = isPostgres ? { bind: ['pedidos'] } : { replacements: ['pedidos'] };
-    const [pedidosColumns] = await sequelize.query(columnQuery, bindParam2);
-
-    const bindParam3 = isPostgres ? { bind: ['usuarios'] } : { replacements: ['usuarios'] };
-    const [usuariosColumns] = await sequelize.query(columnQuery, bindParam3);
+    const result = {};
+    
+    for (const table of tables) {
+      const bindParam = isPostgres ? { bind: [table] } : { replacements: [table] };
+      const [columns] = await sequelize.query(columnQuery, bindParam);
+      result[table] = {
+        exists: columns.length > 0,
+        columnCount: columns.length,
+        columns: columns.map(c => c.column_name)
+      };
+    }
 
     res.json({
       success: true,
       dialect: sequelize.getDialect(),
-      tables: {
-        locales: localesColumns,
-        pedidos: pedidosColumns,
-        usuarios: usuariosColumns
-      }
+      tables: result
     });
   } catch (error) {
     console.error('❌ Error al verificar estructura:', error);
