@@ -71,3 +71,25 @@ Si no recibes el email:
 2. Verifica que el email esté registrado en la base de datos
 3. Revisa los logs de Render para ver si hay errores
 4. Verifica que todas las variables estén configuradas correctamente
+
+### ⚠️ Problema común: Connection Timeout
+
+Si ves este error en los logs:
+```
+❌ Error al enviar email: Error: Connection timeout
+code: 'ETIMEDOUT'
+```
+
+**Causa:** Render bloquea el puerto 587 (SMTP estándar) por seguridad.
+
+**Solución:** El código ya está configurado para usar el puerto 465 con SSL, que Render permite.
+
+### 🔧 Configuración técnica del email
+
+El sistema usa:
+- **Host:** smtp.gmail.com
+- **Puerto:** 465 (SSL)
+- **Secure:** true
+- **Autenticación:** Gmail App Password
+
+Esta configuración evita los bloqueos de firewall de Render.

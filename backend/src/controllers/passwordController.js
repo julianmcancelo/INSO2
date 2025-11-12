@@ -7,13 +7,18 @@ let transporter = null;
 if (process.env.EMAIL_USER && process.env.EMAIL_PASSWORD) {
   try {
     transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true, // usar SSL
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASSWORD
+      },
+      tls: {
+        rejectUnauthorized: false
       }
     });
-    console.log('✅ Transporter de email configurado en passwordController');
+    console.log('✅ Transporter de email configurado en passwordController (puerto 465/SSL)');
   } catch (error) {
     console.error('❌ Error al configurar email en passwordController:', error);
   }

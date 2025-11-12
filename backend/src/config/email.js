@@ -9,13 +9,18 @@ if (process.env.EMAIL_USER && process.env.EMAIL_PASSWORD) {
     // Verificar que createTransport existe
     if (typeof nodemailer.createTransport === 'function') {
       transporter = nodemailer.createTransport({
-        service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true, // usar SSL
         auth: {
           user: process.env.EMAIL_USER,
           pass: process.env.EMAIL_PASSWORD
+        },
+        tls: {
+          rejectUnauthorized: false
         }
       });
-      console.log('✅ Transporter de email configurado');
+      console.log('✅ Transporter de email configurado (puerto 465/SSL)');
     } else {
       console.error('❌ nodemailer.createTransporter no es una función');
       throw new Error('createTransporter no disponible');
