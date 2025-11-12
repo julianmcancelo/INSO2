@@ -396,6 +396,57 @@ const ConfirmacionPage = () => {
             </div>
           </div>
 
+          {/* Datos Bancarios para Transferencia */}
+          {formData.metodoPago === 'transferencia' && local?.datosBancarios && Object.keys(local.datosBancarios).length > 0 && (
+            <div className="mb-6 bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <CreditCard className="text-green-600" size={24} />
+                Datos para Transferencia
+              </h3>
+              <div className="bg-white rounded-lg p-4 space-y-3">
+                {local.datosBancarios.titular && (
+                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span className="text-sm text-gray-600 font-medium">Titular:</span>
+                    <span className="text-sm font-semibold text-gray-900">{local.datosBancarios.titular}</span>
+                  </div>
+                )}
+                {local.datosBancarios.cbu && (
+                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span className="text-sm text-gray-600 font-medium">CBU:</span>
+                    <span className="text-sm font-mono text-gray-900 select-all">{local.datosBancarios.cbu}</span>
+                  </div>
+                )}
+                {local.datosBancarios.alias && (
+                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span className="text-sm text-gray-600 font-medium">Alias:</span>
+                    <span className="text-sm font-semibold text-gray-900 select-all">{local.datosBancarios.alias}</span>
+                  </div>
+                )}
+                {local.datosBancarios.banco && (
+                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span className="text-sm text-gray-600 font-medium">Banco:</span>
+                    <span className="text-sm text-gray-900">{local.datosBancarios.banco}</span>
+                  </div>
+                )}
+                {local.datosBancarios.tipoCuenta && (
+                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span className="text-sm text-gray-600 font-medium">Tipo de Cuenta:</span>
+                    <span className="text-sm text-gray-900">{local.datosBancarios.tipoCuenta}</span>
+                  </div>
+                )}
+                {local.datosBancarios.cuit && (
+                  <div className="flex justify-between items-center py-2">
+                    <span className="text-sm text-gray-600 font-medium">CUIT/CUIL:</span>
+                    <span className="text-sm font-mono text-gray-900">{local.datosBancarios.cuit}</span>
+                  </div>
+                )}
+              </div>
+              <p className="text-xs text-gray-600 mt-3 text-center">
+                💡 Realiza la transferencia y luego sube el comprobante abajo
+              </p>
+            </div>
+          )}
+
           {/* Comprobante de Transferencia */}
           {formData.metodoPago === 'transferencia' && (
             <div className="mb-6">

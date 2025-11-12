@@ -28,6 +28,7 @@ import AdminPedidos from './pages/admin/AdminPedidos';
 import AdminCategorias from './pages/admin/AdminCategorias';
 import AdminQRCode from './pages/admin/AdminQRCode';
 import AdminHorarios from './pages/admin/AdminHorarios';
+import AdminDatosBancarios from './pages/admin/AdminDatosBancarios';
 import AdminMantenimiento from './pages/admin/AdminMantenimiento';
 import QRLabel from './pages/admin/QRLabel';
 import Mantenimiento from './pages/Mantenimiento';
@@ -148,6 +149,7 @@ function AppContent() {
               <Route path="/admin/pedidos" element={<PrivateRoute><AdminPedidos /></PrivateRoute>} />
               <Route path="/admin/categorias" element={<PrivateRoute><AdminCategorias /></PrivateRoute>} />
               <Route path="/admin/horarios" element={<PrivateRoute><AdminHorarios /></PrivateRoute>} />
+              <Route path="/admin/datos-bancarios" element={<PrivateRoute><AdminDatosBancarios /></PrivateRoute>} />
               <Route path="/admin/mantenimiento" element={<PrivateRoute><AdminMantenimiento /></PrivateRoute>} />
               <Route path="/admin/qr" element={<PrivateRoute><AdminQRCode /></PrivateRoute>} />
               <Route path="/admin/qr-label" element={<PrivateRoute><QRLabel /></PrivateRoute>} />

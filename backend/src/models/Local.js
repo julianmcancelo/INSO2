@@ -58,6 +58,12 @@ const Local = sequelize.define('Local', {
     defaultValue: {},
     comment: 'Horarios de atención del local'
   },
+  datosBancarios: {
+    type: DataTypes.JSON,
+    allowNull: true,
+    defaultValue: {},
+    comment: 'Datos bancarios para transferencias (CBU, Alias, Titular, Banco)'
+  },
   configuracion: {
     type: DataTypes.JSON,
     allowNull: true,

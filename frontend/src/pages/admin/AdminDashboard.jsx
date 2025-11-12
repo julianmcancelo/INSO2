@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, Package, Grid, LogOut, Store, FileText, QrCode, Clock, Settings, Users, DollarSign, TrendingUp } from 'lucide-react';
+import { ShoppingBag, Package, Grid, LogOut, Store, FileText, QrCode, Clock, Settings, Users, DollarSign, TrendingUp, CreditCard } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { pedidoAPI } from '../../services/api';
 import socketService from '../../services/socket';
@@ -275,6 +275,17 @@ const AdminDashboard = () => {
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">Horarios</h3>
                 <p className="text-sm text-gray-600">Configurar atención</p>
+              </Link>
+
+              <Link
+                to="/admin/datos-bancarios"
+                className="bg-white rounded-lg shadow p-6 hover:shadow-md transition border border-gray-200"
+              >
+                <div className="text-green-600 mb-4">
+                  <CreditCard size={32} />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Datos Bancarios</h3>
+                <p className="text-sm text-gray-600">CBU y Alias</p>
               </Link>
             </>
           )}
