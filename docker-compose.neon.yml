@@ -75,6 +75,22 @@ services:
     networks:
       - menu-network
 
+  # phpMyAdmin para administrar MySQL remoto
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: cartita-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: ${DB_HOST}
+      PMA_PORT: ${DB_PORT:-3306}
+      PMA_USER: ${DB_USER}
+      PMA_PASSWORD: ${DB_PASSWORD}
+      UPLOAD_LIMIT: 50M
+    ports:
+      - "8080:80"
+    networks:
+      - menu-network
+
 volumes:
   backend_logs:
     driver: local
