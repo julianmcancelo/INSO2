@@ -367,6 +367,15 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Footer */}
+      <footer className="bg-white border-t border-gray-200 py-6">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <p className="text-sm text-gray-600">
+            Armado con ♥ por el equipo de Ingeniería 2
+          </p>
+        </div>
+      </footer>
+
     </div>
   );
 };
