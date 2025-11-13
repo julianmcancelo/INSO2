@@ -56,7 +56,7 @@ export async function GET(request) {
 }
 
 // POST - Crear producto
-export const POST = requireAuth(async (request) => {
+export const POST = requireAuth(async (request, context) => {
   try {
     const body = await request.json();
     const {
@@ -69,7 +69,8 @@ export const POST = requireAuth(async (request) => {
       disponible,
       destacado,
       opciones,
-      orden
+      orden,
+      localId
     } = body;
 
     // Validaciones
@@ -80,10 +81,20 @@ export const POST = requireAuth(async (request) => {
       );
     }
 
+    // Usar localId del body o del context.user
+    const productLocalId = localId || context?.user?.localId;
+
+    if (!productLocalId) {
+      return NextResponse.json(
+        { error: 'localId es requerido' },
+        { status: 400 }
+      );
+    }
+
     const producto = await prisma.producto.create({
       data: {
         categoriaId: parseInt(categoriaId),
-        localId: request.user.localId,
+        localId: parseInt(productLocalId),
         nombre,
         descripcion: descripcion || null,
         precio: parseFloat(precio),
