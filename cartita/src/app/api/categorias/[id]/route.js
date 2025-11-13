@@ -3,9 +3,10 @@ import prisma from '@/lib/prisma';
 import { requireAuth } from '@/lib/middleware';
 
 // GET - Obtener categoría por ID
-export const GET = requireAuth(async (request, { params }) => {
+export const GET = requireAuth(async (request, context) => {
   try {
-    const { id } = params;
+    const { id } = context.params;
+    const userLocalId = context?.user?.localId;
 
     const categoria = await prisma.categoria.findUnique({
       where: { id: parseInt(id) },
@@ -20,6 +21,14 @@ export const GET = requireAuth(async (request, { params }) => {
       return NextResponse.json(
         { error: 'Categoría no encontrada' },
         { status: 404 }
+      );
+    }
+
+    // Verificar que la categoría pertenece al local del usuario (solo para admins)
+    if (context?.user?.rol === 'admin' && userLocalId && categoria.localId !== userLocalId) {
+      return NextResponse.json(
+        { error: 'No tienes permiso para acceder a esta categoría' },
+        { status: 403 }
       );
     }
 
@@ -38,11 +47,32 @@ export const GET = requireAuth(async (request, { params }) => {
 });
 
 // PUT - Actualizar categoría
-export const PUT = requireAuth(async (request, { params }) => {
+export const PUT = requireAuth(async (request, context) => {
   try {
-    const { id } = params;
+    const { id } = context.params;
+    const userLocalId = context?.user?.localId;
     const body = await request.json();
     const { nombre, descripcion, icono, orden } = body;
+
+    // Verificar que la categoría existe y pertenece al local del usuario
+    const categoriaExistente = await prisma.categoria.findUnique({
+      where: { id: parseInt(id) }
+    });
+
+    if (!categoriaExistente) {
+      return NextResponse.json(
+        { error: 'Categoría no encontrada' },
+        { status: 404 }
+      );
+    }
+
+    // Verificar permisos (solo para admins)
+    if (context?.user?.rol === 'admin' && userLocalId && categoriaExistente.localId !== userLocalId) {
+      return NextResponse.json(
+        { error: 'No tienes permiso para modificar esta categoría' },
+        { status: 403 }
+      );
+    }
 
     const dataToUpdate = {};
     if (nombre !== undefined) dataToUpdate.nombre = nombre;
@@ -79,9 +109,10 @@ export const PUT = requireAuth(async (request, { params }) => {
 });
 
 // DELETE - Eliminar categoría
-export const DELETE = requireAuth(async (request, { params }) => {
+export const DELETE = requireAuth(async (request, context) => {
   try {
-    const { id } = params;
+    const { id } = context.params;
+    const userLocalId = context?.user?.localId;
 
     // Verificar si tiene productos
     const categoria = await prisma.categoria.findUnique({
@@ -97,6 +128,14 @@ export const DELETE = requireAuth(async (request, { params }) => {
       return NextResponse.json(
         { error: 'Categoría no encontrada' },
         { status: 404 }
+      );
+    }
+
+    // Verificar permisos (solo para admins)
+    if (context?.user?.rol === 'admin' && userLocalId && categoria.localId !== userLocalId) {
+      return NextResponse.json(
+        { error: 'No tienes permiso para eliminar esta categoría' },
+        { status: 403 }
       );
     }
 

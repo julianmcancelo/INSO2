@@ -1,28 +1,44 @@
 import { NextResponse } from 'next/server';
-import { getDb } from '@/lib/database';
+import prisma from '@/lib/prisma';
 import { requireAuth } from '@/lib/middleware';
 
 // GET - Obtener producto por ID
-export async function GET(request, { params }) {
+export const GET = requireAuth(async (request, context) => {
   try {
-    const { id } = params;
-    const db = await getDb();
+    const { id } = context.params;
+    const userLocalId = context?.user?.localId;
 
-    const result = await db.query(
-      'SELECT * FROM productos WHERE id = $1',
-      [id]
-    );
+    const producto = await prisma.producto.findUnique({
+      where: { id: parseInt(id) },
+      include: {
+        categoria: {
+          select: {
+            id: true,
+            nombre: true,
+            icono: true
+          }
+        }
+      }
+    });
 
-    if (result.rows.length === 0) {
+    if (!producto) {
       return NextResponse.json(
         { error: 'Producto no encontrado' },
         { status: 404 }
       );
     }
 
+    // Verificar que el producto pertenece al local del usuario (solo para admins)
+    if (context?.user?.rol === 'admin' && userLocalId && producto.localId !== userLocalId) {
+      return NextResponse.json(
+        { error: 'No tienes permiso para acceder a este producto' },
+        { status: 403 }
+      );
+    }
+
     return NextResponse.json({
       success: true,
-      producto: result.rows[0]
+      producto
     });
 
   } catch (error) {
@@ -32,14 +48,14 @@ export async function GET(request, { params }) {
       { status: 500 }
     );
   }
-}
+});
 
 // PUT - Actualizar producto
-export const PUT = requireAuth(async (request, { params }) => {
+export const PUT = requireAuth(async (request, context) => {
   try {
-    const { id } = params;
+    const { id } = context.params;
+    const userLocalId = context?.user?.localId;
     const body = await request.json();
-    const db = await getDb();
 
     const {
       categoriaId,
@@ -49,40 +65,58 @@ export const PUT = requireAuth(async (request, { params }) => {
       imagenBase64,
       tiempoPreparacion,
       disponible,
-      destacado
+      destacado,
+      orden
     } = body;
 
-    const result = await db.query(
-      `UPDATE productos 
-       SET categoria_id = $1, nombre = $2, descripcion = $3, precio = $4,
-           imagen_base64 = $5, tiempo_preparacion = $6, disponible = $7,
-           destacado = $8, updated_at = NOW()
-       WHERE id = $9 AND local_id = $10
-       RETURNING *`,
-      [
-        categoriaId,
-        nombre,
-        descripcion,
-        precio,
-        imagenBase64,
-        tiempoPreparacion,
-        disponible,
-        destacado,
-        id,
-        request.user.localId
-      ]
-    );
+    // Verificar que el producto existe y pertenece al local del usuario
+    const productoExistente = await prisma.producto.findUnique({
+      where: { id: parseInt(id) }
+    });
 
-    if (result.rows.length === 0) {
+    if (!productoExistente) {
       return NextResponse.json(
-        { error: 'Producto no encontrado o sin permisos' },
+        { error: 'Producto no encontrado' },
         { status: 404 }
       );
     }
 
+    // Verificar permisos (solo para admins)
+    if (context?.user?.rol === 'admin' && userLocalId && productoExistente.localId !== userLocalId) {
+      return NextResponse.json(
+        { error: 'No tienes permiso para modificar este producto' },
+        { status: 403 }
+      );
+    }
+
+    const dataToUpdate = {};
+    if (categoriaId !== undefined) dataToUpdate.categoriaId = parseInt(categoriaId);
+    if (nombre !== undefined) dataToUpdate.nombre = nombre;
+    if (descripcion !== undefined) dataToUpdate.descripcion = descripcion;
+    if (precio !== undefined) dataToUpdate.precio = parseFloat(precio);
+    if (imagenBase64 !== undefined) dataToUpdate.imagenBase64 = imagenBase64;
+    if (tiempoPreparacion !== undefined) dataToUpdate.tiempoPreparacion = tiempoPreparacion;
+    if (disponible !== undefined) dataToUpdate.disponible = disponible;
+    if (destacado !== undefined) dataToUpdate.destacado = destacado;
+    if (orden !== undefined) dataToUpdate.orden = orden;
+
+    const producto = await prisma.producto.update({
+      where: { id: parseInt(id) },
+      data: dataToUpdate,
+      include: {
+        categoria: {
+          select: {
+            id: true,
+            nombre: true,
+            icono: true
+          }
+        }
+      }
+    });
+
     return NextResponse.json({
       success: true,
-      producto: result.rows[0]
+      producto
     });
 
   } catch (error) {
@@ -95,22 +129,34 @@ export const PUT = requireAuth(async (request, { params }) => {
 });
 
 // DELETE - Eliminar producto
-export const DELETE = requireAuth(async (request, { params }) => {
+export const DELETE = requireAuth(async (request, context) => {
   try {
-    const { id } = params;
-    const db = await getDb();
+    const { id } = context.params;
+    const userLocalId = context?.user?.localId;
 
-    const result = await db.query(
-      'DELETE FROM productos WHERE id = $1 AND local_id = $2 RETURNING id',
-      [id, request.user.localId]
-    );
+    // Verificar que el producto existe y pertenece al local del usuario
+    const productoExistente = await prisma.producto.findUnique({
+      where: { id: parseInt(id) }
+    });
 
-    if (result.rows.length === 0) {
+    if (!productoExistente) {
       return NextResponse.json(
-        { error: 'Producto no encontrado o sin permisos' },
+        { error: 'Producto no encontrado' },
         { status: 404 }
       );
     }
+
+    // Verificar permisos (solo para admins)
+    if (context?.user?.rol === 'admin' && userLocalId && productoExistente.localId !== userLocalId) {
+      return NextResponse.json(
+        { error: 'No tienes permiso para eliminar este producto' },
+        { status: 403 }
+      );
+    }
+
+    await prisma.producto.delete({
+      where: { id: parseInt(id) }
+    });
 
     return NextResponse.json({
       success: true,
