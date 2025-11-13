@@ -12,10 +12,10 @@ const transporter = nodemailer.createTransport({
 // Verificar configuración (sin bloquear)
 transporter.verify(function (error, success) {
   if (error) {
-    console.warn('⚠️ Advertencia: Configuración de email no disponible:', error.message);
-    console.warn('⚠️ Los emails no se enviarán, pero la app funcionará normalmente');
+    console.warn('Advertencia: Configuración de email no disponible:', error.message);
+    console.warn('Los emails no se enviarán, pero la app funcionará normalmente');
   } else {
-    console.log('✅ Servidor de email listo');
+    console.log('Servidor de email listo');
   }
 });
 
@@ -43,7 +43,7 @@ export async function enviarEmailRecuperacion(destinatario, resetUrl, nombreUsua
               <tr>
                 <td style="background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%); padding: 40px 30px; text-align: center;">
                   <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: bold;">
-                    🔐 Recuperar Contraseña
+                    Recuperar Contraseña
                   </h1>
                   <p style="margin: 10px 0 0 0; color: #ffffff; font-size: 16px; opacity: 0.9;">
                     Cartita - Menú Digital
@@ -81,10 +81,10 @@ export async function enviarEmailRecuperacion(destinatario, resetUrl, nombreUsua
                   
                   <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #eeeeee;">
                     <p style="margin: 0 0 10px 0; color: #999999; font-size: 14px;">
-                      ⏰ <strong>Este enlace expira en 1 hora</strong>
+                      <strong>Este enlace expira en 1 hora</strong>
                     </p>
                     <p style="margin: 0; color: #999999; font-size: 14px;">
-                      ⚠️ Si no solicitaste restablecer tu contraseña, ignora este email.
+                      Si no solicitaste restablecer tu contraseña, ignora este email.
                     </p>
                   </div>
                 </td>
@@ -112,7 +112,7 @@ export async function enviarEmailRecuperacion(destinatario, resetUrl, nombreUsua
   const mailOptions = {
     from: `"Cartita" <${process.env.EMAIL_USER}>`,
     to: destinatario,
-    subject: '🔐 Recuperar Contraseña - Cartita',
+    subject: 'Recuperar Contraseña - Cartita',
     html: htmlContent
   };
 
@@ -142,7 +142,7 @@ export async function enviarEmailInvitacion(destinatario, token, nombreNegocio) 
               <tr>
                 <td style="background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%); padding: 40px 30px; text-align: center;">
                   <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: bold;">
-                    🍽️ Cartita
+                    Cartita
                   </h1>
                   <p style="margin: 10px 0 0 0; color: #ffffff; font-size: 16px; opacity: 0.9;">
                     Tu menú digital está listo
@@ -154,7 +154,7 @@ export async function enviarEmailInvitacion(destinatario, token, nombreNegocio) 
               <tr>
                 <td style="padding: 40px 30px;">
                   <h2 style="margin: 0 0 20px 0; color: #333333; font-size: 24px;">
-                    ¡Bienvenido a Cartita! 🎉
+                    ¡Bienvenido a Cartita!
                   </h2>
                   
                   <p style="margin: 0 0 15px 0; color: #666666; font-size: 16px; line-height: 1.6;">
@@ -183,7 +183,7 @@ export async function enviarEmailInvitacion(destinatario, token, nombreNegocio) 
                   <!-- Info adicional -->
                   <div style="background-color: #FFF5F0; border-left: 4px solid #FF6B35; padding: 20px; margin: 30px 0; border-radius: 4px;">
                     <p style="margin: 0 0 10px 0; color: #333333; font-size: 14px; font-weight: bold;">
-                      ⏰ Importante:
+                      Importante:
                     </p>
                     <p style="margin: 0; color: #666666; font-size: 14px; line-height: 1.5;">
                       Este enlace es válido por <strong>7 días</strong>. Si necesitas un nuevo enlace, contacta con nuestro equipo.
@@ -199,25 +199,25 @@ export async function enviarEmailInvitacion(destinatario, token, nombreNegocio) 
                     <table width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td style="padding: 10px 0;">
-                          <span style="color: #FF6B35; font-size: 20px; margin-right: 10px;">📱</span>
+                          <span style="color: #FF6B35; font-size: 20px; margin-right: 10px;">•</span>
                           <span style="color: #666666; font-size: 14px;">Menú digital con código QR</span>
                         </td>
                       </tr>
                       <tr>
                         <td style="padding: 10px 0;">
-                          <span style="color: #FF6B35; font-size: 20px; margin-right: 10px;">🛒</span>
+                          <span style="color: #FF6B35; font-size: 20px; margin-right: 10px;">•</span>
                           <span style="color: #666666; font-size: 14px;">Recibe pedidos en tiempo real</span>
                         </td>
                       </tr>
                       <tr>
                         <td style="padding: 10px 0;">
-                          <span style="color: #FF6B35; font-size: 20px; margin-right: 10px;">📊</span>
+                          <span style="color: #FF6B35; font-size: 20px; margin-right: 10px;">•</span>
                           <span style="color: #666666; font-size: 14px;">Estadísticas de ventas</span>
                         </td>
                       </tr>
                       <tr>
                         <td style="padding: 10px 0;">
-                          <span style="color: #FF6B35; font-size: 20px; margin-right: 10px;">⚡</span>
+                          <span style="color: #FF6B35; font-size: 20px; margin-right: 10px;">•</span>
                           <span style="color: #666666; font-size: 14px;">Actualiza tu menú al instante</span>
                         </td>
                       </tr>
