@@ -71,7 +71,10 @@ export default function AdminCategorias() {
         await categoriaAPI.update(categoriaEditar.id, formData);
         toast.success('Categoría actualizada');
       } else {
-        await categoriaAPI.create(formData);
+        await categoriaAPI.create({
+          ...formData,
+          localId: user.localId
+        });
         toast.success('Categoría creada');
       }
       setShowModal(false);
