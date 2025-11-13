@@ -11,9 +11,9 @@ export default function AdminDashboard() {
   const { user, logout } = useAuth();
   const router = useRouter();
 
-  console.log('📊 Dashboard - Usuario cargado:', user);
-  console.log('🏪 Dashboard - Local ID:', user?.localId);
-  console.log('🏪 Dashboard - Local:', user?.local);
+  console.log('Dashboard - Usuario cargado:', user);
+  console.log('Dashboard - Local ID:', user?.localId);
+  console.log('Dashboard - Local:', user?.local);
 
   const handleLogout = () => {
     logout();

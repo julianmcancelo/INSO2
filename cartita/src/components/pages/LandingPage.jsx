@@ -194,7 +194,7 @@ const LandingPage = () => {
           {/* Left Content */}
           <div className="text-white">
             <div className="inline-block mb-4 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold animate-bounce">
-              🚀 Digitaliza tu negocio en minutos
+              Digitaliza tu negocio en minutos
             </div>
             
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-4 sm:mb-6 leading-tight">

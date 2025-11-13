@@ -178,7 +178,7 @@ export default function RegistroPage({ params }) {
     e.preventDefault();
     e.stopPropagation();
 
-    console.log('🚀 Iniciando registro...');
+    console.log('Iniciando registro...');
     console.log('FormData:', formData);
     console.log('Email exists:', emailExists);
 
@@ -209,7 +209,7 @@ export default function RegistroPage({ params }) {
     setSubmitting(true);
 
     try {
-      console.log('📤 Enviando datos de registro...');
+      console.log('Enviando datos de registro...');
       const response = await axios.post(`${API_URL}/api/registro/completar`, {
         token,
         local: {
@@ -536,7 +536,7 @@ export default function RegistroPage({ params }) {
                   )}
 
                   <p className="text-xs text-gray-500 mt-1">
-                    💡 Escribe 3+ caracteres para buscar
+                    Escribe 3+ caracteres para buscar
                   </p>
                 </div>
 
@@ -613,7 +613,7 @@ export default function RegistroPage({ params }) {
                     className="w-full px-3 py-2.5 border border-gray-300 rounded-lg bg-gray-50 text-gray-600 text-sm"
                   />
                   <p className="text-xs text-gray-500 mt-1">
-                    📧 Email de tu invitación
+                    Email de tu invitación
                   </p>
                 </div>
 
@@ -652,7 +652,7 @@ export default function RegistroPage({ params }) {
                       <p className={`text-xs ${
                         passwordStrength <= 2 ? 'text-red-600' : passwordStrength <= 3 ? 'text-yellow-600' : 'text-green-600'
                       }`}>
-                        {passwordStrength <= 2 ? '🔴 Débil' : passwordStrength <= 3 ? '🟡 Media' : '🟢 Fuerte'}
+                        {passwordStrength <= 2 ? 'Débil' : passwordStrength <= 3 ? 'Media' : 'Fuerte'}
                       </p>
                     </div>
                   )}
