@@ -43,11 +43,28 @@ const AdminLogin = () => {
         toast.success(`¡Bienvenido ${result.usuario.nombre}!`);
         navigate('/admin');
       } else {
-        toast.error(result.error);
+        // Manejo específico de error 429
+        if (result.status === 429 || result.error?.includes('Demasiados intentos')) {
+          toast.error(
+            '⏱️ Demasiados intentos de inicio de sesión. Por favor, espera unos minutos e intenta nuevamente.',
+            { autoClose: 5000 }
+          );
+        } else {
+          toast.error(result.error || 'Credenciales incorrectas');
+        }
       }
     } catch (error) {
       console.error('Error en login:', error);
-      toast.error('Error al iniciar sesión');
+      
+      // Manejo específico de error 429
+      if (error.response?.status === 429) {
+        toast.error(
+          '⏱️ Demasiados intentos de inicio de sesión. Por favor, espera 15 minutos e intenta nuevamente.',
+          { autoClose: 5000 }
+        );
+      } else {
+        toast.error('Error al iniciar sesión. Verifica tus credenciales.');
+      }
     } finally {
       setLoading(false);
     }

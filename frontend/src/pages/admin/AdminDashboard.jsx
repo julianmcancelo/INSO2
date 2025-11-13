@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import { pedidoAPI } from '../../services/api';
 import socketService from '../../services/socket';
 import BrandLogo from '../../components/BrandLogo';
+import AIStatusBanner from '../../components/admin/AIStatusBanner';
 
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
@@ -124,6 +125,9 @@ const AdminDashboard = () => {
             </div>
           </div>
         )}
+
+        {/* Banner de IA */}
+        {user?.localId && <AIStatusBanner />}
 
         {/* Estadísticas - Solo para usuarios con local */}
         {estadisticas && user?.localId && (

@@ -20,6 +20,7 @@ const pedidoRoutes = require('./routes/pedido.routes');
 const configuracionPagoRoutes = require('./routes/configuracionPago');
 const passwordRoutes = require('./routes/password');
 const migrateRoutes = require('./routes/migrate.routes');
+const aiRoutes = require('./routes/ai.routes');
 
 const app = express();
 const server = http.createServer(app);
@@ -117,6 +118,7 @@ app.use('/api/pedidos', pedidoRoutes);
 app.use('/api/configuracion-pago', configuracionPagoRoutes);
 app.use('/api/password', passwordRoutes);
 app.use('/api/migrate', migrateRoutes); // ⚠️ TEMPORAL - Eliminar en producción
+app.use('/api/ai', aiRoutes); // 🤖 Rutas de IA con DeepSeek
 
 // Manejador de errores global
 app.use((err, req, res, next) => {

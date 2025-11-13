@@ -1,10 +1,12 @@
 import React, { useState, useRef } from 'react';
-import { X, Package, DollarSign, Clock, Image as ImageIcon, FileText } from 'lucide-react';
+import { X, Package, DollarSign, Clock, Image as ImageIcon, FileText, Sparkles } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { productoAPI } from '../../services/api';
+import axios from 'axios';
 
 const ProductoFormModal = ({ producto, categorias, onClose, onSuccess }) => {
   const [loading, setLoading] = useState(false);
+  const [loadingIA, setLoadingIA] = useState(false);
   const [imagePreview, setImagePreview] = useState(producto?.imagenBase64 || null);
   const fileInputRef = useRef(null);
   
@@ -61,6 +63,77 @@ const ProductoFormModal = ({ producto, categorias, onClose, onSuccess }) => {
     setFormData(prev => ({ ...prev, imagenBase64: '' }));
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
+    }
+  };
+
+  const generarDescripcionIA = async () => {
+    // Validar que haya datos mínimos
+    if (!formData.nombre.trim()) {
+      toast.warning('Ingresa el nombre del producto primero');
+      return;
+    }
+    if (!formData.precio || parseFloat(formData.precio) <= 0) {
+      toast.warning('Ingresa el precio del producto primero');
+      return;
+    }
+
+    setLoadingIA(true);
+    try {
+      const token = localStorage.getItem('token');
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      
+      // Obtener nombre de la categoría
+      const categoria = categorias.find(c => c.id === parseInt(formData.categoriaId));
+      
+      const response = await axios.post(
+        `${API_URL}/api/ai/descripcion`,
+        {
+          nombre: formData.nombre,
+          categoria: categoria?.nombre || 'General',
+          precio: parseFloat(formData.precio),
+          ingredientes: formData.descripcion || '' // Si ya hay algo escrito, usarlo como base
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      if (response.data.success) {
+        setFormData(prev => ({
+          ...prev,
+          descripcion: response.data.data.descripcion
+        }));
+        toast.success('✨ Descripción generada con IA');
+      }
+    } catch (error) {
+      console.error('Error al generar descripción:', error);
+      
+      // Error 429: Rate limit exceeded
+      if (error.response?.status === 429) {
+        const retryAfter = error.response.data?.retryAfter || 60;
+        toast.error(
+          `⏱️ Límite de solicitudes alcanzado. Por favor, espera ${retryAfter} segundos e intenta nuevamente.`,
+          { autoClose: 5000 }
+        );
+      }
+      // Error 503: Servicio no configurado
+      else if (error.response?.status === 503) {
+        toast.error('El servicio de IA no está configurado. Contacta al administrador.');
+      }
+      // Error 401: API Key inválida
+      else if (error.response?.status === 401) {
+        toast.error('API Key de IA inválida. Contacta al administrador.');
+      }
+      // Error genérico
+      else {
+        const message = error.response?.data?.message || 'Error al generar descripción con IA';
+        toast.error(message);
+      }
+    } finally {
+      setLoadingIA(false);
     }
   };
 
@@ -164,18 +237,32 @@ const ProductoFormModal = ({ producto, categorias, onClose, onSuccess }) => {
 
             {/* Descripción */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <FileText size={16} className="inline mr-1" />
-                Descripción
-              </label>
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  <FileText size={16} className="inline mr-1" />
+                  Descripción
+                </label>
+                <button
+                  type="button"
+                  onClick={generarDescripcionIA}
+                  disabled={loadingIA}
+                  className="flex items-center space-x-1 px-3 py-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-medium rounded-lg hover:from-purple-600 hover:to-pink-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Sparkles size={14} />
+                  <span>{loadingIA ? 'Generando...' : 'Generar con IA'}</span>
+                </button>
+              </div>
               <textarea
                 name="descripcion"
                 value={formData.descripcion}
                 onChange={handleInputChange}
-                placeholder="Describe los ingredientes, características especiales..."
+                placeholder="Describe los ingredientes, características especiales... o usa IA para generar automáticamente"
                 rows={3}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
               />
+              <p className="text-xs text-gray-500 mt-1">
+                💡 Tip: Completa el nombre, categoría y precio, luego haz clic en "Generar con IA"
+              </p>
             </div>
 
             {/* Precio y Tiempo */}

@@ -372,8 +372,10 @@ const LandingPage = () => {
           </div>
 
           {/* Right Phone Mockup */}
-          <div className="relative hidden md:flex items-center justify-center">
-            <PhoneMockup />
+          <div className="relative flex items-center justify-center md:justify-end">
+            <div className="scale-75 sm:scale-90 md:scale-100">
+              <PhoneMockup />
+            </div>
           </div>
         </div>
 

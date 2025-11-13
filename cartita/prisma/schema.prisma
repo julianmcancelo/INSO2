@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,161 +7,112 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ============================================
-// USUARIOS Y AUTENTICACIÓN
-// ============================================
-
 model Usuario {
   id        Int      @id @default(autoincrement())
   nombre    String   @db.VarChar(255)
   email     String   @db.VarChar(255)
   password  String   @db.VarChar(255)
-  rol       String   @db.VarChar(50) // 'superadmin', 'admin', 'staff'
+  rol       String   @db.VarChar(50)
   localId   Int?     @map("local_id")
   activo    Boolean  @default(true)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  // Relaciones
-  local          Local?          @relation(fields: [localId], references: [id], onDelete: SetNull)
-  passwordResets PasswordReset[]
-
-  // Índices
   @@unique([email, localId], name: "email_local_unique")
-  @@index([email])
+  @@index([email(length: 250)])
+  @@index([localId], map: "usuarios_local_id_fkey")
   @@map("usuarios")
 }
 
-// ============================================
-// LOCALES (RESTAURANTES)
-// ============================================
-
 model Local {
-  id               Int       @id @default(autoincrement())
-  nombre           String    @db.VarChar(255)
-  slug             String    @unique @db.VarChar(255)
-  descripcion      String?   @db.Text
-  direccion        String?   @db.VarChar(500)
-  telefono         String?   @db.VarChar(50)
-  email            String?   @db.VarChar(255)
-  logoBase64       String?   @map("logo_base64") @db.LongText
-  colorPrimario    String    @default("#FF6B35") @map("color_primario") @db.VarChar(7)
-  colorSecundario  String    @default("#004E89") @map("color_secundario") @db.VarChar(7)
-  horarioAtencion  Json?     @map("horario_atencion")
-  activo           Boolean   @default(true)
-  createdAt        DateTime  @default(now()) @map("created_at")
-  updatedAt        DateTime  @updatedAt @map("updated_at")
-
-  // Relaciones
-  usuarios   Usuario[]
-  categorias Categoria[]
-  productos  Producto[]
-  pedidos    Pedido[]
+  id              Int      @id @default(autoincrement())
+  nombre          String   @db.VarChar(255)
+  slug            String   @unique @db.VarChar(255)
+  descripcion     String?  @db.Text
+  direccion       String?  @db.VarChar(500)
+  telefono        String?  @db.VarChar(50)
+  email           String?  @db.VarChar(255)
+  logoBase64      String?  @map("logo_base64") @db.LongText
+  colorPrimario   String   @default("#FF6B35") @map("color_primario") @db.VarChar(7)
+  colorSecundario String   @default("#004E89") @map("color_secundario") @db.VarChar(7)
+  horarioAtencion String?  @map("horario_atencion") @db.LongText
+  activo          Boolean  @default(true)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
 
   @@map("locales")
 }
 
-// ============================================
-// CATEGORÍAS
-// ============================================
-
 model Categoria {
-  id          Int       @id @default(autoincrement())
-  localId     Int       @map("local_id")
-  nombre      String    @db.VarChar(255)
-  descripcion String?   @db.Text
-  icono       String?   @db.VarChar(50)
-  orden       Int       @default(0)
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
+  id          Int      @id @default(autoincrement())
+  localId     Int      @map("local_id")
+  nombre      String   @db.VarChar(255)
+  descripcion String?  @db.Text
+  icono       String?  @db.VarChar(50)
+  orden       Int      @default(0)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
-  // Relaciones
-  local     Local      @relation(fields: [localId], references: [id], onDelete: Cascade)
-  productos Producto[]
-
+  @@index([localId], map: "categorias_local_id_fkey")
   @@map("categorias")
 }
 
-// ============================================
-// PRODUCTOS
-// ============================================
-
 model Producto {
-  id                 Int       @id @default(autoincrement())
-  categoriaId        Int       @map("categoria_id")
-  localId            Int       @map("local_id")
-  nombre             String    @db.VarChar(255)
-  descripcion        String?   @db.Text
-  precio             Decimal   @db.Decimal(10, 2)
-  imagenBase64       String?   @map("imagen_base64") @db.LongText
-  tiempoPreparacion  Int?      @map("tiempo_preparacion")
-  disponible         Boolean   @default(true)
-  destacado          Boolean   @default(false)
-  opciones           Json?     // Personalizaciones del producto
-  orden              Int       @default(0)
-  createdAt          DateTime  @default(now()) @map("created_at")
-  updatedAt          DateTime  @updatedAt @map("updated_at")
+  id                Int      @id @default(autoincrement())
+  categoriaId       Int      @map("categoria_id")
+  localId           Int      @map("local_id")
+  nombre            String   @db.VarChar(255)
+  descripcion       String?  @db.Text
+  precio            Decimal  @db.Decimal(10, 2)
+  imagenBase64      String?  @map("imagen_base64") @db.LongText
+  tiempoPreparacion Int?     @map("tiempo_preparacion")
+  disponible        Boolean  @default(true)
+  destacado         Boolean  @default(false)
+  opciones          String?  @db.LongText
+  orden             Int      @default(0)
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
 
-  // Relaciones
-  categoria   Categoria    @relation(fields: [categoriaId], references: [id], onDelete: Cascade)
-  local       Local        @relation(fields: [localId], references: [id], onDelete: Cascade)
-  pedidoItems PedidoItem[]
-
+  @@index([categoriaId], map: "productos_categoria_id_fkey")
+  @@index([localId], map: "productos_local_id_fkey")
   @@map("productos")
 }
 
-// ============================================
-// PEDIDOS
-// ============================================
-
 model Pedido {
-  id               Int       @id @default(autoincrement())
-  localId          Int       @map("local_id")
-  numeroPedido     Int       @map("numero_pedido")
-  nombreCliente    String    @map("nombre_cliente") @db.VarChar(255)
-  telefonoCliente  String    @map("telefono_cliente") @db.VarChar(50)
-  tipoEntrega      String    @map("tipo_entrega") @db.VarChar(50) // 'takeaway', 'delivery', 'mesa'
-  direccion        String?   @db.VarChar(500)
-  numeroMesa       String?   @map("numero_mesa") @db.VarChar(20)
-  total            Decimal   @db.Decimal(10, 2)
-  notas            String?   @db.Text
-  estado           String    @default("pendiente") @db.VarChar(50) // 'pendiente', 'preparando', 'listo', 'entregado', 'cancelado'
-  metodoPago       String?   @map("metodo_pago") @db.VarChar(50) // 'efectivo', 'tarjeta', 'transferencia'
-  createdAt        DateTime  @default(now()) @map("created_at")
-  updatedAt        DateTime  @updatedAt @map("updated_at")
+  id              Int      @id @default(autoincrement())
+  localId         Int      @map("local_id")
+  numeroPedido    Int      @map("numero_pedido")
+  nombreCliente   String   @map("nombre_cliente") @db.VarChar(255)
+  telefonoCliente String   @map("telefono_cliente") @db.VarChar(50)
+  tipoEntrega     String   @map("tipo_entrega") @db.VarChar(50)
+  direccion       String?  @db.VarChar(500)
+  numeroMesa      String?  @map("numero_mesa") @db.VarChar(20)
+  total           Decimal  @db.Decimal(10, 2)
+  notas           String?  @db.Text
+  estado          String   @default("pendiente") @db.VarChar(50)
+  metodoPago      String?  @map("metodo_pago") @db.VarChar(50)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
 
-  // Relaciones
-  local Local        @relation(fields: [localId], references: [id], onDelete: Cascade)
-  items PedidoItem[]
-
+  @@index([localId], map: "pedidos_local_id_fkey")
   @@map("pedidos")
 }
 
-// ============================================
-// ITEMS DE PEDIDO
-// ============================================
-
 model PedidoItem {
-  id                 Int      @id @default(autoincrement())
-  pedidoId           Int      @map("pedido_id")
-  productoId         Int      @map("producto_id")
-  cantidad           Int
-  precioUnitario     Decimal  @map("precio_unitario") @db.Decimal(10, 2)
-  subtotal           Decimal  @db.Decimal(10, 2)
-  personalizaciones  Json?    // Opciones seleccionadas
-  notas              String?  @db.Text
-  createdAt          DateTime @default(now()) @map("created_at")
+  id                Int      @id @default(autoincrement())
+  pedidoId          Int      @map("pedido_id")
+  productoId        Int      @map("producto_id")
+  cantidad          Int
+  precioUnitario    Decimal  @map("precio_unitario") @db.Decimal(10, 2)
+  subtotal          Decimal  @db.Decimal(10, 2)
+  personalizaciones String?  @db.LongText
+  notas             String?  @db.Text
+  createdAt         DateTime @default(now()) @map("created_at")
 
-  // Relaciones
-  pedido   Pedido   @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
-  producto Producto @relation(fields: [productoId], references: [id])
-
+  @@index([pedidoId], map: "pedido_items_pedido_id_fkey")
+  @@index([productoId], map: "pedido_items_producto_id_fkey")
   @@map("pedido_items")
 }
-
-// ============================================
-// SOLICITUDES (DESDE LANDING PAGE)
-// ============================================
 
 model Solicitud {
   id             Int      @id @default(autoincrement())
@@ -180,51 +128,38 @@ model Solicitud {
   @@map("solicitudes")
 }
 
-// ============================================
-// INVITACIONES
-// ============================================
-
 model Invitacion {
-  id        Int       @id @default(autoincrement())
-  localId   Int?      @map("local_id")
-  token     String    @unique @db.VarChar(255)
-  email     String?   @db.VarChar(255)
-  rol       String    @db.VarChar(50)
-  usado     Boolean   @default(false)
-  expiraEn  DateTime  @map("expira_en")
-  createdAt DateTime  @default(now()) @map("created_at")
+  id        Int      @id @default(autoincrement())
+  localId   Int?     @map("local_id")
+  token     String   @unique @db.VarChar(255)
+  email     String?  @db.VarChar(255)
+  rol       String   @db.VarChar(50)
+  usado     Boolean  @default(false)
+  expiraEn  DateTime @map("expira_en")
+  createdAt DateTime @default(now()) @map("created_at")
 
   @@map("invitaciones")
 }
 
-// ============================================
-// RECUPERACIÓN DE CONTRASEÑA
-// ============================================
-
 model PasswordReset {
-  id        Int       @id @default(autoincrement())
-  usuarioId Int       @map("usuario_id")
-  token     String    @unique @db.VarChar(255)
-  usado     Boolean   @default(false)
-  expiraEn  DateTime  @map("expira_en")
-  createdAt DateTime  @default(now()) @map("created_at")
+  id        Int      @id @default(autoincrement())
+  usuarioId Int      @map("usuario_id")
+  token     String   @unique @db.VarChar(255)
+  usado     Boolean  @default(false)
+  expiraEn  DateTime @map("expira_en")
+  createdAt DateTime @default(now()) @map("created_at")
 
-  usuario   Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
-
+  @@index([usuarioId], map: "password_resets_usuario_id_fkey")
   @@map("password_resets")
 }
 
-// ============================================
-// CONFIGURACIÓN GLOBAL
-// ============================================
-
 model ConfiguracionGlobal {
-  id                      Int      @id @default(autoincrement())
-  mantenimientoActivo     Boolean  @default(false) @map("mantenimiento_activo")
-  mantenimientoMensaje    String?  @map("mantenimiento_mensaje") @db.Text
-  mantenimientoFecha      DateTime? @map("mantenimiento_fecha")
-  createdAt               DateTime @default(now()) @map("created_at")
-  updatedAt               DateTime @updatedAt @map("updated_at")
+  id                   Int       @id @default(autoincrement())
+  mantenimientoActivo  Boolean   @default(false) @map("mantenimiento_activo")
+  mantenimientoMensaje String?   @map("mantenimiento_mensaje") @db.Text
+  mantenimientoFecha   DateTime? @map("mantenimiento_fecha")
+  createdAt            DateTime  @default(now()) @map("created_at")
+  updatedAt            DateTime  @updatedAt @map("updated_at")
 
   @@map("configuracion_global")
 }

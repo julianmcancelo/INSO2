@@ -16,12 +16,18 @@ const generalLimiter = rateLimit({
 });
 
 /**
- * Rate limiter estricto para login y registro
+ * Rate limiter para login y registro
+ * Más permisivo para evitar bloqueos innecesarios
  */
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutos
-  max: isDevelopment ? 100 : 5, // 100 en dev, 5 en producción
-  message: 'Demasiados intentos de inicio de sesión, por favor intenta de nuevo en 15 minutos.',
+  max: isDevelopment ? 100 : 20, // 100 en dev, 20 en producción (aumentado de 5 a 20)
+  message: {
+    success: false,
+    error: 'Demasiados intentos de inicio de sesión. Por favor, intenta de nuevo en unos minutos.',
+    code: 'RATE_LIMIT_EXCEEDED',
+    retryAfter: 900 // 15 minutos en segundos
+  },
   standardHeaders: true,
   legacyHeaders: false,
   skipSuccessfulRequests: true, // No contar requests exitosos
