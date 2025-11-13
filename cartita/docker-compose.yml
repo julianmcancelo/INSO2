@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: cartita-phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      # Configuración para conectar a MySQL remoto
+      PMA_HOST: 167.250.5.55
+      PMA_PORT: 3306
+      PMA_USER: transpo1_cartita
+      PMA_PASSWORD: feelthesky1
+      # Configuración adicional
+      UPLOAD_LIMIT: 300M
+      MEMORY_LIMIT: 512M
+      MAX_EXECUTION_TIME: 600
+    networks:
+      - cartita-network
+
+networks:
+  cartita-network:
+    driver: bridge
