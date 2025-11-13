@@ -38,10 +38,10 @@ export async function GET(request) {
 }
 
 // POST - Crear categoría
-export const POST = requireAuth(async (request) => {
+export const POST = requireAuth(async (request, context) => {
   try {
     const body = await request.json();
-    const { nombre, descripcion, icono, orden } = body;
+    const { nombre, descripcion, icono, orden, localId } = body;
 
     if (!nombre) {
       return NextResponse.json(
@@ -50,9 +50,19 @@ export const POST = requireAuth(async (request) => {
       );
     }
 
+    // Usar localId del body o del context.user
+    const categoriaLocalId = localId || context?.user?.localId;
+
+    if (!categoriaLocalId) {
+      return NextResponse.json(
+        { error: 'localId es requerido' },
+        { status: 400 }
+      );
+    }
+
     const categoria = await prisma.categoria.create({
       data: {
-        localId: request.user.localId,
+        localId: parseInt(categoriaLocalId),
         nombre,
         descripcion: descripcion || null,
         icono: icono || null,
