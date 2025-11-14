@@ -57,7 +57,7 @@ export default function AsistentePedido({ local, onComplete }) {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Progress Bar */}
       <div className="bg-white shadow-sm sticky top-0 z-40">
-        <div className="max-w-4xl mx-auto px-3 md:px-4 py-3 md:py-4">
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3 md:py-4">
           {/* Steps Indicator */}
           <div className="flex items-center justify-between">
             {STEPS.map((step, index) => (
@@ -96,8 +96,8 @@ export default function AsistentePedido({ local, onComplete }) {
       </div>
 
       {/* Step Content */}
-      <div className="max-w-4xl mx-auto px-3 md:px-4 py-4 md:py-8 pb-24 md:pb-8">
-        <div className="bg-white rounded-xl md:rounded-2xl shadow-lg p-4 md:p-6 lg:p-8">
+      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 md:py-6 lg:py-8 pb-24 md:pb-8">
+        <div className="bg-white rounded-xl md:rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 lg:p-10">
           <CurrentStepComponent
             local={local}
             pedidoData={pedidoData}

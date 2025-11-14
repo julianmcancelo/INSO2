@@ -98,7 +98,7 @@ export default function Step2MetodoEntrega({
 
       {/* Opciones de Entrega */}
       {!showMap && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
           {/* Take Away */}
           <button
             onClick={() => handleTipoEntregaSelect('takeaway')}

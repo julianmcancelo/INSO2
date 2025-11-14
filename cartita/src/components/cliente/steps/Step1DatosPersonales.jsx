@@ -62,7 +62,7 @@ export default function Step1DatosPersonales({
   };
 
   return (
-    <div className="space-y-6 animate-fadeIn">
+    <div className="space-y-6 animate-fadeIn max-w-2xl mx-auto">
       {/* Header */}
       <div className="text-center mb-6">
         <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-orange-400 to-red-500 rounded-full mb-3 shadow-lg">
@@ -91,7 +91,7 @@ export default function Step1DatosPersonales({
             onChange={handleChange}
             onKeyPress={handleKeyPress}
             placeholder="Ej: Juan Pérez"
-            className={`w-full px-4 py-3.5 border-2 rounded-xl focus:ring-4 focus:ring-black/5 transition-all text-lg ${
+            className={`w-full px-4 py-4 border-2 rounded-xl focus:ring-4 focus:ring-black/5 transition-all text-base md:text-lg ${
               errors.nombreCliente
                 ? 'border-red-500 focus:border-red-500'
                 : 'border-gray-200 focus:border-black'
@@ -118,7 +118,7 @@ export default function Step1DatosPersonales({
             onChange={handleChange}
             onKeyPress={handleKeyPress}
             placeholder="Ej: 1234567890"
-            className={`w-full px-4 py-3.5 border-2 rounded-xl focus:ring-4 focus:ring-black/5 transition-all text-lg ${
+            className={`w-full px-4 py-4 border-2 rounded-xl focus:ring-4 focus:ring-black/5 transition-all text-base md:text-lg ${
               errors.telefonoCliente
                 ? 'border-red-500 focus:border-red-500'
                 : 'border-gray-200 focus:border-black'
@@ -138,7 +138,7 @@ export default function Step1DatosPersonales({
       {/* Continue Button */}
       <button
         onClick={handleContinue}
-        className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 rounded-xl font-bold text-lg hover:from-orange-600 hover:to-red-600 transition-all shadow-lg hover:shadow-xl active:scale-[0.98] flex items-center justify-center gap-2 mt-8"
+        className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 md:py-5 rounded-xl font-bold text-base md:text-lg hover:from-orange-600 hover:to-red-600 transition-all shadow-lg hover:shadow-xl active:scale-[0.98] flex items-center justify-center gap-2 mt-8"
       >
         Continuar
         <ChevronRight size={24} />

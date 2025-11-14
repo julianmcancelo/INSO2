@@ -219,7 +219,8 @@ export default function MapaSelector({ onUbicacionSeleccionada, ubicacionInicial
         <MapContainer
           center={mapCenter}
           zoom={15}
-          style={{ height: '300px', width: '100%' }}
+          style={{ height: '350px', width: '100%' }}
+          className="md:!h-[450px] lg:!h-[500px]"
           key={`${mapCenter[0]}-${mapCenter[1]}`}
         >
           <TileLayer
