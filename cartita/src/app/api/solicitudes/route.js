@@ -48,8 +48,13 @@ export async function POST(request) {
     // Enviar email de confirmación al cliente (sin bloquear)
     Promise.resolve().then(async () => {
       try {
-        await enviarEmailConfirmacionSolicitud(solicitud.email, solicitud.nombreNegocio);      } catch (emailError) {      }
-    }).catch(err =>);
+        await enviarEmailConfirmacionSolicitud(solicitud.email, solicitud.nombreNegocio);
+      } catch (emailError) {
+        // Silenciar error de email
+      }
+    }).catch(err => {
+      // Silenciar error
+    });
 
     // TODO: Enviar email de notificación al admin
 

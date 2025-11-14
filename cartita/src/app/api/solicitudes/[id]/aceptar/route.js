@@ -66,8 +66,11 @@ export const POST = requireRole('superadmin')(async (request, { params }) => {
       try {
         await enviarEmailInvitacion(solicitud.email, token, solicitud.nombreNegocio);
       } catch (emailError) {
+        // Silenciar error de email
       }
-    }).catch(err =>);
+    }).catch(err => {
+      // Silenciar error
+    });
 
     return NextResponse.json({
       success: true,
