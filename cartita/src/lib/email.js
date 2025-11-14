@@ -2,7 +2,9 @@ import nodemailer from 'nodemailer';
 
 // Configurar transporter de Nodemailer
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: process.env.EMAIL_HOST || 'smtp.gmail.com',
+  port: parseInt(process.env.EMAIL_PORT || '587'),
+  secure: false, // true para 465, false para otros puertos
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASSWORD
@@ -88,7 +90,7 @@ export async function enviarEmailRecuperacion(destinatario, resetUrl, nombreUsua
   `;
 
   const mailOptions = {
-    from: `"Cartita" <${process.env.EMAIL_USER}>`,
+    from: process.env.EMAIL_FROM || `"Cartita" <${process.env.EMAIL_USER}>`,
     to: destinatario,
     subject: 'Recuperar Contraseña - Cartita',
     html: htmlContent
@@ -161,7 +163,7 @@ export async function enviarEmailInvitacion(destinatario, token, nombreNegocio) 
   `;
 
   const mailOptions = {
-    from: `"Cartita" <${process.env.EMAIL_USER}>`,
+    from: process.env.EMAIL_FROM || `"Cartita" <${process.env.EMAIL_USER}>`,
     to: destinatario,
     subject: `Bienvenido a Cartita - ${nombreNegocio}`,
     html: htmlContent,
@@ -234,7 +236,7 @@ export async function enviarEmailConfirmacionSolicitud(destinatario, nombreNegoc
   `;
 
   const mailOptions = {
-    from: `"Cartita" <${process.env.EMAIL_USER}>`,
+    from: process.env.EMAIL_FROM || `"Cartita" <${process.env.EMAIL_USER}>`,
     to: destinatario,
     subject: `Solicitud recibida - ${nombreNegocio}`,
     html: htmlContent
