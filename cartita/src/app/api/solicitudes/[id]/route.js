@@ -2,14 +2,14 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { requireRole } from '@/lib/middleware';
 
-// GET - Obtener solicitud o invitación
+// GET - Traer solicitud o invitación
 export const GET = requireRole('superadmin')(async (request, { params }) => {
   try {
     const { id } = params;
     const { searchParams } = new URL(request.url);
     const getInvitacion = searchParams.get('invitacion');
 
-    // Si se solicita la invitación
+    // Si piden la invitación
     if (getInvitacion === 'true') {
       const solicitud = await prisma.solicitud.findUnique({
         where: { id: parseInt(id) }
@@ -57,7 +57,7 @@ export const GET = requireRole('superadmin')(async (request, { params }) => {
       });
     }
 
-    // Si no, retornar la solicitud
+    // Si no, devolver la solicitud
     const solicitud = await prisma.solicitud.findUnique({
       where: { id: parseInt(id) }
     });
@@ -89,7 +89,7 @@ export const PUT = requireRole('superadmin')(async (request, { params }) => {
     const { id } = params;
     const { estado, notas } = await request.json();
 
-    // Validar estado
+    // Validar el estado
     const estadosValidos = ['pendiente', 'aceptada', 'rechazada'];
     if (!estadosValidos.includes(estado)) {
       return NextResponse.json(
@@ -98,7 +98,7 @@ export const PUT = requireRole('superadmin')(async (request, { params }) => {
       );
     }
 
-    // Actualizar solicitud
+    // Actualizar la solicitud
     const solicitud = await prisma.solicitud.update({
       where: { id: parseInt(id) },
       data: {
@@ -106,8 +106,8 @@ export const PUT = requireRole('superadmin')(async (request, { params }) => {
       }
     });
 
-    // TODO: Si es aceptada, enviar email con invitación
-    // TODO: Si es rechazada, enviar email de notificación
+    // TODO: Si la aceptan, enviar email con invitación
+    // TODO: Si la rechazan, enviar email de notificación
 
     return NextResponse.json({
       success: true,

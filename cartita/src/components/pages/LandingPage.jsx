@@ -37,18 +37,18 @@ const LandingPage = () => {
     { id: 'f5', nombre: 'Bite Pizza', logoBase64: null },
   ];
 
-  // Verificar si necesita setup al cargar y cargar locales públicos inicialmente
+  // Verificar si necesita configuración inicial al cargar y cargar locales públicos inicialmente
   useEffect(() => {
     checkSetupNeeded();
     cargarLocalesPublicos();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Refrescar automáticamente el slider de marcas cada cierto tiempo
+  // Refrescar automáticamente el carrusel de marcas cada cierto tiempo
   useEffect(() => {
     const interval = setInterval(() => {
       cargarLocalesPublicos();
-    }, 60000); // 60s para no sobrecargar el backend
+    }, 60000); // 60 segundos para no sobrecargar el backend
 
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,7 +58,7 @@ const LandingPage = () => {
     try {
       const response = await axios.get(`${API_URL}/api/setup/check`);
       if (response.data.setupNeeded) {
-        // Redirigir a setup si no hay usuarios
+        // Redirigir a configuración inicial si no hay usuarios
         router.push('/setup');
       }
     } catch (error) {
@@ -104,7 +104,7 @@ const LandingPage = () => {
     }
   };
 
-  // Mostrar loading mientras verifica setup
+  // Mostrar carga mientras verifica la configuración inicial
   if (checkingSetup) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-orange-50 to-blue-50 flex items-center justify-center">
@@ -143,7 +143,7 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
+      {/* Encabezado */}
       <header className="fixed top-0 left-0 right-0 bg-white shadow-sm z-40">
         <div className="max-w-7xl mx-auto px-4 py-3 sm:py-4 flex items-center justify-between">
           <BrandLogo size="sm" showText={true} />
@@ -211,16 +211,16 @@ const LandingPage = () => {
         </div>
       </header>
 
-      {/* Hero Section */}
+      {/* Sección Principal */}
       <section className="bg-gradient-to-br from-amber-400 via-orange-400 to-red-500 relative overflow-hidden pt-20 sm:pt-24">
-        {/* Decorative elements */}
+        {/* Elementos decorativos */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-1/2 -right-1/4 w-96 h-96 bg-yellow-300/20 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute -bottom-1/2 -left-1/4 w-96 h-96 bg-red-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 py-12 sm:py-20 md:py-32 grid md:grid-cols-2 gap-8 sm:gap-12 items-center relative z-10">
-          {/* Left Content */}
+          {/* Contenido Izquierdo */}
           <div className="text-white">
             <div className="inline-block mb-4 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold animate-bounce">
               Digitaliza tu negocio en minutos
@@ -238,7 +238,7 @@ const LandingPage = () => {
               Menú QR, pedidos online y mucho más
             </p>
 
-            {/* Features rápidas */}
+            {/* Características rápidas */}
             <div className="flex flex-wrap gap-3 mb-8 animate-fade-in animation-delay-600">
               <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
                 <CheckCircle size={18} className="text-yellow-300" />
@@ -256,7 +256,7 @@ const LandingPage = () => {
             
             <div className="space-y-4">
               <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Input principal */}
+                {/* Campo de entrada principal */}
                 <div className="bg-white rounded-xl p-1.5 sm:p-2 shadow-2xl flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-0">
                   <input
                     type="text"
@@ -400,7 +400,7 @@ const LandingPage = () => {
             </div>
           </div>
 
-          {/* Right Phone Mockup */}
+          {/* Maqueta de Teléfono Derecha */}
           <div className="relative flex items-center justify-center md:justify-end">
             <div className="scale-75 sm:scale-90 md:scale-100">
               <PhoneMockup />
@@ -408,7 +408,7 @@ const LandingPage = () => {
           </div>
         </div>
 
-        {/* Wave */}
+        {/* Onda */}
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
             <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="white"/>
@@ -416,7 +416,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Brands Slider Section */}
+      {/* Sección de Carrusel de Marcas */}
       <section className="bg-white py-8 sm:py-10 border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-4 sm:mb-6">
@@ -429,7 +429,7 @@ const LandingPage = () => {
           </div>
 
           <div className="relative overflow-hidden">
-            {/* Fades laterales solo en desktop */}
+            {/* Desvanecimientos laterales solo en escritorio */}
             <div className="hidden sm:block pointer-events-none absolute inset-y-0 left-0 w-10 sm:w-16 bg-gradient-to-r from-white to-transparent z-10" />
             <div className="hidden sm:block pointer-events-none absolute inset-y-0 right-0 w-10 sm:w-16 bg-gradient-to-l from-white to-transparent z-10" />
 
@@ -467,7 +467,7 @@ const LandingPage = () => {
                       ))}
                     </div>
 
-                    {/* Grupo 2 duplicado para loop suave (solo tiene efecto con marquee en sm+) */}
+                    {/* Grupo 2 duplicado para bucle suave (solo tiene efecto con marquesina en pantallas medianas o mayores) */}
                     <div className="hidden sm:flex items-center gap-8 sm:gap-12 flex-shrink-0" aria-hidden="true">
                       {items.map((local) => (
                         <div
@@ -500,7 +500,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Sección de Características */}
       <section id="features" className="py-12 sm:py-16 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12 sm:mb-16">
@@ -546,11 +546,11 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* Pie de página */}
       <footer className="bg-gray-950 text-gray-300 border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-4 py-10 sm:py-12">
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
-            {/* Brand + claim */}
+            {/* Marca + eslogan */}
             <div className="max-w-sm">
               <div className="flex items-center gap-2 mb-3">
                 <BrandLogo size="sm" showText={true} />
@@ -560,7 +560,7 @@ const LandingPage = () => {
               </p>
             </div>
 
-            {/* Navigation */}
+            {/* Navegación */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 text-sm">
               <div>
                 <h3 className="text-xs font-semibold tracking-wide text-gray-400 uppercase mb-3">

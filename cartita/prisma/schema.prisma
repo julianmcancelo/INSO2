@@ -57,6 +57,8 @@ model Categoria {
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
+  productos   Producto[]
+
   @@index([localId], map: "categorias_local_id_fkey")
   @@map("categorias")
 }
@@ -76,6 +78,8 @@ model Producto {
   orden             Int      @default(0)
   createdAt         DateTime @default(now()) @map("created_at")
   updatedAt         DateTime @updatedAt @map("updated_at")
+
+  categoria         Categoria @relation(fields: [categoriaId], references: [id])
 
   @@index([categoriaId], map: "productos_categoria_id_fkey")
   @@index([localId], map: "productos_local_id_fkey")

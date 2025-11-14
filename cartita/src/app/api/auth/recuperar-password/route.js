@@ -15,7 +15,7 @@ export async function POST(request) {
       );
     }
 
-    // Buscar usuario
+    // Buscar el usuario
     const usuario = await prisma.usuario.findUnique({
       where: { email }
     });
@@ -32,9 +32,9 @@ export async function POST(request) {
     // Generar token de recuperación
     const token = crypto.randomBytes(32).toString('hex');
     const expiraEn = new Date();
-    expiraEn.setHours(expiraEn.getHours() + 1); // Expira en 1 hora
+    expiraEn.setHours(expiraEn.getHours() + 1); // Vence en 1 hora
 
-    // Guardar token en la base de datos
+    // Guardar el token en la base de datos
     await prisma.passwordReset.create({
       data: {
         usuarioId: usuario.id,
@@ -43,7 +43,7 @@ export async function POST(request) {
       }
     });
 
-    // Enviar email
+    // Enviar el email
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
     const resetUrl = `${baseUrl}/admin/restablecer-password/${token}`;
 

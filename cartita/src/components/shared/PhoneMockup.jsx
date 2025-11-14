@@ -26,11 +26,11 @@ const PhoneMockup = () => {
 
   return (
     <div className="relative animate-float">
-      {/* Phone Frame */}
+      {/* Marco del Teléfono */}
       <div className="relative w-[300px] h-[600px] bg-gray-900 rounded-[45px] p-3 shadow-2xl ring-8 ring-gray-800/50 overflow-hidden">
-        {/* Screen */}
+        {/* Pantalla */}
         <div className="w-full h-full bg-white rounded-[36px] overflow-hidden relative transform scale-[0.96] origin-center">
-          {/* Status Bar */}
+          {/* Barra de Estado */}
           <div className="bg-gradient-to-r from-orange-500 to-red-500 h-7 flex items-center justify-between px-5">
             <span className="text-white text-xs font-bold">{currentTime || '9:41'}</span>
             <div className="flex items-center gap-1">
@@ -46,21 +46,21 @@ const PhoneMockup = () => {
             </div>
           </div>
 
-          {/* Content wrapper with slide animation */}
+          {/* Contenedor con animación de deslizamiento */}
           <div className="relative h-full">
-            {/* Menu Screen */}
+            {/* Pantalla del Menú */}
             <div
               className={`absolute inset-0 p-5 space-y-3 pb-24 overflow-y-auto transition-transform duration-500 ${
                 showCart ? '-translate-x-full' : 'translate-x-0'
               }`}
             >
-              {/* Header */}
+              {/* Encabezado */}
               <div className="text-center mb-5">
                 <h3 className="text-xl font-bold text-gray-900">Menú Digital</h3>
                 <p className="text-xs text-gray-500 mt-1">Sabores Caseros</p>
               </div>
 
-              {/* Menu Items */}
+              {/* Items del Menú */}
               {[
                 { name: 'Milanesa con papas', desc: 'Milanesa casera con papas fritas y ensalada mixta', price: '$2.500', image: milanesaImg },
                 { name: 'QUINTUPLE Hamburgesa', desc: 'Cinco medallones de carne, queso cheddar, panceta y papas fritas', price: '$2.800', image: 'https://dx49ypn7lfv84.cloudfront.net/479/54BHEfFuou-AlMQH.jpg' },
@@ -95,7 +95,7 @@ const PhoneMockup = () => {
               ))}
             </div>
 
-            {/* Cart Screen */}
+            {/* Pantalla del Carrito */}
             <div
               className={`absolute inset-0 p-5 pb-24 flex flex-col items-center justify-between transition-transform duration-500 ${
                 showCart ? 'translate-x-0' : 'translate-x-full'
@@ -154,7 +154,7 @@ const PhoneMockup = () => {
               </div>
             </div>
 
-            {/* Bottom Button (only visible en menú) */}
+            {/* Botón Inferior (solo visible en el menú) */}
             {!showCart && (
               <div className="absolute bottom-4 left-6 right-6">
                 <button
@@ -168,21 +168,21 @@ const PhoneMockup = () => {
           </div>
         </div>
 
-        {/* Notch */}
+        {/* Muesca */}
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-36 h-7 bg-gray-900 rounded-b-3xl z-10">
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-gray-700 rounded-full"></div>
         </div>
       </div>
 
-      {/* Floating Elements */}
+      {/* Elementos Flotantes */}
       <div className="absolute -top-6 -right-6 w-24 h-24 bg-yellow-300 rounded-full opacity-40 blur-2xl animate-pulse"></div>
       <div className="absolute -bottom-6 -left-6 w-28 h-28 bg-red-300 rounded-full opacity-40 blur-2xl animate-pulse" style={{ animationDelay: '1s' }}></div>
       <div className="absolute top-1/2 -right-8 w-20 h-20 bg-orange-300 rounded-full opacity-30 blur-xl animate-pulse" style={{ animationDelay: '0.5s' }}></div>
 
-      {/* Modal QR Code */}
+      {/* Modal Código QR */}
       {showQR && (
         <>
-          {/* Backdrop */}
+          {/* Fondo */}
           <div 
             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 animate-fadeIn"
             onClick={() => setShowQR(false)}
@@ -194,7 +194,7 @@ const PhoneMockup = () => {
               className="bg-white rounded-3xl shadow-2xl px-5 py-6 sm:px-6 sm:py-7 max-w-xs sm:max-w-sm w-full pointer-events-auto animate-fadeIn relative"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Close Button */}
+              {/* Botón Cerrar */}
               <button
                 onClick={() => setShowQR(false)}
                 className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
@@ -209,7 +209,7 @@ const PhoneMockup = () => {
                 </div>
               </div>
 
-              {/* Title */}
+              {/* Título */}
               <h3 className="text-xl font-bold text-center text-gray-900 mb-1">
                 Cartita
               </h3>
@@ -217,7 +217,7 @@ const PhoneMockup = () => {
                 Escanea el código QR para visitar nuestra web
               </p>
 
-              {/* QR Code */}
+              {/* Código QR */}
               <div className="flex justify-center mb-4 bg-white p-4 rounded-2xl border-2 border-gray-100">
                 <QRCodeSVG 
                   value="https://cartita.digital"

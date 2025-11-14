@@ -48,7 +48,7 @@ export default function MiLocalPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.localId]);
 
-  // Cerrar sugerencias al hacer clic fuera
+  // Cerrar sugerencias al hacer clic afuera
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (suggestionsRef.current && !suggestionsRef.current.contains(event.target) &&
@@ -72,7 +72,7 @@ export default function MiLocalPage() {
       const localData = response.data.local;
       setLocal(localData);
 
-      // Aseguramos que horarioAtencion sea siempre un objeto (puede venir como string JSON desde la API)
+      // Nos aseguramos que horarioAtencion sea siempre un objeto (puede venir como string JSON desde la API)
       let horarioAtencionParsed = localData.horarioAtencion;
       if (typeof horarioAtencionParsed === 'string') {
         try {
@@ -114,7 +114,7 @@ export default function MiLocalPage() {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
 
-    // Buscar direcciones cuando se escribe en el campo de dirección
+    // Buscar direcciones cuando escribís en el campo de dirección
     if (name === 'direccion' && value.length > 3) {
       searchAddress(value);
     } else if (name === 'direccion' && value.length <= 3) {
@@ -136,7 +136,7 @@ export default function MiLocalPage() {
           format: 'json',
           addressdetails: 1,
           limit: 5,
-          countrycodes: 'ar' // Limitar a Argentina, puedes cambiarlo
+          countrycodes: 'ar' // Limitar a Argentina, podés cambiarlo
         },
         headers: {
           'User-Agent': 'Cartita-App' // Requerido por Nominatim
@@ -251,7 +251,7 @@ export default function MiLocalPage() {
   return (
     <PrivateRoute>
       <div className="min-h-screen bg-gray-50">
-        {/* Header */}
+        {/* Encabezado */}
         <header className="bg-white shadow-sm border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex items-center justify-between">
@@ -268,7 +268,7 @@ export default function MiLocalPage() {
           </div>
         </header>
 
-        {/* Main Content */}
+        {/* Contenido Principal */}
         <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             

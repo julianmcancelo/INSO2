@@ -9,7 +9,7 @@ export const POST = requireRole('superadmin')(async (request, { params }) => {
   try {
     const { id } = params;
 
-    // Obtener solicitud
+    // Traer la solicitud
     const solicitud = await prisma.solicitud.findUnique({
       where: { id: parseInt(id) }
     });
@@ -28,22 +28,22 @@ export const POST = requireRole('superadmin')(async (request, { params }) => {
       );
     }
 
-    // Generar token único
+    // Generar un token único
     const token = crypto.randomBytes(32).toString('hex');
     
-    // Fecha de expiración (7 días)
+    // Fecha de vencimiento (7 días)
     const expiraEn = new Date();
     expiraEn.setDate(expiraEn.getDate() + 7);
 
-    // Crear invitación y actualizar solicitud en una transacción
+    // Crear la invitación y actualizar la solicitud en una transacción
     const result = await prisma.$transaction(async (tx) => {
-      // Actualizar solicitud
+      // Actualizar la solicitud
       const solicitudActualizada = await tx.solicitud.update({
         where: { id: parseInt(id) },
         data: { estado: 'aceptada' }
       });
 
-      // Crear invitación
+      // Crear la invitación
       const invitacion = await tx.invitacion.create({
         data: {
           token,
@@ -61,7 +61,7 @@ export const POST = requireRole('superadmin')(async (request, { params }) => {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
     const invitacionUrl = `${baseUrl}/registro/${token}`;
 
-    // Enviar email con el enlace de invitación (sin bloquear)
+    // Enviar email con el link de invitación (sin bloquear)
     Promise.resolve().then(async () => {
       try {
         await enviarEmailInvitacion(solicitud.email, token, solicitud.nombreNegocio);

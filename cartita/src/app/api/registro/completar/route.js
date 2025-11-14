@@ -15,7 +15,7 @@ export async function POST(request) {
       );
     }
 
-    // Verificar invitación
+    // Verificar la invitación
     const invitacion = await prisma.invitacion.findUnique({
       where: { token }
     });
@@ -41,7 +41,7 @@ export async function POST(request) {
       );
     }
 
-    // Verificar que el slug no exista
+    // Verificar que el slug no exista ya
     const localExistente = await prisma.local.findUnique({
       where: { slug: local.slug }
     });
@@ -53,12 +53,12 @@ export async function POST(request) {
       );
     }
 
-    // Hash de la contraseña
+    // Hashear la contraseña
     const hashedPassword = await bcrypt.hash(usuario.password, 10);
 
-    // Crear local y usuario en una transacción
+    // Crear el local y el usuario en una transacción
     const result = await prisma.$transaction(async (tx) => {
-      // Crear local
+      // Crear el local
       const nuevoLocal = await tx.local.create({
         data: {
           nombre: local.nombre,
@@ -83,7 +83,7 @@ export async function POST(request) {
         }
       });
 
-      // Crear usuario admin
+      // Crear el usuario admin
       const nuevoUsuario = await tx.usuario.create({
         data: {
           nombre: usuario.nombre,
@@ -95,7 +95,7 @@ export async function POST(request) {
         }
       });
 
-      // Marcar invitación como usada
+      // Marcar la invitación como usada
       await tx.invitacion.update({
         where: { token },
         data: {
@@ -104,7 +104,7 @@ export async function POST(request) {
         }
       });
 
-      // Crear categorías por defecto
+      // Crear las categorías por defecto
       await tx.categoria.createMany({
         data: [
           {

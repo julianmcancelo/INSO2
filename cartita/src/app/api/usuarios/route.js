@@ -3,7 +3,7 @@ import prisma from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 import { requireRole } from '@/lib/middleware';
 
-// GET - Obtener todos los usuarios (solo superadmin)
+// GET - Traer todos los usuarios (solo superadmin)
 export const GET = requireRole('superadmin')(async (request) => {
   try {
     const usuarios = await prisma.usuario.findMany({
@@ -21,7 +21,7 @@ export const GET = requireRole('superadmin')(async (request) => {
       }
     });
 
-    // Remover passwords
+    // Sacar las contraseñas
     const usuariosSinPassword = usuarios.map(({ password, ...usuario }) => usuario);
 
     return NextResponse.json({
@@ -52,7 +52,7 @@ export const POST = requireRole('superadmin')(async (request) => {
       );
     }
 
-    // Validar rol
+    // Validar el rol
     const rolesValidos = ['superadmin', 'admin', 'staff'];
     if (!rolesValidos.includes(rol)) {
       return NextResponse.json(
@@ -69,7 +69,7 @@ export const POST = requireRole('superadmin')(async (request) => {
       );
     }
 
-    // Verificar que el email no exista
+    // Verificar que el email no exista ya
     const existente = await prisma.usuario.findUnique({
       where: { email }
     });
@@ -81,10 +81,10 @@ export const POST = requireRole('superadmin')(async (request) => {
       );
     }
 
-    // Hash de la contraseña
+    // Hashear la contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Crear usuario
+    // Crear el usuario
     const usuario = await prisma.usuario.create({
       data: {
         nombre,
@@ -105,7 +105,7 @@ export const POST = requireRole('superadmin')(async (request) => {
       }
     });
 
-    // Remover password de la respuesta
+    // Sacar la contraseña de la respuesta
     const { password: _, ...usuarioSinPassword } = usuario;
 
     return NextResponse.json({

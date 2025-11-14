@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getDb } from '@/lib/database';
 import { requireAuth } from '@/lib/middleware';
 
-// GET - Obtener pedidos
+// GET - Traer pedidos
 export const GET = requireAuth(async (request) => {
   try {
     const { searchParams } = new URL(request.url);
@@ -84,14 +84,14 @@ export async function POST(request) {
 
     const db = await getDb();
 
-    // Generar número de pedido
+    // Generar el número de pedido
     const numeroPedidoResult = await db.query(
       'SELECT COALESCE(MAX(numero_pedido), 0) + 1 as siguiente FROM pedidos WHERE local_id = $1',
       [localId]
     );
     const numeroPedido = numeroPedidoResult.rows[0].siguiente;
 
-    // Crear pedido
+    // Crear el pedido
     const pedidoResult = await db.query(
       `INSERT INTO pedidos 
        (local_id, numero_pedido, nombre_cliente, telefono_cliente, 
@@ -104,7 +104,7 @@ export async function POST(request) {
 
     const pedido = pedidoResult.rows[0];
 
-    // Crear items del pedido
+    // Crear los items del pedido
     for (const item of items) {
       await db.query(
         `INSERT INTO pedido_items 

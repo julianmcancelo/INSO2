@@ -42,7 +42,7 @@ export default function SetupPage() {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
 
-    // Auto-generar slug del local
+    // Auto-generar el slug del local
     if (name === 'nombreLocal') {
       const slug = value
         .toLowerCase()
@@ -95,7 +95,7 @@ export default function SetupPage() {
 
       toast.success('¡Configuración inicial completada!');
       
-      // Esperar un momento y redirigir al login
+      // Esperar un toque y redirigir al login
       setTimeout(() => {
         router.push('/admin/login');
       }, 2000);

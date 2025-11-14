@@ -9,7 +9,7 @@ const api = axios.create({
   }
 });
 
-// Interceptor para agregar token a las requests
+// Interceptor para agregar el token a las peticiones
 api.interceptors.request.use(
   (config) => {
     if (typeof window !== 'undefined') {
@@ -25,7 +25,7 @@ api.interceptors.request.use(
   }
 );
 
-// Interceptor para manejar errores de respuesta
+// Interceptor para manejar errores en las respuestas
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -40,7 +40,7 @@ api.interceptors.response.use(
   }
 );
 
-// API de Auth
+// API de Autenticación
 export const authAPI = {
   login: (email, password) => api.post('/auth/login', { email, password }),
   getMe: () => api.get('/auth/me'),
@@ -116,7 +116,7 @@ export const configuracionAPI = {
   update: (data) => api.put('/configuracion', data)
 };
 
-// API de Setup
+// API de Configuración Inicial
 export const setupAPI = {
   check: () => api.get('/setup/check'),
   complete: (data) => api.post('/setup/complete', data)

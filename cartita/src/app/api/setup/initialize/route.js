@@ -24,12 +24,12 @@ export async function POST(request) {
       );
     }
 
-    // Hash de la contraseña
+    // Hashear la contraseña
     const hashedPassword = await bcrypt.hash(superadmin.password, 10);
 
-    // Crear superadmin y local en una transacción
+    // Crear el superadmin y el local en una transacción
     const result = await prisma.$transaction(async (tx) => {
-      // Crear local si se proporcionó
+      // Crear el local si lo pasaron
       let localCreado = null;
       if (local && local.nombre && local.slug) {
         localCreado = await tx.local.create({
@@ -52,7 +52,7 @@ export async function POST(request) {
           }
         });
 
-        // Crear categorías por defecto para el local
+        // Crear las categorías por defecto para el local
         await tx.categoria.createMany({
           data: [
             {
@@ -83,7 +83,7 @@ export async function POST(request) {
         });
       }
 
-      // Crear superadmin
+      // Crear el superadmin
       const usuario = await tx.usuario.create({
         data: {
           nombre: superadmin.nombre,
@@ -95,7 +95,7 @@ export async function POST(request) {
         }
       });
 
-      // Crear configuración global
+      // Crear la configuración global
       await tx.configuracionGlobal.create({
         data: {
           mantenimientoActivo: false

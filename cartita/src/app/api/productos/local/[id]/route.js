@@ -19,15 +19,6 @@ export async function GET(request, { params }) {
 
     const productos = await prisma.producto.findMany({
       where,
-      include: {
-        categoria: {
-          select: {
-            id: true,
-            nombre: true,
-            icono: true
-          }
-        }
-      },
       orderBy: [
         { destacado: 'desc' },
         { orden: 'asc' },

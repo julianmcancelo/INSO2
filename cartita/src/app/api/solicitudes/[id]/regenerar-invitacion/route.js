@@ -9,7 +9,7 @@ export const POST = requireRole('superadmin')(async (request, { params }) => {
   try {
     const { id } = params;
 
-    // Obtener solicitud
+    // Traer la solicitud
     const solicitud = await prisma.solicitud.findUnique({
       where: { id: parseInt(id) }
     });
@@ -28,7 +28,7 @@ export const POST = requireRole('superadmin')(async (request, { params }) => {
       );
     }
 
-    // Buscar invitación anterior
+    // Buscar la invitación anterior
     const invitacionAnterior = await prisma.invitacion.findFirst({
       where: {
         email: solicitud.email
@@ -38,7 +38,7 @@ export const POST = requireRole('superadmin')(async (request, { params }) => {
       }
     });
 
-    // Verificar si ya fue usada
+    // Verificar si ya la usaron
     if (invitacionAnterior?.usado) {
       return NextResponse.json(
         { error: 'Esta invitación ya fue utilizada. El usuario ya completó su registro.' },
@@ -46,25 +46,25 @@ export const POST = requireRole('superadmin')(async (request, { params }) => {
       );
     }
 
-    // Generar nuevo token
+    // Generar un nuevo token
     const nuevoToken = crypto.randomBytes(32).toString('hex');
     console.log('🔑 Nuevo token generado:', nuevoToken.substring(0, 16) + '...');
     
-    // Nueva fecha de expiración (7 días)
+    // Nueva fecha de vencimiento (7 días)
     const expiraEn = new Date();
     expiraEn.setDate(expiraEn.getDate() + 7);
     console.log('⏰ Expira en:', expiraEn);
 
-    // Marcar invitación anterior como expirada (si existe) y crear nueva
+    // Marcar la invitación anterior como vencida (si existe) y crear una nueva
     console.log('📝 Iniciando transacción...');
     const result = await prisma.$transaction(async (tx) => {
-      // Si existe invitación anterior no usada, marcarla como expirada
+      // Si existe invitación anterior sin usar, marcarla como vencida
       if (invitacionAnterior && !invitacionAnterior.usado) {
         console.log('⏰ Expirando invitación anterior:', invitacionAnterior.id);
         await tx.invitacion.update({
           where: { id: invitacionAnterior.id },
           data: {
-            expiraEn: new Date() // Expirarla inmediatamente
+            expiraEn: new Date() // Vencerla inmediatamente
           }
         });
       }
@@ -90,7 +90,7 @@ export const POST = requireRole('superadmin')(async (request, { params }) => {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
     const invitacionUrl = `${baseUrl}/registro/${nuevoToken}`;
 
-    // Enviar email con el nuevo enlace
+    // Enviar email con el nuevo link
     Promise.resolve().then(async () => {
       try {
         await enviarEmailInvitacion(solicitud.email, nuevoToken, solicitud.nombreNegocio);

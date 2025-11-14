@@ -29,16 +29,16 @@ export default function MenuPage() {
     try {
       setLoading(true);
       
-      // Cargar datos del local
+      // Cargar los datos del local
       const localResponse = await axios.get(`${API_URL}/api/locales/slug/${params.localId}`);
       const localData = localResponse.data.local;
       setLocal(localData);
 
-      // Cargar categorías
+      // Cargar las categorías
       const categoriasResponse = await axios.get(`${API_URL}/api/categorias/local/${localData.id}`);
       setCategorias(categoriasResponse.data.categorias || []);
 
-      // Cargar productos disponibles
+      // Cargar los productos disponibles
       const productosResponse = await axios.get(`${API_URL}/api/productos/local/${localData.id}?disponible=true`);
       setProductos(productosResponse.data.productos || []);
     } catch (error) {
@@ -86,7 +86,7 @@ export default function MenuPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
+      {/* Encabezado */}
       <header className="bg-white shadow-sm sticky top-0 z-30">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between mb-4">
@@ -97,7 +97,7 @@ export default function MenuPage() {
               )}
             </div>
             
-            {/* Cart Button */}
+            {/* Botón del Carrito */}
             <button
               onClick={openCart}
               className="relative bg-primary text-white p-3 rounded-full shadow-lg hover:opacity-90 transition"

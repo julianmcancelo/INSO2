@@ -17,7 +17,7 @@ export const CartProvider = ({ children }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [clienteInfo, setClienteInfo] = useState(null);
 
-  // Cargar carrito y datos del cliente del localStorage al iniciar
+  // Cargar el carrito y los datos del cliente del localStorage al iniciar
   useEffect(() => {
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
@@ -40,7 +40,7 @@ export const CartProvider = ({ children }) => {
     }
   }, []);
 
-  // Guardar carrito en localStorage cuando cambie
+  // Guardar el carrito en localStorage cuando cambie
   useEffect(() => {
     if (cart.length > 0) {
       localStorage.setItem('cart', JSON.stringify(cart));
@@ -58,12 +58,12 @@ export const CartProvider = ({ children }) => {
       );
 
       if (existingIndex !== -1) {
-        // Si existe, incrementar cantidad
+        // Si existe, aumentar la cantidad
         const newCart = [...prevCart];
         newCart[existingIndex].cantidad += cantidad;
         return newCart;
       } else {
-        // Si no existe, agregar nuevo item
+        // Si no existe, agregar un nuevo item
         return [...prevCart, {
           producto,
           cantidad,

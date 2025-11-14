@@ -48,7 +48,7 @@ export default function RegistroPage({ params }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
-  // Cerrar sugerencias al hacer clic fuera
+  // Cerrar sugerencias al hacer clic afuera
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (suggestionsRef.current && !suggestionsRef.current.contains(event.target) &&
@@ -67,7 +67,7 @@ export default function RegistroPage({ params }) {
       const response = await axios.get(`${API_URL}/api/invitaciones/${token}`);
       setInvitacion(response.data.invitacion);
       
-      // Pre-llenar el email del usuario
+      // Pre-cargar el email del usuario
       setFormData(prev => ({
         ...prev,
         emailUsuario: response.data.invitacion.email
@@ -80,13 +80,13 @@ export default function RegistroPage({ params }) {
         });
 
         if (checkResponse.data.exists) {
-          // Email ya registrado - mostrar banner informativo pero permitir continuar
+          // Email ya registrado - mostrar banner informativo pero dejar continuar
           console.log('ℹ️ Email ya registrado, pero permitiendo crear nuevo local');
           setEmailExists(true);
         }
       } catch (checkError) {
         console.error('Error verificando email:', checkError);
-        // Continuar normalmente si falla la verificación
+        // Seguir normalmente si falla la verificación
       }
     } catch (error) {
       console.error('Error al verificar invitación:', error);
@@ -111,7 +111,7 @@ export default function RegistroPage({ params }) {
       setFormData(prev => ({ ...prev, slugLocal: slug }));
     }
 
-    // Buscar direcciones cuando se escribe
+    // Buscar direcciones cuando escribís
     if (name === 'direccion' && value.length > 3) {
       searchAddress(value);
     } else if (name === 'direccion' && value.length <= 3) {
@@ -119,7 +119,7 @@ export default function RegistroPage({ params }) {
       setShowSuggestions(false);
     }
 
-    // Validar fortaleza de contraseña
+    // Validar qué tan fuerte es la contraseña
     if (name === 'password') {
       let strength = 0;
       if (value.length >= 6) strength++;
@@ -130,7 +130,7 @@ export default function RegistroPage({ params }) {
       setPasswordStrength(strength);
     }
 
-    // Validar coincidencia de contraseñas
+    // Validar que las contraseñas coincidan
     if (name === 'confirmPassword') {
       setPasswordMatch(value === formData.password);
     }
@@ -333,7 +333,7 @@ export default function RegistroPage({ params }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-blue-50 py-8 px-4">
       <div className="max-w-5xl mx-auto">
-        {/* Header Compacto */}
+        {/* Encabezado Compacto */}
         <div className="text-center mb-6">
           <BrandLogo size="md" showText={true} className="mx-auto mb-3" />
           <h1 className="text-3xl font-bold text-gray-900 mb-1">
@@ -357,7 +357,7 @@ export default function RegistroPage({ params }) {
           </div>
         </div>
 
-        {/* Progress Steps - Solo mostrar si NO existe el email */}
+        {/* Pasos de Progreso - Solo mostrar si NO existe el email */}
         {!emailExists && (
           <div className="max-w-2xl mx-auto mb-6">
             <div className="flex items-center justify-between">
@@ -704,7 +704,7 @@ export default function RegistroPage({ params }) {
               </div>
             )}
 
-            {/* Botón Submit */}
+            {/* Botón de Envío */}
             <div className="pt-4 border-t">
               <button
                 type="submit"
@@ -727,7 +727,7 @@ export default function RegistroPage({ params }) {
           </form>
         </div>
 
-        {/* Footer */}
+        {/* Pie de página */}
         <p className="text-center text-xs text-gray-500 mt-4">
           Al completar el registro, podrás acceder a tu panel de administración
         </p>
