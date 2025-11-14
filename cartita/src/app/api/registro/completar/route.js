@@ -70,7 +70,8 @@ export async function POST(request) {
           colorPrimario: '#FF6B35',
           colorSecundario: '#004E89',
           activo: true,
-          horarioAtencion: {
+          // Guardamos el horario como JSON string para que encaje con el tipo String del schema
+          horarioAtencion: JSON.stringify({
             lunes: '09:00-22:00',
             martes: '09:00-22:00',
             miercoles: '09:00-22:00',
@@ -78,7 +79,7 @@ export async function POST(request) {
             viernes: '09:00-23:00',
             sabado: '10:00-23:00',
             domingo: '10:00-22:00'
-          }
+          })
         }
       });
 
