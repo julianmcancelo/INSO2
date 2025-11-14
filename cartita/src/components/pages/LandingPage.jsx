@@ -37,10 +37,20 @@ const LandingPage = () => {
     { id: 'f5', nombre: 'Bite Pizza', logoBase64: null },
   ];
 
-  // Verificar si necesita setup al cargar
+  // Verificar si necesita setup al cargar y cargar locales públicos inicialmente
   useEffect(() => {
     checkSetupNeeded();
     cargarLocalesPublicos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Refrescar automáticamente el slider de marcas cada cierto tiempo
+  useEffect(() => {
+    const interval = setInterval(() => {
+      cargarLocalesPublicos();
+    }, 60000); // 60s para no sobrecargar el backend
+
+    return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

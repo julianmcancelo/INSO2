@@ -35,7 +35,16 @@ export default function AdminHorarios() {
     try {
       setLoading(true);
       const response = await localAPI.getById(user.localId);
-      const horariosActuales = response.data.local.horarioAtencion || {};
+      let horariosActuales = response.data.local.horarioAtencion || {};
+
+      // Puede venir como string JSON desde la base, lo parseamos si es necesario
+      if (typeof horariosActuales === 'string') {
+        try {
+          horariosActuales = JSON.parse(horariosActuales);
+        } catch (e) {
+          horariosActuales = {};
+        }
+      }
       
       const horariosInicializados = {};
       diasSemana.forEach(dia => {

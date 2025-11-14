@@ -71,6 +71,17 @@ export default function MiLocalPage() {
       
       const localData = response.data.local;
       setLocal(localData);
+
+      // Aseguramos que horarioAtencion sea siempre un objeto (puede venir como string JSON desde la API)
+      let horarioAtencionParsed = localData.horarioAtencion;
+      if (typeof horarioAtencionParsed === 'string') {
+        try {
+          horarioAtencionParsed = JSON.parse(horarioAtencionParsed);
+        } catch (e) {
+          horarioAtencionParsed = null;
+        }
+      }
+
       setFormData({
         nombre: localData.nombre || '',
         slug: localData.slug || '',
@@ -81,7 +92,7 @@ export default function MiLocalPage() {
         colorPrimario: localData.colorPrimario || '#FF6B35',
         colorSecundario: localData.colorSecundario || '#004E89',
         logoBase64: localData.logoBase64 || '',
-        horarioAtencion: localData.horarioAtencion || {
+        horarioAtencion: horarioAtencionParsed || {
           lunes: '09:00-22:00',
           martes: '09:00-22:00',
           miercoles: '09:00-22:00',
