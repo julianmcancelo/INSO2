@@ -15,6 +15,7 @@ module.exports = {
         'shimmer': 'shimmer 2s infinite',
         'bounce-slow': 'bounce 2s infinite',
         'float': 'float 3s ease-in-out infinite',
+        'marquee': 'marquee 25s linear infinite',
       },
       keyframes: {
         shimmer: {
@@ -24,6 +25,10 @@ module.exports = {
         float: {
           '0%, 100%': { transform: 'translateY(0px)' },
           '50%': { transform: 'translateY(-20px)' },
+        },
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
         },
       },
     },

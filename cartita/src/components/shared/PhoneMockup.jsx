@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
+import { X, Utensils } from 'lucide-react';
+import milanesaImg from '../../../fotos/1.jpg';
 
 const PhoneMockup = () => {
   const [currentTime, setCurrentTime] = useState('');
+  const [showQR, setShowQR] = useState(false);
+  const [showImage, setShowImage] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
     const updateTime = () => {
@@ -44,17 +50,34 @@ const PhoneMockup = () => {
             {/* Header */}
             <div className="text-center mb-5">
               <h3 className="text-xl font-bold text-gray-900">Menú Digital</h3>
-              <p className="text-xs text-gray-500 mt-1">Restaurante Demo</p>
+              <p className="text-xs text-gray-500 mt-1">Sabores Caseros</p>
             </div>
 
             {/* Menu Items */}
             {[
-              { name: 'Milanesa 1', desc: 'Con papas fritas y ensalada', price: '$2.500' },
-              { name: 'Milanesa 2', desc: 'Napolitana con guarnición', price: '$2.800' },
-              { name: 'Milanesa 3', desc: 'A caballo con huevo frito', price: '$2.900' }
+              { name: 'Milanesa con papas', desc: 'Con papas fritas y ensalada', price: '$2.500', image: milanesaImg },
+              { name: 'QUINTUPLE Hamburgesa', desc: '+ papas', price: '$2.800', image: 'https://dx49ypn7lfv84.cloudfront.net/479/54BHEfFuou-AlMQH.jpg' },
+              { name: 'Milanesa a caballo', desc: 'A caballo con huevo frito', price: '$2.900', image: null }
             ].map((item, idx) => (
               <div key={idx} className="bg-white border-2 border-gray-100 rounded-xl p-3 flex gap-3 hover:border-orange-300 transition-all shadow-sm">
-                <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-red-500 rounded-xl flex-shrink-0 shadow-md"></div>
+                {item.image ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedItem(item);
+                      setShowImage(true);
+                    }}
+                    className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  >
+                    <img
+                      src={item.image?.src ?? item.image}
+                      alt={item.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ) : (
+                  <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-red-500 rounded-xl flex-shrink-0 shadow-md"></div>
+                )}
                 <div className="flex-1">
                   <h4 className="text-sm font-bold text-gray-900">{item.name}</h4>
                   <p className="text-xs text-gray-500 line-clamp-2 mt-0.5">{item.desc}</p>
@@ -66,7 +89,10 @@ const PhoneMockup = () => {
 
           {/* Bottom Button */}
           <div className="absolute bottom-5 left-5 right-5">
-            <button className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-3.5 rounded-xl font-bold text-sm shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
+            <button 
+              onClick={() => setShowQR(true)}
+              className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-3.5 rounded-xl font-bold text-sm shadow-xl hover:shadow-2xl transition-all transform hover:scale-105"
+            >
               Ver Carrito (3)
             </button>
           </div>
@@ -82,6 +108,111 @@ const PhoneMockup = () => {
       <div className="absolute -top-6 -right-6 w-24 h-24 bg-yellow-300 rounded-full opacity-40 blur-2xl animate-pulse"></div>
       <div className="absolute -bottom-6 -left-6 w-28 h-28 bg-red-300 rounded-full opacity-40 blur-2xl animate-pulse" style={{ animationDelay: '1s' }}></div>
       <div className="absolute top-1/2 -right-8 w-20 h-20 bg-orange-300 rounded-full opacity-30 blur-xl animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+
+      {/* Modal QR Code */}
+      {showQR && (
+        <>
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 animate-fadeIn"
+            onClick={() => setShowQR(false)}
+          />
+          
+          {/* Modal */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 pointer-events-none">
+            <div 
+              className="bg-white rounded-3xl shadow-2xl px-5 py-6 sm:px-6 sm:py-7 max-w-xs sm:max-w-sm w-full pointer-events-auto animate-fadeIn relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setShowQR(false)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X size={24} />
+              </button>
+
+              {/* Logo */}
+              <div className="flex justify-center mb-4">
+                <div className="bg-gradient-to-br from-orange-500 to-red-500 p-3 rounded-2xl shadow-lg">
+                  <Utensils size={38} className="text-white" />
+                </div>
+              </div>
+
+              {/* Title */}
+              <h3 className="text-xl font-bold text-center text-gray-900 mb-1">
+                Cartita
+              </h3>
+              <p className="text-center text-gray-600 text-sm mb-4">
+                Escanea el código QR para visitar nuestra web
+              </p>
+
+              {/* QR Code */}
+              <div className="flex justify-center mb-4 bg-white p-4 rounded-2xl border-2 border-gray-100">
+                <QRCodeSVG 
+                  value="https://cartita.digital"
+                  size={140}
+                  level="H"
+                  includeMargin={true}
+                  fgColor="#FF6B35"
+                />
+              </div>
+
+              {/* URL */}
+              <div className="text-center">
+                <a 
+                  href="https://cartita.digital" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-orange-600 font-semibold hover:text-orange-700 transition-colors"
+                >
+                  cartita.digital
+                </a>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Modal Imagen Milanesa */}
+      {showImage && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 animate-fadeIn"
+            onClick={() => setShowImage(false)}
+          />
+
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+            <div
+              className="bg-white rounded-3xl shadow-2xl p-4 sm:p-6 max-w-md w-full pointer-events-auto animate-fadeIn relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setShowImage(false)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X size={24} />
+              </button>
+
+              <h3 className="text-lg sm:text-xl font-bold text-center text-gray-900 mb-3">
+                {selectedItem?.name || 'Milanesa con papas'}
+              </h3>
+
+              <div className="rounded-2xl overflow-hidden shadow-lg mb-3">
+                <img
+                  src={(selectedItem?.image && (selectedItem.image.src ?? selectedItem.image)) || (milanesaImg?.src ?? milanesaImg)}
+                  alt={selectedItem?.name || 'Milanesa con papas'}
+                  className="w-full h-auto object-cover"
+                />
+              </div>
+
+              <p className="text-center text-xs sm:text-sm text-gray-600">
+                Imagen de ejemplo para el menú de Sabores Caseros.
+              </p>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

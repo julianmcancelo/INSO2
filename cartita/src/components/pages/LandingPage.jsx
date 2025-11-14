@@ -19,6 +19,7 @@ const LandingPage = () => {
   const [showForm, setShowForm] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [checkingSetup, setCheckingSetup] = useState(true);
+  const [localesPublicos, setLocalesPublicos] = useState([]);
   const [formData, setFormData] = useState({
     nombreNegocio: '',
     nombreContacto: '',
@@ -28,9 +29,18 @@ const LandingPage = () => {
     mensaje: ''
   });
 
+  const fallbackBrands = [
+    { id: 'f1', nombre: 'Sabores Caseros', logoBase64: null },
+    { id: 'f2', nombre: 'La Esquina Burger', logoBase64: null },
+    { id: 'f3', nombre: 'Café Central', logoBase64: null },
+    { id: 'f4', nombre: 'Parrilla Don Julio', logoBase64: null },
+    { id: 'f5', nombre: 'Bite Pizza', logoBase64: null },
+  ];
+
   // Verificar si necesita setup al cargar
   useEffect(() => {
     checkSetupNeeded();
+    cargarLocalesPublicos();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -45,6 +55,15 @@ const LandingPage = () => {
       console.error('Error checking setup:', error);
     } finally {
       setCheckingSetup(false);
+    }
+  };
+
+  const cargarLocalesPublicos = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/api/public/locales`);
+      setLocalesPublicos(response.data.locales || []);
+    } catch (error) {
+      console.error('Error al obtener locales públicos:', error);
     }
   };
 
@@ -384,6 +403,90 @@ const LandingPage = () => {
           <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
             <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="white"/>
           </svg>
+        </div>
+      </section>
+
+      {/* Brands Slider Section */}
+      <section className="bg-white py-8 sm:py-10 border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-4 sm:mb-6">
+            <p className="text-sm sm:text-base font-semibold tracking-wide text-gray-900 mb-1">
+              <span className="text-orange-500">Marcas</span> que confían en nosotros
+            </p>
+            <p className="text-xs sm:text-sm text-gray-500">
+              Locales reales que ya usan Cartita en su día a día
+            </p>
+          </div>
+
+          <div className="relative overflow-hidden">
+            {/* Fades laterales */}
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-10 sm:w-16 bg-gradient-to-r from-white to-transparent z-10" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-10 sm:w-16 bg-gradient-to-l from-white to-transparent z-10" />
+
+            <div className="relative mx-auto rounded-2xl sm:rounded-3xl border border-orange-100 bg-gradient-to-r from-orange-50 via-white to-orange-50/60 shadow-sm px-4 sm:px-6 py-4 sm:py-5">
+              {(() => {
+                const items = (localesPublicos && localesPublicos.length > 0)
+                  ? localesPublicos
+                  : fallbackBrands;
+
+                return (
+                  <div className="flex items-center gap-8 sm:gap-12 animate-marquee">
+                    {/* Grupo 1 */}
+                    <div className="flex items-center gap-8 sm:gap-12">
+                      {items.map((local) => (
+                        <div
+                          key={local.id || local.nombre}
+                          className="h-14 sm:h-16 flex items-center opacity-80"
+                        >
+                          {local.logoBase64 ? (
+                            <div className="h-full flex items-center">
+                              <div className="bg-white/90 rounded-2xl sm:rounded-3xl shadow-md px-4 sm:px-5 py-2 sm:py-2.5 flex items-center justify-center border border-orange-50">
+                                <img
+                                  src={local.logoBase64}
+                                  alt={local.nombre}
+                                  className="h-10 sm:h-14 w-auto object-contain"
+                                />
+                              </div>
+                            </div>
+                          ) : (
+                            <span className="text-sm sm:text-base font-semibold text-gray-700 whitespace-nowrap bg-white/80 px-4 py-2 rounded-2xl shadow-sm border border-gray-100">
+                              {local.nombre}
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Grupo 2 duplicado para loop suave */}
+                    <div className="flex items-center gap-8 sm:gap-12" aria-hidden="true">
+                      {items.map((local) => (
+                        <div
+                          key={`dup-${local.id || local.nombre}`}
+                          className="h-14 sm:h-16 flex items-center opacity-80"
+                        >
+                          {local.logoBase64 ? (
+                            <div className="h-full flex items-center">
+                              <div className="bg-white/90 rounded-2xl sm:rounded-3xl shadow-md px-4 sm:px-5 py-2 sm:py-2.5 flex items-center justify-center border border-orange-50">
+                                <img
+                                  src={local.logoBase64}
+                                  alt={local.nombre}
+                                  className="h-10 sm:h-14 w-auto object-contain"
+                                />
+                              </div>
+                            </div>
+                          ) : (
+                            <span className="text-sm sm:text-base font-semibold text-gray-700 whitespace-nowrap bg-white/80 px-4 py-2 rounded-2xl shadow-sm border border-gray-100">
+                              {local.nombre}
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+          </div>
         </div>
       </section>
 
