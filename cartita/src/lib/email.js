@@ -12,10 +12,10 @@ const transporter = nodemailer.createTransport({
 // Verificar configuración (sin bloquear)
 transporter.verify(function (error, success) {
   if (error) {
-    console.warn('Advertencia: Configuración de email no disponible:', error.message);
-    console.warn('Los emails no se enviarán, pero la app funcionará normalmente');
+    console.error('❌ Error configuración email:', error.message);
+    console.warn('⚠️  Los emails no se enviarán. Verifica EMAIL_USER y EMAIL_PASSWORD');
   } else {
-    console.log('Servidor de email listo');
+    console.log('✅ Servidor de email listo');
   }
 });
 
@@ -170,10 +170,8 @@ export async function enviarEmailInvitacion(destinatario, token, nombreNegocio) 
 
   try {
     const info = await transporter.sendMail(mailOptions);
-    console.log('✅ Email de invitación enviado:', info.messageId);
     return { success: true, messageId: info.messageId };
   } catch (error) {
-    console.error('❌ Error al enviar email:', error);
     throw error;
   }
 }
@@ -244,10 +242,8 @@ export async function enviarEmailConfirmacionSolicitud(destinatario, nombreNegoc
 
   try {
     const info = await transporter.sendMail(mailOptions);
-    console.log('✅ Email de confirmación enviado:', info.messageId);
     return { success: true, messageId: info.messageId };
   } catch (error) {
-    console.error('❌ Error al enviar email:', error);
     throw error;
   }
 }

@@ -87,11 +87,12 @@ export const POST = requireRole('superadmin')(async (request, { params }) => {
     Promise.resolve().then(async () => {
       try {
         await enviarEmailInvitacion(solicitud.email, nuevoToken, solicitud.nombreNegocio);
+        console.log('✅ Email de invitación regenerada enviado a:', solicitud.email);
       } catch (emailError) {
-        // Silenciar error de email
+        console.error('⚠️  No se pudo enviar email de invitación:', emailError.message);
       }
     }).catch(err => {
-      // Silenciar error
+      console.error('⚠️  Error en envío de email:', err.message);
     });
 
     return NextResponse.json({

@@ -49,11 +49,12 @@ export async function POST(request) {
     Promise.resolve().then(async () => {
       try {
         await enviarEmailConfirmacionSolicitud(solicitud.email, solicitud.nombreNegocio);
+        console.log('✅ Email de confirmación enviado a:', solicitud.email);
       } catch (emailError) {
-        // Silenciar error de email
+        console.error('⚠️  No se pudo enviar email de confirmación:', emailError.message);
       }
     }).catch(err => {
-      // Silenciar error
+      console.error('⚠️  Error en envío de email:', err.message);
     });
 
     // TODO: Enviar email de notificación al admin
