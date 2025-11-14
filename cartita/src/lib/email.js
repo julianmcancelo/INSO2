@@ -44,6 +44,11 @@ export async function enviarEmailRecuperacion(destinatario, resetUrl, nombreUsua
               
               <tr>
                 <td style="padding: 48px 40px; text-align: center; border-bottom: 1px solid #f0f0f0;">
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto 12px;">
+                    <rect width="40" height="40" rx="8" fill="#000000"/>
+                    <path d="M12 14C12 12.8954 12.8954 12 14 12H26C27.1046 12 28 12.8954 28 14V26C28 27.1046 27.1046 28 26 28H14C12.8954 28 12 27.1046 12 26V14Z" fill="white"/>
+                    <path d="M16 18H24M16 22H22" stroke="#000000" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
                   <h1 style="margin: 0; color: #000000; font-size: 24px; font-weight: 600; letter-spacing: -0.5px;">
                     Cartita
                   </h1>
@@ -119,6 +124,11 @@ export async function enviarEmailInvitacion(destinatario, token, nombreNegocio) 
               
               <tr>
                 <td style="padding: 48px 40px; text-align: center; border-bottom: 1px solid #f0f0f0;">
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto 12px;">
+                    <rect width="40" height="40" rx="8" fill="#000000"/>
+                    <path d="M12 14C12 12.8954 12.8954 12 14 12H26C27.1046 12 28 12.8954 28 14V26C28 27.1046 27.1046 28 26 28H14C12.8954 28 12 27.1046 12 26V14Z" fill="white"/>
+                    <path d="M16 18H24M16 22H22" stroke="#000000" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
                   <h1 style="margin: 0; color: #000000; font-size: 24px; font-weight: 600; letter-spacing: -0.5px;">
                     Cartita
                   </h1>
@@ -198,6 +208,11 @@ export async function enviarEmailConfirmacionSolicitud(destinatario, nombreNegoc
               
               <tr>
                 <td style="padding: 48px 40px; text-align: center; border-bottom: 1px solid #f0f0f0;">
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto 12px;">
+                    <rect width="40" height="40" rx="8" fill="#000000"/>
+                    <path d="M12 14C12 12.8954 12.8954 12 14 12H26C27.1046 12 28 12.8954 28 14V26C28 27.1046 27.1046 28 26 28H14C12.8954 28 12 27.1046 12 26V14Z" fill="white"/>
+                    <path d="M16 18H24M16 22H22" stroke="#000000" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
                   <h1 style="margin: 0; color: #000000; font-size: 24px; font-weight: 600; letter-spacing: -0.5px;">
                     Cartita
                   </h1>
