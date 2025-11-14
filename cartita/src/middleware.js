@@ -3,6 +3,16 @@ import { NextResponse } from 'next/server';
 export async function middleware(request) {
   const { pathname } = request.nextUrl;
   const origin = request.headers.get('origin');
+  
+  // SEGURIDAD: Forzar HTTPS en producción
+  if (process.env.NODE_ENV === 'production') {
+    const protocol = request.headers.get('x-forwarded-proto');
+    if (protocol === 'http') {
+      const url = request.nextUrl.clone();
+      url.protocol = 'https:';
+      return NextResponse.redirect(url, 301);
+    }
+  }
 
   // Lista de orígenes permitidos
   const allowedOrigins = [
@@ -81,6 +91,11 @@ export async function middleware(request) {
   response.headers.set('X-XSS-Protection', '1; mode=block');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  
+  // HSTS - Forzar HTTPS por 1 año (solo en producción)
+  if (process.env.NODE_ENV === 'production') {
+    response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+  }
   
   // Content Security Policy
   response.headers.set(

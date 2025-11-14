@@ -17,6 +17,7 @@
     "prisma:studio": "prisma studio",
     "prisma:seed": "prisma db seed",
     "security:check": "node scripts/verificar-seguridad.js",
+    "security:audit": "node scripts/audit-seguridad.js",
     "security:generate-jwt": "node scripts/generar-jwt-secret.js",
     "security:generate-jwt-prod": "node scripts/generar-jwt-separados.js",
     "clean:logs": "node scripts/eliminar-logs.js"
@@ -29,7 +30,7 @@
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.454.0",
     "next": "14.2.33",
-    "nodemailer": "^6.9.16",
+    "nodemailer": "^7.0.10",
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
     "qrcode": "^1.5.3",
