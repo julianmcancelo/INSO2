@@ -32,71 +32,49 @@ export async function enviarEmailRecuperacion(destinatario, resetUrl, nombreUsua
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Recuperar Contraseña - Cartita</title>
+      <title>Recuperar Contraseña</title>
     </head>
-    <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5;">
-      <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f5; padding: 40px 0;">
+    <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background-color: #fafafa;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #fafafa; padding: 60px 20px;">
         <tr>
           <td align="center">
-            <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <table width="500" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px;">
               
               <tr>
-                <td style="background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%); padding: 40px 30px; text-align: center;">
-                  <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: bold;">
-                    Recuperar Contraseña
+                <td style="padding: 48px 40px; text-align: center; border-bottom: 1px solid #f0f0f0;">
+                  <h1 style="margin: 0; color: #000000; font-size: 24px; font-weight: 600; letter-spacing: -0.5px;">
+                    Cartita
                   </h1>
-                  <p style="margin: 10px 0 0 0; color: #ffffff; font-size: 16px; opacity: 0.9;">
-                    Cartita - Menú Digital
-                  </p>
                 </td>
               </tr>
               
               <tr>
-                <td style="padding: 40px 30px;">
-                  <h2 style="margin: 0 0 20px 0; color: #333333; font-size: 24px;">
-                    Hola ${nombreUsuario || 'Usuario'},
+                <td style="padding: 48px 40px;">
+                  <h2 style="margin: 0 0 24px 0; color: #000000; font-size: 20px; font-weight: 500;">
+                    Recuperar contraseña
                   </h2>
                   
-                  <p style="margin: 0 0 20px 0; color: #666666; font-size: 16px; line-height: 1.6;">
-                    Recibimos una solicitud para restablecer la contraseña de tu cuenta en Cartita.
+                  <p style="margin: 0 0 24px 0; color: #666666; font-size: 15px; line-height: 1.6;">
+                    Hola${nombreUsuario ? ' ' + nombreUsuario : ''}, recibimos una solicitud para restablecer tu contraseña.
                   </p>
                   
-                  <p style="margin: 0 0 30px 0; color: #666666; font-size: 16px; line-height: 1.6;">
-                    Haz clic en el botón de abajo para crear una nueva contraseña:
-                  </p>
-                  
-                  <div style="text-align: center; margin: 30px 0;">
+                  <div style="text-align: center; margin: 32px 0;">
                     <a href="${resetUrl}" 
-                       style="display: inline-block; background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 6px rgba(255, 107, 53, 0.3);">
-                      Restablecer Contraseña
+                       style="display: inline-block; background-color: #000000; color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 6px; font-size: 15px; font-weight: 500;">
+                      Restablecer contraseña
                     </a>
                   </div>
                   
-                  <p style="margin: 30px 0 0 0; color: #999999; font-size: 14px; line-height: 1.6;">
-                    O copia y pega este enlace en tu navegador:
+                  <p style="margin: 32px 0 0 0; padding-top: 24px; border-top: 1px solid #f0f0f0; color: #999999; font-size: 13px; line-height: 1.5;">
+                    Este enlace expira en 1 hora. Si no solicitaste esto, ignora este email.
                   </p>
-                  <p style="margin: 10px 0 0 0; color: #FF6B35; font-size: 14px; word-break: break-all;">
-                    ${resetUrl}
-                  </p>
-                  
-                  <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #eeeeee;">
-                    <p style="margin: 0 0 10px 0; color: #999999; font-size: 14px;">
-                      <strong>Este enlace expira en 1 hora</strong>
-                    </p>
-                    <p style="margin: 0; color: #999999; font-size: 14px;">
-                      Si no solicitaste restablecer tu contraseña, ignora este email.
-                    </p>
-                  </div>
                 </td>
               </tr>
               
               <tr>
-                <td style="background-color: #f8f8f8; padding: 30px; text-align: center; border-top: 1px solid #eeeeee;">
-                  <p style="margin: 0 0 10px 0; color: #999999; font-size: 14px;">
-                    © ${new Date().getFullYear()} Cartita - Menú Digital para Restaurantes
-                  </p>
+                <td style="padding: 32px 40px; text-align: center; border-top: 1px solid #f0f0f0;">
                   <p style="margin: 0; color: #999999; font-size: 12px;">
-                    Este es un email automático, por favor no respondas.
+                    © ${new Date().getFullYear()} Cartita
                   </p>
                 </td>
               </tr>
@@ -129,131 +107,48 @@ export async function enviarEmailInvitacion(destinatario, token, nombreNegocio) 
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Invitación a Cartita</title>
+      <title>Bienvenido a Cartita</title>
     </head>
-    <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5;">
-      <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f5; padding: 40px 0;">
+    <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background-color: #fafafa;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #fafafa; padding: 60px 20px;">
         <tr>
           <td align="center">
-            <!-- Container principal -->
-            <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <table width="500" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px;">
               
-              <!-- Header con gradiente -->
               <tr>
-                <td style="background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%); padding: 40px 30px; text-align: center;">
-                  <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: bold;">
+                <td style="padding: 48px 40px; text-align: center; border-bottom: 1px solid #f0f0f0;">
+                  <h1 style="margin: 0; color: #000000; font-size: 24px; font-weight: 600; letter-spacing: -0.5px;">
                     Cartita
                   </h1>
-                  <p style="margin: 10px 0 0 0; color: #ffffff; font-size: 16px; opacity: 0.9;">
-                    Tu menú digital está listo
-                  </p>
                 </td>
               </tr>
 
-              <!-- Contenido -->
               <tr>
-                <td style="padding: 40px 30px;">
-                  <h2 style="margin: 0 0 20px 0; color: #333333; font-size: 24px;">
-                    ¡Bienvenido a Cartita!
+                <td style="padding: 48px 40px;">
+                  <h2 style="margin: 0 0 16px 0; color: #000000; font-size: 20px; font-weight: 500;">
+                    Bienvenido a Cartita
                   </h2>
                   
-                  <p style="margin: 0 0 15px 0; color: #666666; font-size: 16px; line-height: 1.6;">
-                    Hola,
-                  </p>
-                  
-                  <p style="margin: 0 0 15px 0; color: #666666; font-size: 16px; line-height: 1.6;">
-                    ¡Excelentes noticias! Tu solicitud para <strong>${nombreNegocio}</strong> ha sido aceptada.
-                  </p>
-                  
-                  <p style="margin: 0 0 25px 0; color: #666666; font-size: 16px; line-height: 1.6;">
-                    Ahora puedes completar tu registro y comenzar a configurar tu menú digital. Haz clic en el botón de abajo para continuar:
+                  <p style="margin: 0 0 24px 0; color: #666666; font-size: 15px; line-height: 1.6;">
+                    Tu solicitud para <strong>${nombreNegocio}</strong> ha sido aceptada. Completa tu registro para comenzar.
                   </p>
 
-                  <!-- Botón CTA -->
-                  <table width="100%" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td align="center" style="padding: 20px 0;">
-                        <a href="${enlaceRegistro}" style="display: inline-block; background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-size: 18px; font-weight: bold; box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);">
-                          Completar Registro
-                        </a>
-                      </td>
-                    </tr>
-                  </table>
-
-                  <!-- Info adicional -->
-                  <div style="background-color: #FFF5F0; border-left: 4px solid #FF6B35; padding: 20px; margin: 30px 0; border-radius: 4px;">
-                    <p style="margin: 0 0 10px 0; color: #333333; font-size: 14px; font-weight: bold;">
-                      Importante:
-                    </p>
-                    <p style="margin: 0; color: #666666; font-size: 14px; line-height: 1.5;">
-                      Este enlace es válido por <strong>7 días</strong>. Si necesitas un nuevo enlace, contacta con nuestro equipo.
-                    </p>
+                  <div style="text-align: center; margin: 32px 0;">
+                    <a href="${enlaceRegistro}" style="display: inline-block; background-color: #000000; color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 6px; font-size: 15px; font-weight: 500;">
+                      Completar registro
+                    </a>
                   </div>
 
-                  <!-- Características -->
-                  <div style="margin: 30px 0;">
-                    <p style="margin: 0 0 15px 0; color: #333333; font-size: 16px; font-weight: bold;">
-                      ¿Qué puedes hacer con Cartita?
-                    </p>
-                    
-                    <table width="100%" cellpadding="0" cellspacing="0">
-                      <tr>
-                        <td style="padding: 10px 0;">
-                          <span style="color: #FF6B35; font-size: 20px; margin-right: 10px;">•</span>
-                          <span style="color: #666666; font-size: 14px;">Menú digital con código QR</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 10px 0;">
-                          <span style="color: #FF6B35; font-size: 20px; margin-right: 10px;">•</span>
-                          <span style="color: #666666; font-size: 14px;">Recibe pedidos en tiempo real</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 10px 0;">
-                          <span style="color: #FF6B35; font-size: 20px; margin-right: 10px;">•</span>
-                          <span style="color: #666666; font-size: 14px;">Estadísticas de ventas</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 10px 0;">
-                          <span style="color: #FF6B35; font-size: 20px; margin-right: 10px;">•</span>
-                          <span style="color: #666666; font-size: 14px;">Actualiza tu menú al instante</span>
-                        </td>
-                      </tr>
-                    </table>
-                  </div>
-
-                  <!-- Enlace alternativo -->
-                  <div style="margin: 30px 0; padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
-                    <p style="margin: 0 0 10px 0; color: #666666; font-size: 13px;">
-                      Si el botón no funciona, copia y pega este enlace en tu navegador:
-                    </p>
-                    <p style="margin: 0; color: #FF6B35; font-size: 12px; word-break: break-all;">
-                      ${enlaceRegistro}
-                    </p>
-                  </div>
+                  <p style="margin: 32px 0 0 0; padding-top: 24px; border-top: 1px solid #f0f0f0; color: #999999; font-size: 13px; line-height: 1.5;">
+                    Este enlace es válido por 7 días.
+                  </p>
                 </td>
               </tr>
 
-              <!-- Footer -->
               <tr>
-                <td style="background-color: #f9f9f9; padding: 30px; text-align: center; border-top: 1px solid #eeeeee;">
-                  <p style="margin: 0 0 10px 0; color: #999999; font-size: 14px;">
-                    ¿Necesitas ayuda? Contáctanos en
-                  </p>
-                  <p style="margin: 0 0 20px 0;">
-                    <a href="mailto:${process.env.EMAIL_USER}" style="color: #FF6B35; text-decoration: none; font-weight: bold;">
-                      ${process.env.EMAIL_USER}
-                    </a>
-                  </p>
-                  
+                <td style="padding: 32px 40px; text-align: center; border-top: 1px solid #f0f0f0;">
                   <p style="margin: 0; color: #999999; font-size: 12px;">
-                    © ${new Date().getFullYear()} Cartita. Todos los derechos reservados.
-                  </p>
-                  
-                  <p style="margin: 10px 0 0 0; color: #cccccc; font-size: 11px;">
-                    Armado con ♥ por el equipo de Ingeniería 2
+                    © ${new Date().getFullYear()} Cartita
                   </p>
                 </td>
               </tr>
@@ -266,24 +161,11 @@ export async function enviarEmailInvitacion(destinatario, token, nombreNegocio) 
   `;
 
   const mailOptions = {
-    from: `"Cartita - Menú Digital" <${process.env.EMAIL_USER}>`,
+    from: `"Cartita" <${process.env.EMAIL_USER}>`,
     to: destinatario,
-    subject: `🎉 ¡Bienvenido a Cartita! - Completa tu registro`,
+    subject: `Bienvenido a Cartita - ${nombreNegocio}`,
     html: htmlContent,
-    text: `
-¡Bienvenido a Cartita!
-
-Tu solicitud para ${nombreNegocio} ha sido aceptada.
-
-Completa tu registro en el siguiente enlace:
-${enlaceRegistro}
-
-Este enlace es válido por 7 días.
-
-¿Necesitas ayuda? Contáctanos en ${process.env.EMAIL_USER}
-
-© ${new Date().getFullYear()} Cartita. Todos los derechos reservados.
-    `.trim()
+    text: `Bienvenido a Cartita\n\nTu solicitud para ${nombreNegocio} ha sido aceptada.\n\nCompleta tu registro: ${enlaceRegistro}\n\nEste enlace es válido por 7 días.\n\n© ${new Date().getFullYear()} Cartita`
   };
 
   try {
@@ -306,65 +188,42 @@ export async function enviarEmailConfirmacionSolicitud(destinatario, nombreNegoc
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Solicitud Recibida - Cartita</title>
+      <title>Solicitud Recibida</title>
     </head>
-    <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5;">
-      <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f5; padding: 40px 0;">
+    <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background-color: #fafafa;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #fafafa; padding: 60px 20px;">
         <tr>
           <td align="center">
-            <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <table width="500" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px;">
               
               <tr>
-                <td style="background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%); padding: 40px 30px; text-align: center;">
-                  <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: bold;">
-                    🍽️ Cartita
+                <td style="padding: 48px 40px; text-align: center; border-bottom: 1px solid #f0f0f0;">
+                  <h1 style="margin: 0; color: #000000; font-size: 24px; font-weight: 600; letter-spacing: -0.5px;">
+                    Cartita
                   </h1>
                 </td>
               </tr>
 
               <tr>
-                <td style="padding: 40px 30px;">
-                  <h2 style="margin: 0 0 20px 0; color: #333333; font-size: 24px;">
-                    ¡Solicitud Recibida! ✅
+                <td style="padding: 48px 40px;">
+                  <h2 style="margin: 0 0 16px 0; color: #000000; font-size: 20px; font-weight: 500;">
+                    Solicitud recibida
                   </h2>
                   
-                  <p style="margin: 0 0 15px 0; color: #666666; font-size: 16px; line-height: 1.6;">
-                    Hola,
-                  </p>
-                  
-                  <p style="margin: 0 0 15px 0; color: #666666; font-size: 16px; line-height: 1.6;">
-                    Hemos recibido tu solicitud para <strong>${nombreNegocio}</strong>.
-                  </p>
-                  
-                  <p style="margin: 0 0 25px 0; color: #666666; font-size: 16px; line-height: 1.6;">
-                    Nuestro equipo la revisará en breve y te contactaremos pronto con los siguientes pasos.
+                  <p style="margin: 0 0 24px 0; color: #666666; font-size: 15px; line-height: 1.6;">
+                    Hemos recibido tu solicitud para <strong>${nombreNegocio}</strong>. Te contactaremos pronto.
                   </p>
 
-                  <div style="background-color: #E8F5E9; border-left: 4px solid #4CAF50; padding: 20px; margin: 30px 0; border-radius: 4px;">
-                    <p style="margin: 0; color: #2E7D32; font-size: 14px; line-height: 1.5;">
-                      <strong>⏱️ Tiempo estimado de respuesta:</strong> 24-48 horas
-                    </p>
-                  </div>
-
-                  <p style="margin: 30px 0 0 0; color: #666666; font-size: 14px;">
-                    Gracias por confiar en Cartita.
+                  <p style="margin: 32px 0 0 0; padding-top: 24px; border-top: 1px solid #f0f0f0; color: #999999; font-size: 13px; line-height: 1.5;">
+                    Tiempo estimado de respuesta: 24-48 horas
                   </p>
                 </td>
               </tr>
 
               <tr>
-                <td style="background-color: #f9f9f9; padding: 30px; text-align: center; border-top: 1px solid #eeeeee;">
-                  <p style="margin: 0 0 10px 0; color: #999999; font-size: 14px;">
-                    ¿Tienes preguntas? Contáctanos en
-                  </p>
-                  <p style="margin: 0 0 20px 0;">
-                    <a href="mailto:${process.env.EMAIL_USER}" style="color: #FF6B35; text-decoration: none; font-weight: bold;">
-                      ${process.env.EMAIL_USER}
-                    </a>
-                  </p>
-                  
+                <td style="padding: 32px 40px; text-align: center; border-top: 1px solid #f0f0f0;">
                   <p style="margin: 0; color: #999999; font-size: 12px;">
-                    © ${new Date().getFullYear()} Cartita. Todos los derechos reservados.
+                    © ${new Date().getFullYear()} Cartita
                   </p>
                 </td>
               </tr>
@@ -377,9 +236,9 @@ export async function enviarEmailConfirmacionSolicitud(destinatario, nombreNegoc
   `;
 
   const mailOptions = {
-    from: `"Cartita - Menú Digital" <${process.env.EMAIL_USER}>`,
+    from: `"Cartita" <${process.env.EMAIL_USER}>`,
     to: destinatario,
-    subject: `✅ Solicitud recibida - ${nombreNegocio}`,
+    subject: `Solicitud recibida - ${nombreNegocio}`,
     html: htmlContent
   };
 
