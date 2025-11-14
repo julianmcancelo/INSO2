@@ -51,7 +51,6 @@ export const GET = requireAuth(async (request) => {
     });
 
   } catch (error) {
-    console.error('Error al obtener pedidos:', error);
     return NextResponse.json(
       { error: 'Error al obtener pedidos' },
       { status: 500 }
@@ -131,7 +130,6 @@ export async function POST(request) {
     }, { status: 201 });
 
   } catch (error) {
-    console.error('Error al crear pedido:', error);
     return NextResponse.json(
       { error: 'Error al crear pedido' },
       { status: 500 }

@@ -39,9 +39,7 @@ export async function GET(request, { params }) {
       local
     });
 
-  } catch (error) {
-    console.error('Error al obtener local:', error);
-    return NextResponse.json(
+  } catch (error) {    return NextResponse.json(
       { error: 'Error al obtener local' },
       { status: 500 }
     );

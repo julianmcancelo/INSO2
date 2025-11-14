@@ -24,7 +24,6 @@ export const GET = requireAuth(async (request, { params }) => {
     });
 
   } catch (error) {
-    console.error('Error al obtener local:', error);
     return NextResponse.json(
       { error: 'Error al obtener local' },
       { status: 500 }
@@ -77,7 +76,6 @@ export const PUT = requireAuth(async (request, { params }) => {
     });
 
   } catch (error) {
-    console.error('Error al actualizar local:', error);
     
     if (error.code === 'P2025') {
       return NextResponse.json(
@@ -108,7 +106,6 @@ export const DELETE = requireAuth(async (request, { params }) => {
     });
 
   } catch (error) {
-    console.error('Error al eliminar local:', error);
     
     if (error.code === 'P2025') {
       return NextResponse.json(

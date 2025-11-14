@@ -22,7 +22,6 @@ export async function POST(request) {
 
     // Por seguridad, siempre devolver éxito (no revelar si el email existe)
     if (!usuario) {
-      console.log('Email no encontrado:', email);
       return NextResponse.json({
         success: true,
         message: 'Si el email existe, recibirás un enlace de recuperación'
@@ -49,9 +48,7 @@ export async function POST(request) {
 
     try {
       await enviarEmailRecuperacion(email, resetUrl, usuario.nombre);
-      console.log('✅ Email de recuperación enviado a:', email);
     } catch (emailError) {
-      console.error('⚠️ Error al enviar email:', emailError);
       // No fallar la petición si el email falla
     }
 
@@ -61,7 +58,6 @@ export async function POST(request) {
     });
 
   } catch (error) {
-    console.error('Error en recuperación de contraseña:', error);
     return NextResponse.json(
       { error: 'Error al procesar solicitud' },
       { status: 500 }

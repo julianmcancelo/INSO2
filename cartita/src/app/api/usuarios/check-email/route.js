@@ -29,9 +29,7 @@ export async function GET(request) {
       } : null
     });
 
-  } catch (error) {
-    console.error('Error al verificar email:', error);
-    return NextResponse.json(
+  } catch (error) {    return NextResponse.json(
       { error: 'Error al verificar email' },
       { status: 500 }
     );

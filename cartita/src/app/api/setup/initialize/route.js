@@ -122,7 +122,6 @@ export async function POST(request) {
     }, { status: 201 });
 
   } catch (error) {
-    console.error('Error en setup inicial:', error);
     
     if (error.code === 'P2002') {
       return NextResponse.json(

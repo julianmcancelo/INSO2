@@ -156,7 +156,6 @@ export async function POST(request) {
     }, { status: 201 });
 
   } catch (error) {
-    console.error('Error al completar registro:', error);
     
     if (error.code === 'P2002') {
       return NextResponse.json(

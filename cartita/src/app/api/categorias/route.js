@@ -28,9 +28,7 @@ export async function GET(request) {
       categorias
     });
 
-  } catch (error) {
-    console.error('Error al obtener categorías:', error);
-    return NextResponse.json(
+  } catch (error) {    return NextResponse.json(
       { error: 'Error al obtener categorías' },
       { status: 500 }
     );
@@ -75,9 +73,7 @@ export const POST = requireAuth(async (request, context) => {
       categoria
     }, { status: 201 });
 
-  } catch (error) {
-    console.error('Error al crear categoría:', error);
-    return NextResponse.json(
+  } catch (error) {    return NextResponse.json(
       { error: 'Error al crear categoría' },
       { status: 500 }
     );

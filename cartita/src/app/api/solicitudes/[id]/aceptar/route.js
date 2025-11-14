@@ -65,11 +65,9 @@ export const POST = requireRole('superadmin')(async (request, { params }) => {
     Promise.resolve().then(async () => {
       try {
         await enviarEmailInvitacion(solicitud.email, token, solicitud.nombreNegocio);
-        console.log('✅ Email de invitación enviado a:', solicitud.email);
       } catch (emailError) {
-        console.warn('⚠️ No se pudo enviar email:', emailError.message);
       }
-    }).catch(err => console.warn('⚠️ Error en envío de email:', err.message));
+    }).catch(err =>);
 
     return NextResponse.json({
       success: true,
@@ -83,7 +81,6 @@ export const POST = requireRole('superadmin')(async (request, { params }) => {
     });
 
   } catch (error) {
-    console.error('Error al aceptar solicitud:', error);
     return NextResponse.json(
       { error: 'Error al procesar solicitud' },
       { status: 500 }

@@ -48,19 +48,15 @@ export const POST = requireRole('superadmin')(async (request, { params }) => {
 
     // Generar un nuevo token
     const nuevoToken = crypto.randomBytes(32).toString('hex');
-    console.log('🔑 Nuevo token generado:', nuevoToken.substring(0, 16) + '...');
     
     // Nueva fecha de vencimiento (7 días)
     const expiraEn = new Date();
     expiraEn.setDate(expiraEn.getDate() + 7);
-    console.log('⏰ Expira en:', expiraEn);
 
     // Marcar la invitación anterior como vencida (si existe) y crear una nueva
-    console.log('📝 Iniciando transacción...');
     const result = await prisma.$transaction(async (tx) => {
       // Si existe invitación anterior sin usar, marcarla como vencida
       if (invitacionAnterior && !invitacionAnterior.usado) {
-        console.log('⏰ Expirando invitación anterior:', invitacionAnterior.id);
         await tx.invitacion.update({
           where: { id: invitacionAnterior.id },
           data: {
@@ -70,7 +66,6 @@ export const POST = requireRole('superadmin')(async (request, { params }) => {
       }
 
       // Crear nueva invitación
-      console.log('✨ Creando nueva invitación...');
       const nuevaInvitacion = await tx.invitacion.create({
         data: {
           token: nuevoToken,
@@ -80,25 +75,24 @@ export const POST = requireRole('superadmin')(async (request, { params }) => {
           expiraEn
         }
       });
-      console.log('✅ Nueva invitación creada:', nuevaInvitacion.id);
 
       return nuevaInvitacion;
     });
-    console.log('✅ Transacción completada');
 
     // Generar URL de invitación
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
     const invitacionUrl = `${baseUrl}/registro/${nuevoToken}`;
 
-    // Enviar email con el nuevo link
+    // Enviar email con el nuevo link (sin bloquear)
     Promise.resolve().then(async () => {
       try {
         await enviarEmailInvitacion(solicitud.email, nuevoToken, solicitud.nombreNegocio);
-        console.log('✅ Email de invitación reenviado a:', solicitud.email);
       } catch (emailError) {
-        console.warn('⚠️ No se pudo enviar email:', emailError.message);
+        // Silenciar error de email
       }
-    }).catch(err => console.warn('⚠️ Error en envío de email:', err.message));
+    }).catch(err => {
+      // Silenciar error
+    });
 
     return NextResponse.json({
       success: true,
@@ -112,10 +106,8 @@ export const POST = requireRole('superadmin')(async (request, { params }) => {
     });
 
   } catch (error) {
-    console.error('Error al regenerar invitación:', error);
-    console.error('Stack:', error.stack);
     return NextResponse.json(
-      { error: 'Error al regenerar invitación: ' + error.message },
+      { error: 'Error al regenerar invitación' },
       { status: 500 }
     );
   }

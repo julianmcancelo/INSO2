@@ -56,17 +56,12 @@ export async function POST(request) {
         data: { usado: true }
       })
     ]);
-
-    console.log('✅ Contraseña restablecida para:', resetToken.usuario.email);
-
     return NextResponse.json({
       success: true,
       message: 'Contraseña restablecida exitosamente'
     });
 
-  } catch (error) {
-    console.error('Error al restablecer contraseña:', error);
-    return NextResponse.json(
+  } catch (error) {    return NextResponse.json(
       { error: 'Error al restablecer contraseña' },
       { status: 500 }
     );

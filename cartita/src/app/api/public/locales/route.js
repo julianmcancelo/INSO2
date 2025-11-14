@@ -24,7 +24,6 @@ export async function GET() {
       locales,
     });
   } catch (error) {
-    console.error('Error al obtener locales públicos:', error);
     return NextResponse.json(
       { error: 'Error al obtener locales públicos' },
       { status: 500 }

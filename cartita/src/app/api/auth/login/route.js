@@ -2,17 +2,58 @@ import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import prisma from '@/lib/prisma';
+import { checkRateLimit, isValidEmail } from '@/lib/security';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'tu-secreto-super-seguro';
+// SEGURIDAD: JWT_SECRET es obligatorio
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET no está configurado en las variables de entorno');
+}
 
 export async function POST(request) {
   try {
-    const { email, password } = await request.json();
+    const body = await request.json();
+    const { email, password } = body;
 
+    // Rate limiting por IP
+    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+    const rateLimitCheck = checkRateLimit(`login:${ip}`, 5, 60000); // 5 intentos por minuto
+    
+    if (!rateLimitCheck.allowed) {
+      return NextResponse.json(
+        { error: 'Demasiados intentos. Intenta de nuevo más tarde.' },
+        { 
+          status: 429,
+          headers: {
+            'Retry-After': Math.ceil((rateLimitCheck.resetTime - Date.now()) / 1000).toString()
+          }
+        }
+      );
+    }
+
+    // Validación de entrada
     if (!email || !password) {
       return NextResponse.json(
         { error: 'Email y contraseña son requeridos' },
         { status: 400 }
+      );
+    }
+
+    // Validar formato de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { error: 'Formato de email inválido' },
+        { status: 400 }
+      );
+    }
+
+    // Validar longitud de password
+    if (password.length < 6 || password.length > 100) {
+      return NextResponse.json(
+        { error: 'Credenciales inválidas' },
+        { status: 401 }
       );
     }
 
@@ -30,7 +71,10 @@ export async function POST(request) {
       }
     });
 
+    // Siempre devolver el mismo mensaje para no revelar si el email existe
     if (usuarios.length === 0) {
+      // Simular tiempo de procesamiento para prevenir timing attacks
+      await bcrypt.compare('dummy', '$2a$10$dummyhashfordummypasswordprotection');
       return NextResponse.json(
         { error: 'Credenciales inválidas' },
         { status: 401 }
@@ -54,7 +98,7 @@ export async function POST(request) {
       );
     }
 
-    // Generar token
+    // Generar token con algoritmo seguro
     const token = jwt.sign(
       { 
         id: user.id, 
@@ -63,7 +107,10 @@ export async function POST(request) {
         localId: user.localId 
       },
       JWT_SECRET,
-      { expiresIn: '7d' }
+      { 
+        expiresIn: '7d',
+        algorithm: 'HS256' // Especificar algoritmo explícitamente
+      }
     );
 
     // Retornar usuario sin password
@@ -79,7 +126,7 @@ export async function POST(request) {
     });
 
   } catch (error) {
-    console.error('Error en login:', error);
+    // No loguear detalles del error por seguridad en producción
     return NextResponse.json(
       { error: 'Error en el servidor' },
       { status: 500 }

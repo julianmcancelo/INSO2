@@ -41,9 +41,7 @@ export async function GET(request, { params }) {
       pedido: result.rows[0]
     });
 
-  } catch (error) {
-    console.error('Error al obtener pedido:', error);
-    return NextResponse.json(
+  } catch (error) {    return NextResponse.json(
       { error: 'Error al obtener pedido' },
       { status: 500 }
     );

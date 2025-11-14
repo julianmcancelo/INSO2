@@ -35,9 +35,7 @@ export const GET = requireRole('superadmin')(async (request, { params }) => {
       usuario: usuarioSinPassword
     });
 
-  } catch (error) {
-    console.error('Error al obtener usuario:', error);
-    return NextResponse.json(
+  } catch (error) {    return NextResponse.json(
       { error: 'Error al obtener usuario' },
       { status: 500 }
     );
@@ -96,9 +94,7 @@ export const PUT = requireRole('superadmin')(async (request, { params }) => {
       message: 'Usuario actualizado exitosamente'
     });
 
-  } catch (error) {
-    console.error('Error al actualizar usuario:', error);
-    
+  } catch (error) {    
     if (error.code === 'P2025') {
       return NextResponse.json(
         { error: 'Usuario no encontrado' },
@@ -143,9 +139,7 @@ export const DELETE = requireRole('superadmin')(async (request, { params }) => {
       message: 'Usuario eliminado exitosamente'
     });
 
-  } catch (error) {
-    console.error('Error al eliminar usuario:', error);
-    
+  } catch (error) {    
     if (error.code === 'P2025') {
       return NextResponse.json(
         { error: 'Usuario no encontrado' },

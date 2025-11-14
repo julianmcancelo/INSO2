@@ -16,9 +16,7 @@ export const GET = requireRole('superadmin')(async (request) => {
       invitaciones
     });
 
-  } catch (error) {
-    console.error('Error al obtener invitaciones:', error);
-    return NextResponse.json(
+  } catch (error) {    return NextResponse.json(
       { error: 'Error al obtener invitaciones' },
       { status: 500 }
     );

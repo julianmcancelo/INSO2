@@ -11,9 +11,7 @@ export async function GET() {
       setupNeeded: userCount === 0
     });
 
-  } catch (error) {
-    console.error('Error checking setup:', error);
-    
+  } catch (error) {    
     // Si hay error de conexión o tablas no existen, setup es necesario
     return NextResponse.json({
       success: true,

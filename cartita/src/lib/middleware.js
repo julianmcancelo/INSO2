@@ -1,7 +1,12 @@
 import jwt from 'jsonwebtoken';
 import { NextResponse } from 'next/server';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'tu-secreto-super-seguro';
+// SEGURIDAD: JWT_SECRET es obligatorio
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET no está configurado en las variables de entorno');
+}
 
 export function verifyToken(request) {
   try {
@@ -12,11 +17,28 @@ export function verifyToken(request) {
     }
 
     const token = authHeader.substring(7);
-    const decoded = jwt.verify(token, JWT_SECRET);
+    
+    // Validar longitud del token para prevenir ataques
+    if (token.length > 500) {
+      return { error: 'Token inválido', status: 401 };
+    }
+    
+    const decoded = jwt.verify(token, JWT_SECRET, {
+      algorithms: ['HS256'], // Solo permitir HS256
+      maxAge: '7d' // Validar expiración
+    });
+    
+    // Validar estructura del token
+    if (!decoded.id || !decoded.email || !decoded.rol) {
+      return { error: 'Token inválido', status: 401 };
+    }
     
     return { user: decoded };
   } catch (error) {
-    console.error('Error verificando token:', error);
+    // No loguear el error completo por seguridad
+    if (error.name === 'TokenExpiredError') {
+      return { error: 'Token expirado', status: 401 };
+    }
     return { error: 'Token inválido', status: 401 };
   }
 }

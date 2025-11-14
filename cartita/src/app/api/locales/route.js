@@ -43,11 +43,6 @@ export const GET = requireAuth(async (request, { user }) => {
           .map(u => u.localId)
           .filter(id => id !== null)
       )];
-
-      console.log('Usuario:', user.email);
-      console.log('Usuarios con mismo email:', usuariosConMismoEmail);
-      console.log('Local IDs encontrados:', localIds);
-
       if (localIds.length > 0) {
         // Obtener los locales
         locales = await prisma.local.findMany({
@@ -74,17 +69,12 @@ export const GET = requireAuth(async (request, { user }) => {
         locales = [];
       }
     }
-
-    console.log('Locales devueltos:', locales.length);
-
     return NextResponse.json({
       success: true,
       locales
     });
 
-  } catch (error) {
-    console.error('Error al obtener locales:', error);
-    return NextResponse.json(
+  } catch (error) {    return NextResponse.json(
       { error: 'Error al obtener locales' },
       { status: 500 }
     );
@@ -134,9 +124,7 @@ export const POST = requireRole('superadmin')(async (request) => {
       local
     }, { status: 201 });
 
-  } catch (error) {
-    console.error('Error al crear local:', error);
-    
+  } catch (error) {    
     if (error.code === 'P2002') { // Unique violation
       return NextResponse.json(
         { error: 'El slug ya está en uso' },

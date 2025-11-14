@@ -30,7 +30,6 @@ export const GET = requireRole('superadmin')(async (request) => {
     });
 
   } catch (error) {
-    console.error('Error al obtener usuarios:', error);
     return NextResponse.json(
       { error: 'Error al obtener usuarios' },
       { status: 500 }
@@ -115,7 +114,6 @@ export const POST = requireRole('superadmin')(async (request) => {
     }, { status: 201 });
 
   } catch (error) {
-    console.error('Error al crear usuario:', error);
     
     if (error.code === 'P2002') {
       return NextResponse.json(

@@ -48,12 +48,8 @@ export async function POST(request) {
     // Enviar email de confirmación al cliente (sin bloquear)
     Promise.resolve().then(async () => {
       try {
-        await enviarEmailConfirmacionSolicitud(solicitud.email, solicitud.nombreNegocio);
-        console.log('✅ Email de confirmación enviado a:', solicitud.email);
-      } catch (emailError) {
-        console.warn('⚠️ No se pudo enviar email:', emailError.message);
-      }
-    }).catch(err => console.warn('⚠️ Error en envío de email:', err.message));
+        await enviarEmailConfirmacionSolicitud(solicitud.email, solicitud.nombreNegocio);      } catch (emailError) {      }
+    }).catch(err =>);
 
     // TODO: Enviar email de notificación al admin
 
@@ -63,9 +59,7 @@ export async function POST(request) {
       message: 'Solicitud enviada exitosamente. Te contactaremos pronto.'
     }, { status: 201 });
 
-  } catch (error) {
-    console.error('Error al crear solicitud:', error);
-    return NextResponse.json(
+  } catch (error) {    return NextResponse.json(
       { error: 'Error al enviar solicitud' },
       { status: 500 }
     );
@@ -87,9 +81,7 @@ export async function GET(request) {
       solicitudes
     });
 
-  } catch (error) {
-    console.error('Error al obtener solicitudes:', error);
-    return NextResponse.json(
+  } catch (error) {    return NextResponse.json(
       { error: 'Error al obtener solicitudes' },
       { status: 500 }
     );

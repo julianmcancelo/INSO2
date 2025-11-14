@@ -75,7 +75,6 @@ export const GET = requireRole('superadmin')(async (request, { params }) => {
     });
 
   } catch (error) {
-    console.error('Error:', error);
     return NextResponse.json(
       { error: 'Error al obtener datos' },
       { status: 500 }
@@ -116,7 +115,6 @@ export const PUT = requireRole('superadmin')(async (request, { params }) => {
     });
 
   } catch (error) {
-    console.error('Error al actualizar solicitud:', error);
     
     if (error.code === 'P2025') {
       return NextResponse.json(
@@ -147,7 +145,6 @@ export const DELETE = requireRole('superadmin')(async (request, { params }) => {
     });
 
   } catch (error) {
-    console.error('Error al eliminar solicitud:', error);
     
     if (error.code === 'P2025') {
       return NextResponse.json(

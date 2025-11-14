@@ -28,9 +28,7 @@ export async function GET(request, { params }) {
       valid: true
     });
 
-  } catch (error) {
-    console.error('Error al verificar token:', error);
-    return NextResponse.json(
+  } catch (error) {    return NextResponse.json(
       { error: 'Error al verificar token' },
       { status: 500 }
     );

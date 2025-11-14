@@ -41,9 +41,7 @@ export const PUT = requireAuth(async (request, { params }) => {
       pedido: result.rows[0]
     });
 
-  } catch (error) {
-    console.error('Error al actualizar estado:', error);
-    return NextResponse.json(
+  } catch (error) {    return NextResponse.json(
       { error: 'Error al actualizar estado' },
       { status: 500 }
     );

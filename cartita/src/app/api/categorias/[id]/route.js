@@ -37,9 +37,7 @@ export const GET = requireAuth(async (request, context) => {
       categoria
     });
 
-  } catch (error) {
-    console.error('Error al obtener categoría:', error);
-    return NextResponse.json(
+  } catch (error) {    return NextResponse.json(
       { error: 'Error al obtener categoría' },
       { status: 500 }
     );
@@ -91,9 +89,7 @@ export const PUT = requireAuth(async (request, context) => {
       message: 'Categoría actualizada correctamente'
     });
 
-  } catch (error) {
-    console.error('Error al actualizar categoría:', error);
-    
+  } catch (error) {    
     if (error.code === 'P2025') {
       return NextResponse.json(
         { error: 'Categoría no encontrada' },
@@ -155,9 +151,7 @@ export const DELETE = requireAuth(async (request, context) => {
       message: 'Categoría eliminada correctamente'
     });
 
-  } catch (error) {
-    console.error('Error al eliminar categoría:', error);
-    
+  } catch (error) {    
     if (error.code === 'P2025') {
       return NextResponse.json(
         { error: 'Categoría no encontrada' },

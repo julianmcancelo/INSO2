@@ -41,9 +41,7 @@ export const GET = requireAuth(async (request, context) => {
       producto
     });
 
-  } catch (error) {
-    console.error('Error al obtener producto:', error);
-    return NextResponse.json(
+  } catch (error) {    return NextResponse.json(
       { error: 'Error al obtener producto' },
       { status: 500 }
     );
@@ -119,9 +117,7 @@ export const PUT = requireAuth(async (request, context) => {
       producto
     });
 
-  } catch (error) {
-    console.error('Error al actualizar producto:', error);
-    return NextResponse.json(
+  } catch (error) {    return NextResponse.json(
       { error: 'Error al actualizar producto' },
       { status: 500 }
     );
@@ -163,9 +159,7 @@ export const DELETE = requireAuth(async (request, context) => {
       message: 'Producto eliminado'
     });
 
-  } catch (error) {
-    console.error('Error al eliminar producto:', error);
-    return NextResponse.json(
+  } catch (error) {    return NextResponse.json(
       { error: 'Error al eliminar producto' },
       { status: 500 }
     );

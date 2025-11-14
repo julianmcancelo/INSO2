@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { requireAuth } from '@/lib/middleware';
+import { sanitizeString, isPositiveInteger, isPositiveNumber, isValidBase64Image } from '@/lib/security';
 
 // GET - Obtener productos
 export async function GET(request) {
@@ -46,9 +47,7 @@ export async function GET(request) {
       productos
     });
 
-  } catch (error) {
-    console.error('Error al obtener productos:', error);
-    return NextResponse.json(
+  } catch (error) {    return NextResponse.json(
       { error: 'Error al obtener productos' },
       { status: 500 }
     );
@@ -73,10 +72,48 @@ export const POST = requireAuth(async (request, context) => {
       localId
     } = body;
 
-    // Validaciones
+    // Validaciones básicas
     if (!categoriaId || !nombre || !precio) {
       return NextResponse.json(
         { error: 'Campos requeridos: categoriaId, nombre, precio' },
+        { status: 400 }
+      );
+    }
+
+    // Validar tipos de datos
+    if (!isPositiveInteger(categoriaId)) {
+      return NextResponse.json(
+        { error: 'categoriaId debe ser un número entero positivo' },
+        { status: 400 }
+      );
+    }
+
+    if (!isPositiveNumber(precio)) {
+      return NextResponse.json(
+        { error: 'precio debe ser un número positivo' },
+        { status: 400 }
+      );
+    }
+
+    // Validar longitud de strings
+    if (nombre.length < 1 || nombre.length > 200) {
+      return NextResponse.json(
+        { error: 'nombre debe tener entre 1 y 200 caracteres' },
+        { status: 400 }
+      );
+    }
+
+    if (descripcion && descripcion.length > 1000) {
+      return NextResponse.json(
+        { error: 'descripción no puede exceder 1000 caracteres' },
+        { status: 400 }
+      );
+    }
+
+    // Validar imagen base64 si se proporciona
+    if (imagenBase64 && !isValidBase64Image(imagenBase64)) {
+      return NextResponse.json(
+        { error: 'Imagen inválida o demasiado grande (máximo 5MB)' },
         { status: 400 }
       );
     }
@@ -121,9 +158,7 @@ export const POST = requireAuth(async (request, context) => {
       producto
     }, { status: 201 });
 
-  } catch (error) {
-    console.error('Error al crear producto:', error);
-    return NextResponse.json(
+  } catch (error) {    return NextResponse.json(
       { error: 'Error al crear producto' },
       { status: 500 }
     );
