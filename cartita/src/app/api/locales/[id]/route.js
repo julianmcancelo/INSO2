@@ -59,7 +59,12 @@ export const PUT = requireAuth(async (request, { params }) => {
     if (logoBase64 !== undefined) dataToUpdate.logoBase64 = logoBase64;
     if (colorPrimario !== undefined) dataToUpdate.colorPrimario = colorPrimario;
     if (colorSecundario !== undefined) dataToUpdate.colorSecundario = colorSecundario;
-    if (horarioAtencion !== undefined) dataToUpdate.horarioAtencion = horarioAtencion;
+    if (horarioAtencion !== undefined) {
+      // Convertir a string si es un objeto
+      dataToUpdate.horarioAtencion = typeof horarioAtencion === 'object' 
+        ? JSON.stringify(horarioAtencion) 
+        : horarioAtencion;
+    }
 
     const local = await prisma.local.update({
       where: { id: parseInt(id) },
