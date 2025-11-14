@@ -18,6 +18,8 @@ model Usuario {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  local     Local?   @relation(fields: [localId], references: [id])
+
   @@unique([email, localId], name: "email_local_unique")
   @@index([email(length: 250)])
   @@index([localId], map: "usuarios_local_id_fkey")
@@ -39,6 +41,8 @@ model Local {
   activo          Boolean  @default(true)
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
+
+  usuarios        Usuario[]
 
   @@map("locales")
 }

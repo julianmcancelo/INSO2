@@ -491,7 +491,7 @@ const LandingPage = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-12 sm:py-16 md:py-20 bg-white">
+      <section id="features" className="py-12 sm:py-16 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -537,11 +537,84 @@ const LandingPage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 py-6">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-sm text-gray-600">
-            Armado con ♥ por el equipo de Ingeniería 2
-          </p>
+      <footer className="bg-gray-950 text-gray-300 border-t border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 py-10 sm:py-12">
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
+            {/* Brand + claim */}
+            <div className="max-w-sm">
+              <div className="flex items-center gap-2 mb-3">
+                <BrandLogo size="sm" showText={true} />
+              </div>
+              <p className="text-sm text-gray-400">
+                La forma simple y profesional de tomar pedidos con códigos QR y un menú online pensado para restaurantes reales.
+              </p>
+            </div>
+
+            {/* Navigation */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 text-sm">
+              <div>
+                <h3 className="text-xs font-semibold tracking-wide text-gray-400 uppercase mb-3">
+                  Producto
+                </h3>
+                <ul className="space-y-2">
+                  <li>
+                    <button
+                      type="button"
+                      className="text-gray-300 hover:text-white transition-colors"
+                      onClick={() => {
+                        const section = document.getElementById('features');
+                        if (section) section.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                    >
+                      Características
+                    </button>
+                  </li>
+                  <li>
+                    <span className="text-gray-500 cursor-default">Casos de uso</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-xs font-semibold tracking-wide text-gray-400 uppercase mb-3">
+                  Ayuda
+                </h3>
+                <ul className="space-y-2">
+                  <li>
+                    <a href="mailto:hola@cartita.digital" className="text-gray-300 hover:text-white transition-colors">
+                      Contacto
+                    </a>
+                  </li>
+                  <li>
+                    <span className="text-gray-500 cursor-default">Centro de ayuda</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="hidden sm:block">
+                <h3 className="text-xs font-semibold tracking-wide text-gray-400 uppercase mb-3">
+                  Legal
+                </h3>
+                <ul className="space-y-2">
+                  <li>
+                    <span className="text-gray-500 cursor-default">Términos y condiciones</span>
+                  </li>
+                  <li>
+                    <span className="text-gray-500 cursor-default">Política de privacidad</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 pt-6 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+            <p>
+              &copy; {new Date().getFullYear()} Cartita. Todos los derechos reservados.
+            </p>
+            <p className="text-[11px] sm:text-xs text-gray-600">
+              Diseñado para restaurantes, bares y cafeterías que quieren vender más y atender mejor a sus clientes.
+            </p>
+          </div>
         </div>
       </footer>
 
