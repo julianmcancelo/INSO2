@@ -39,6 +39,16 @@ model Local {
   colorSecundario String   @default("#004E89") @map("color_secundario") @db.VarChar(7)
   horarioAtencion String?  @map("horario_atencion") @db.LongText
   activo          Boolean  @default(true)
+  
+  // Datos para transferencias
+  cbuAlias        String?  @map("cbu_alias") @db.VarChar(255)
+  cbuNumero       String?  @map("cbu_numero") @db.VarChar(22)
+  titularCuenta   String?  @map("titular_cuenta") @db.VarChar(255)
+  bancoNombre     String?  @map("banco_nombre") @db.VarChar(255)
+  aceptaEfectivo  Boolean  @default(true) @map("acepta_efectivo")
+  aceptaTransferencia Boolean @default(false) @map("acepta_transferencia")
+  aceptaMercadoPago Boolean @default(false) @map("acepta_mercadopago")
+  
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
 
@@ -94,11 +104,16 @@ model Pedido {
   telefonoCliente String   @map("telefono_cliente") @db.VarChar(50)
   tipoEntrega     String   @map("tipo_entrega") @db.VarChar(50)
   direccion       String?  @db.VarChar(500)
+  latitud         String?  @db.VarChar(50)
+  longitud        String?  @db.VarChar(50)
+  referenciaDireccion String? @map("referencia_direccion") @db.VarChar(500)
   numeroMesa      String?  @map("numero_mesa") @db.VarChar(20)
   total           Decimal  @db.Decimal(10, 2)
   notas           String?  @db.Text
   estado          String   @default("pendiente") @db.VarChar(50)
   metodoPago      String?  @map("metodo_pago") @db.VarChar(50)
+  comprobanteBase64 String? @map("comprobante_base64") @db.LongText
+  estadoPago      String?  @default("pendiente") @map("estado_pago") @db.VarChar(50)
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
 
