@@ -64,15 +64,15 @@ export default function Step1DatosPersonales({
   return (
     <div className="space-y-6 animate-fadeIn">
       {/* Header */}
-      <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-400 to-red-500 rounded-full mb-4 shadow-lg">
-          <Sparkles className="text-white" size={32} />
+      <div className="text-center mb-6">
+        <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-orange-400 to-red-500 rounded-full mb-3 shadow-lg">
+          <User className="text-white" size={28} />
         </div>
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">
-          ¡Hola! 👋
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+          Tus datos
         </h2>
-        <p className="text-gray-600 text-lg">
-          Empecemos con tus datos para el pedido
+        <p className="text-gray-600 text-sm md:text-base">
+          Necesitamos tu información para el pedido
         </p>
       </div>
 
@@ -99,8 +99,8 @@ export default function Step1DatosPersonales({
             autoFocus
           />
           {errors.nombreCliente && (
-            <p className="mt-2 text-sm text-red-600 flex items-center gap-1">
-              <span className="text-lg">⚠️</span> {errors.nombreCliente}
+            <p className="mt-2 text-sm text-red-600">
+              {errors.nombreCliente}
             </p>
           )}
         </div>
@@ -125,12 +125,12 @@ export default function Step1DatosPersonales({
             }`}
           />
           {errors.telefonoCliente && (
-            <p className="mt-2 text-sm text-red-600 flex items-center gap-1">
-              <span className="text-lg">⚠️</span> {errors.telefonoCliente}
+            <p className="mt-2 text-sm text-red-600">
+              {errors.telefonoCliente}
             </p>
           )}
           <p className="mt-2 text-xs text-gray-500">
-            💬 Te contactaremos por WhatsApp para coordinar tu pedido
+            Te contactaremos por WhatsApp para coordinar tu pedido
           </p>
         </div>
       </div>
@@ -145,12 +145,9 @@ export default function Step1DatosPersonales({
       </button>
 
       {/* Info Card */}
-      <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 mt-6">
-        <p className="text-sm text-blue-800 flex items-start gap-2">
-          <span className="text-lg flex-shrink-0">🔒</span>
-          <span>
-            Tus datos están seguros y solo se usan para procesar tu pedido
-          </span>
+      <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-3 md:p-4 mt-6">
+        <p className="text-xs md:text-sm text-blue-800">
+          Tus datos están seguros y solo se usan para procesar tu pedido
         </p>
       </div>
     </div>

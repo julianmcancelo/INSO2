@@ -84,15 +84,15 @@ export default function Step2MetodoEntrega({
   return (
     <div className="space-y-6 animate-fadeIn">
       {/* Header */}
-      <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full mb-4 shadow-lg">
-          <Truck className="text-white" size={32} />
+      <div className="text-center mb-6">
+        <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full mb-3 shadow-lg">
+          <Truck className="text-white" size={28} />
         </div>
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">
-          ¿Cómo lo recibís? 📦
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+          Método de entrega
         </h2>
-        <p className="text-gray-600 text-lg">
-          Elegí tu método de entrega preferido
+        <p className="text-gray-600 text-sm md:text-base">
+          Elegí cómo querés recibir tu pedido
         </p>
       </div>
 
@@ -123,7 +123,7 @@ export default function Step2MetodoEntrega({
               <div className={`text-xs px-3 py-1 rounded-full ${
                 tipoEntrega === 'takeaway' ? 'bg-white/20' : 'bg-green-100 text-green-700'
               }`}>
-                ✓ Sin cargo
+                Sin cargo
               </div>
             </div>
           </button>
@@ -152,7 +152,7 @@ export default function Step2MetodoEntrega({
               <div className={`text-xs px-3 py-1 rounded-full ${
                 tipoEntrega === 'envio' ? 'bg-white/20' : 'bg-blue-100 text-blue-700'
               }`}>
-                🚚 Delivery
+                Delivery
               </div>
             </div>
           </button>
@@ -183,11 +183,11 @@ export default function Step2MetodoEntrega({
 
           {/* Dirección seleccionada */}
           {direccionData.direccion && (
-            <div className="bg-green-50 border-2 border-green-200 rounded-xl p-4">
-              <p className="text-sm font-semibold text-green-800 mb-1">
-                📍 Dirección seleccionada:
+            <div className="bg-green-50 border-2 border-green-200 rounded-xl p-3 md:p-4">
+              <p className="text-xs md:text-sm font-semibold text-green-800 mb-1">
+                Dirección seleccionada:
               </p>
-              <p className="text-green-900">{direccionData.direccion}</p>
+              <p className="text-sm md:text-base text-green-900">{direccionData.direccion}</p>
             </div>
           )}
 

@@ -57,25 +57,25 @@ export default function AsistentePedido({ local, onComplete }) {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Progress Bar */}
       <div className="bg-white shadow-sm sticky top-0 z-40">
-        <div className="max-w-4xl mx-auto px-4 py-4">
+        <div className="max-w-4xl mx-auto px-3 md:px-4 py-3 md:py-4">
           {/* Steps Indicator */}
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between">
             {STEPS.map((step, index) => (
               <div key={step.id} className="flex items-center flex-1">
                 <div className="flex flex-col items-center flex-1">
                   <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
+                    className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-bold text-xs md:text-sm transition-all ${
                       currentStep > step.id
                         ? 'bg-green-500 text-white'
                         : currentStep === step.id
-                        ? 'bg-black text-white ring-4 ring-black/10'
+                        ? 'bg-black text-white ring-2 md:ring-4 ring-black/10'
                         : 'bg-gray-200 text-gray-500'
                     }`}
                   >
-                    {currentStep > step.id ? <Check size={20} /> : step.id}
+                    {currentStep > step.id ? <Check size={16} className="md:w-5 md:h-5" /> : step.id}
                   </div>
                   <span
-                    className={`text-xs mt-1 font-medium hidden sm:block ${
+                    className={`text-[10px] md:text-xs mt-1 font-medium hidden sm:block ${
                       currentStep === step.id ? 'text-black' : 'text-gray-500'
                     }`}
                   >
@@ -84,7 +84,7 @@ export default function AsistentePedido({ local, onComplete }) {
                 </div>
                 {index < STEPS.length - 1 && (
                   <div
-                    className={`h-1 flex-1 mx-2 rounded-full transition-all ${
+                    className={`h-0.5 md:h-1 flex-1 mx-1 md:mx-2 rounded-full transition-all ${
                       currentStep > step.id ? 'bg-green-500' : 'bg-gray-200'
                     }`}
                   />
@@ -96,8 +96,8 @@ export default function AsistentePedido({ local, onComplete }) {
       </div>
 
       {/* Step Content */}
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+      <div className="max-w-4xl mx-auto px-3 md:px-4 py-4 md:py-8 pb-24 md:pb-8">
+        <div className="bg-white rounded-xl md:rounded-2xl shadow-lg p-4 md:p-6 lg:p-8">
           <CurrentStepComponent
             local={local}
             pedidoData={pedidoData}
@@ -111,20 +111,8 @@ export default function AsistentePedido({ local, onComplete }) {
         </div>
       </div>
 
-      {/* Navigation Buttons - Mobile Fixed */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 md:hidden z-30">
-        <div className="flex gap-3">
-          {currentStep > 1 && (
-            <button
-              onClick={goToPrevStep}
-              className="flex-1 bg-gray-100 text-gray-700 py-3 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-gray-200 transition"
-            >
-              <ChevronLeft size={20} />
-              Atrás
-            </button>
-          )}
-        </div>
-      </div>
+      {/* Mobile Bottom Padding */}
+      <div className="h-20 md:hidden"></div>
     </div>
   );
 }

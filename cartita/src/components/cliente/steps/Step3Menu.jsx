@@ -74,34 +74,34 @@ export default function Step3Menu({
   return (
     <div className="space-y-6 animate-fadeIn">
       {/* Header */}
-      <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full mb-4 shadow-lg">
-          <ShoppingCart className="text-white" size={32} />
+      <div className="text-center mb-6">
+        <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full mb-3 shadow-lg">
+          <ShoppingCart className="text-white" size={28} />
         </div>
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">
-          Tu Pedido 🛍️
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+          Tu pedido
         </h2>
-        <p className="text-gray-600 text-lg">
-          Revisá y confirmá lo que elegiste
+        <p className="text-gray-600 text-sm md:text-base">
+          Elegí tus productos y revisá tu pedido
         </p>
       </div>
 
       {/* Resumen del Cliente */}
-      <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200 rounded-xl p-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+      <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200 rounded-xl p-3 md:p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3 text-xs md:text-sm">
           <div>
-            <p className="text-gray-600 font-medium">👤 Cliente</p>
-            <p className="text-gray-900 font-semibold">{pedidoData.nombreCliente}</p>
+            <p className="text-gray-600 font-medium">Cliente</p>
+            <p className="text-gray-900 font-semibold truncate">{pedidoData.nombreCliente}</p>
           </div>
           <div>
-            <p className="text-gray-600 font-medium">📱 WhatsApp</p>
+            <p className="text-gray-600 font-medium">WhatsApp</p>
             <p className="text-gray-900 font-semibold">{pedidoData.telefonoCliente}</p>
           </div>
-          <div className="md:col-span-2">
+          <div className="sm:col-span-2">
             <p className="text-gray-600 font-medium">
-              {pedidoData.tipoEntrega === 'takeaway' ? '📦 Retiro' : '🚚 Envío'}
+              {pedidoData.tipoEntrega === 'takeaway' ? 'Retiro' : 'Envío'}
             </p>
-            <p className="text-gray-900 font-semibold">
+            <p className="text-gray-900 font-semibold text-xs md:text-sm">
               {pedidoData.tipoEntrega === 'takeaway' 
                 ? 'Retiro en el local' 
                 : pedidoData.direccion}
@@ -228,7 +228,7 @@ export default function Step3Menu({
                     {/* Notas */}
                     {item.notas && (
                       <p className="text-xs text-gray-500 italic mb-2">
-                        💬 {item.notas}
+                        Nota: {item.notas}
                       </p>
                     )}
 
@@ -308,12 +308,9 @@ export default function Step3Menu({
       </div>
 
       {/* Info */}
-      <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-4">
-        <p className="text-sm text-yellow-800 flex items-start gap-2">
-          <span className="text-lg flex-shrink-0">💡</span>
-          <span>
-            Podés modificar las cantidades o eliminar productos antes de continuar
-          </span>
+      <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-3 md:p-4">
+        <p className="text-xs md:text-sm text-yellow-800">
+          Podés modificar las cantidades o eliminar productos antes de continuar
         </p>
       </div>
 

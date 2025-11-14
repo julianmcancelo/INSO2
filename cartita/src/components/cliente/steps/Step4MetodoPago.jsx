@@ -132,15 +132,15 @@ export default function Step4MetodoPago({
   return (
     <div className="space-y-6 animate-fadeIn">
       {/* Header */}
-      <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full mb-4 shadow-lg">
-          <CreditCard className="text-white" size={32} />
+      <div className="text-center mb-6">
+        <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full mb-3 shadow-lg">
+          <CreditCard className="text-white" size={28} />
         </div>
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">
-          Método de Pago 💳
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+          Método de pago
         </h2>
-        <p className="text-gray-600 text-lg">
-          ¿Cómo vas a pagar tu pedido?
+        <p className="text-gray-600 text-sm md:text-base">
+          Elegí cómo vas a pagar tu pedido
         </p>
       </div>
 
@@ -234,12 +234,12 @@ export default function Step4MetodoPago({
         </div>
       </div>
 
-      {/* Datos de Transferencia */}
+          {/* Datos de Transferencia */}
       {metodoPago === 'transferencia' && (
         <div className="space-y-4 animate-fadeIn">
-          <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-5">
-            <h3 className="font-bold text-blue-900 mb-4 text-lg">
-              📋 Datos para transferir
+          <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 md:p-5">
+            <h3 className="font-bold text-blue-900 mb-4 text-base md:text-lg">
+              Datos para transferir
             </h3>
             
             <div className="space-y-3">
@@ -304,9 +304,9 @@ export default function Step4MetodoPago({
           </div>
 
           {/* Subir Comprobante */}
-          <div className="bg-white border-2 border-gray-200 rounded-xl p-5">
-            <h3 className="font-bold text-gray-900 mb-4 text-lg">
-              📸 Comprobante de pago
+          <div className="bg-white border-2 border-gray-200 rounded-xl p-4 md:p-5">
+            <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">
+              Comprobante de pago
             </h3>
             
             {!comprobantePreview ? (
@@ -353,12 +353,9 @@ export default function Step4MetodoPago({
             )}
           </div>
 
-          <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-4">
-            <p className="text-sm text-yellow-800 flex items-start gap-2">
-              <span className="text-lg flex-shrink-0">⏱️</span>
-              <span>
-                Tu pedido será confirmado una vez que verifiquemos el pago
-              </span>
+          <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-3 md:p-4">
+            <p className="text-xs md:text-sm text-yellow-800">
+              Tu pedido será confirmado una vez que verifiquemos el pago
             </p>
           </div>
         </div>
