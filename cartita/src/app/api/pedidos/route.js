@@ -68,9 +68,15 @@ export async function POST(request) {
       telefonoCliente,
       tipoEntrega,
       direccion,
+      latitud,
+      longitud,
+      referenciaDireccion,
       items,
       total,
-      notas
+      notas,
+      metodoPago,
+      comprobanteBase64,
+      estadoPago
     } = body;
 
     // Validaciones
@@ -94,11 +100,13 @@ export async function POST(request) {
     const pedidoResult = await db.query(
       `INSERT INTO pedidos 
        (local_id, numero_pedido, nombre_cliente, telefono_cliente, 
-        tipo_entrega, direccion, total, notas, estado) 
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'pendiente') 
+        tipo_entrega, direccion, latitud, longitud, referencia_direccion,
+        total, notas, estado, metodo_pago, comprobante_base64, estado_pago) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, 'pendiente', $12, $13, $14) 
        RETURNING *`,
       [localId, numeroPedido, nombreCliente, telefonoCliente, 
-       tipoEntrega, direccion, total, notas]
+       tipoEntrega, direccion, latitud, longitud, referenciaDireccion,
+       total, notas, metodoPago, comprobanteBase64, estadoPago || 'pendiente']
     );
 
     const pedido = pedidoResult.rows[0];

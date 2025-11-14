@@ -46,7 +46,14 @@ export const PUT = requireAuth(async (request, { params }) => {
       logoBase64,
       colorPrimario,
       colorSecundario,
-      horarioAtencion
+      horarioAtencion,
+      cbuAlias,
+      cbuNumero,
+      titularCuenta,
+      bancoNombre,
+      aceptaEfectivo,
+      aceptaTransferencia,
+      aceptaMercadoPago
     } = body;
 
     const dataToUpdate = {};
@@ -64,6 +71,15 @@ export const PUT = requireAuth(async (request, { params }) => {
         ? JSON.stringify(horarioAtencion) 
         : horarioAtencion;
     }
+    
+    // Datos de transferencia
+    if (cbuAlias !== undefined) dataToUpdate.cbuAlias = cbuAlias;
+    if (cbuNumero !== undefined) dataToUpdate.cbuNumero = cbuNumero;
+    if (titularCuenta !== undefined) dataToUpdate.titularCuenta = titularCuenta;
+    if (bancoNombre !== undefined) dataToUpdate.bancoNombre = bancoNombre;
+    if (aceptaEfectivo !== undefined) dataToUpdate.aceptaEfectivo = aceptaEfectivo;
+    if (aceptaTransferencia !== undefined) dataToUpdate.aceptaTransferencia = aceptaTransferencia;
+    if (aceptaMercadoPago !== undefined) dataToUpdate.aceptaMercadoPago = aceptaMercadoPago;
 
     const local = await prisma.local.update({
       where: { id: parseInt(id) },
