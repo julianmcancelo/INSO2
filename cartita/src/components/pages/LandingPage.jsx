@@ -419,9 +419,9 @@ const LandingPage = () => {
           </div>
 
           <div className="relative overflow-hidden">
-            {/* Fades laterales */}
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-10 sm:w-16 bg-gradient-to-r from-white to-transparent z-10" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 w-10 sm:w-16 bg-gradient-to-l from-white to-transparent z-10" />
+            {/* Fades laterales solo en desktop */}
+            <div className="hidden sm:block pointer-events-none absolute inset-y-0 left-0 w-10 sm:w-16 bg-gradient-to-r from-white to-transparent z-10" />
+            <div className="hidden sm:block pointer-events-none absolute inset-y-0 right-0 w-10 sm:w-16 bg-gradient-to-l from-white to-transparent z-10" />
 
             <div className="relative mx-auto rounded-2xl sm:rounded-3xl border border-orange-100 bg-gradient-to-r from-orange-50 via-white to-orange-50/60 shadow-sm px-4 sm:px-6 py-4 sm:py-5">
               {(() => {
@@ -430,9 +430,9 @@ const LandingPage = () => {
                   : fallbackBrands;
 
                 return (
-                  <div className="flex items-center gap-8 sm:gap-12 animate-marquee">
+                  <div className="flex items-center gap-4 sm:gap-8 sm:animate-marquee overflow-x-auto sm:overflow-visible scrollbar-hide">
                     {/* Grupo 1 */}
-                    <div className="flex items-center gap-8 sm:gap-12">
+                    <div className="flex items-center gap-4 sm:gap-8 flex-shrink-0">
                       {items.map((local) => (
                         <div
                           key={local.id || local.nombre}
@@ -457,8 +457,8 @@ const LandingPage = () => {
                       ))}
                     </div>
 
-                    {/* Grupo 2 duplicado para loop suave */}
-                    <div className="flex items-center gap-8 sm:gap-12" aria-hidden="true">
+                    {/* Grupo 2 duplicado para loop suave (solo tiene efecto con marquee en sm+) */}
+                    <div className="hidden sm:flex items-center gap-8 sm:gap-12 flex-shrink-0" aria-hidden="true">
                       {items.map((local) => (
                         <div
                           key={`dup-${local.id || local.nombre}`}

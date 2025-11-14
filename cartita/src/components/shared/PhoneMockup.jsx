@@ -8,6 +8,7 @@ const PhoneMockup = () => {
   const [showQR, setShowQR] = useState(false);
   const [showImage, setShowImage] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [showCart, setShowCart] = useState(false);
 
   useEffect(() => {
     const updateTime = () => {
@@ -26,9 +27,9 @@ const PhoneMockup = () => {
   return (
     <div className="relative animate-float">
       {/* Phone Frame */}
-      <div className="relative w-[300px] h-[600px] bg-gray-900 rounded-[45px] p-3 shadow-2xl ring-8 ring-gray-800/50">
+      <div className="relative w-[300px] h-[600px] bg-gray-900 rounded-[45px] p-3 shadow-2xl ring-8 ring-gray-800/50 overflow-hidden">
         {/* Screen */}
-        <div className="w-full h-full bg-white rounded-[36px] overflow-hidden relative">
+        <div className="w-full h-full bg-white rounded-[36px] overflow-hidden relative transform scale-[0.96] origin-center">
           {/* Status Bar */}
           <div className="bg-gradient-to-r from-orange-500 to-red-500 h-7 flex items-center justify-between px-5">
             <span className="text-white text-xs font-bold">{currentTime || '9:41'}</span>
@@ -45,57 +46,125 @@ const PhoneMockup = () => {
             </div>
           </div>
 
-          {/* Content */}
-          <div className="p-5 space-y-3 h-full overflow-y-auto pb-24">
-            {/* Header */}
-            <div className="text-center mb-5">
-              <h3 className="text-xl font-bold text-gray-900">Menú Digital</h3>
-              <p className="text-xs text-gray-500 mt-1">Sabores Caseros</p>
+          {/* Content wrapper with slide animation */}
+          <div className="relative h-full">
+            {/* Menu Screen */}
+            <div
+              className={`absolute inset-0 p-5 space-y-3 pb-24 overflow-y-auto transition-transform duration-500 ${
+                showCart ? '-translate-x-full' : 'translate-x-0'
+              }`}
+            >
+              {/* Header */}
+              <div className="text-center mb-5">
+                <h3 className="text-xl font-bold text-gray-900">Menú Digital</h3>
+                <p className="text-xs text-gray-500 mt-1">Sabores Caseros</p>
+              </div>
+
+              {/* Menu Items */}
+              {[
+                { name: 'Milanesa con papas', desc: 'Milanesa casera con papas fritas y ensalada mixta', price: '$2.500', image: milanesaImg },
+                { name: 'QUINTUPLE Hamburgesa', desc: 'Cinco medallones de carne, queso cheddar, panceta y papas fritas', price: '$2.800', image: 'https://dx49ypn7lfv84.cloudfront.net/479/54BHEfFuou-AlMQH.jpg' },
+                { name: 'Milanesa a caballo', desc: 'Milanesa con dos huevos fritos y papas rústicas', price: '$2.900', image: 'https://hoycocino.com.ar/wp-content/uploads/2023/08/milanesa-a-caballo-1024x681.jpg' }
+              ].map((item, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => {
+                    setSelectedItem(item);
+                    setShowImage(true);
+                  }}
+                  className="w-full text-left bg-white border-2 border-gray-100 rounded-xl p-3 flex gap-3 hover:border-orange-300 hover:shadow-md transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500/60"
+                >
+                  {item.image ? (
+                    <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 shadow-md">
+                      <img
+                        src={item.image?.src ?? item.image}
+                        alt={item.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-red-500 rounded-xl flex-shrink-0 shadow-md"></div>
+                  )}
+                  <div className="flex-1">
+                    <h4 className="text-sm font-bold text-gray-900">{item.name}</h4>
+                    <p className="text-xs text-gray-500 line-clamp-2 mt-0.5">{item.desc}</p>
+                    <p className="text-base font-bold text-orange-600 mt-1">{item.price}</p>
+                  </div>
+                </button>
+              ))}
             </div>
 
-            {/* Menu Items */}
-            {[
-              { name: 'Milanesa con papas', desc: 'Milanesa casera con papas fritas y ensalada mixta', price: '$2.500', image: milanesaImg },
-              { name: 'QUINTUPLE Hamburgesa', desc: 'Cinco medallones de carne, queso cheddar, panceta y papas fritas', price: '$2.800', image: 'https://dx49ypn7lfv84.cloudfront.net/479/54BHEfFuou-AlMQH.jpg' },
-              { name: 'Milanesa a caballo', desc: 'Milanesa con dos huevos fritos y papas rústicas', price: '$2.900', image: 'https://hoycocino.com.ar/wp-content/uploads/2023/08/milanesa-a-caballo-1024x681.jpg' }
-            ].map((item, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => {
-                  setSelectedItem(item);
-                  setShowImage(true);
-                }}
-                className="w-full text-left bg-white border-2 border-gray-100 rounded-xl p-3 flex gap-3 hover:border-orange-300 hover:shadow-md transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500/60"
-              >
-                {item.image ? (
-                  <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 shadow-md">
-                    <img
-                      src={item.image?.src ?? item.image}
-                      alt={item.name}
-                      className="w-full h-full object-cover"
+            {/* Cart Screen */}
+            <div
+              className={`absolute inset-0 p-5 pb-24 flex flex-col items-center justify-between transition-transform duration-500 ${
+                showCart ? 'translate-x-0' : 'translate-x-full'
+              }`}
+            >
+              <div className="w-full">
+                <div className="text-center mb-4">
+                  <h3 className="text-xl font-bold text-gray-900">Tu carrito</h3>
+                  <p className="text-xs text-gray-500 mt-1">Mesa 4 · 3 productos</p>
+                </div>
+
+                <div className="bg-orange-50 border border-orange-100 rounded-2xl p-3 mb-4">
+                  <div className="flex justify-between text-xs text-gray-700 mb-1">
+                    <span>Milanesa con papas</span>
+                    <span>$2.500</span>
+                  </div>
+                  <div className="flex justify-between text-xs text-gray-700 mb-1">
+                    <span>QUINTUPLE Hamburgesa</span>
+                    <span>$2.800</span>
+                  </div>
+                  <div className="flex justify-between text-xs text-gray-700 mb-1">
+                    <span>Milanesa a caballo</span>
+                    <span>$2.900</span>
+                  </div>
+                  <div className="border-t border-orange-100 mt-2 pt-2 flex justify-between text-xs font-semibold text-gray-900">
+                    <span>Total</span>
+                    <span>$8.200</span>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-2xl border border-gray-100 p-3 flex flex-col items-center">
+                  <p className="text-xs text-gray-600 mb-2 text-center">
+                    Escaneá este QR para confirmar y pagar tu pedido
+                  </p>
+                  <div className="bg-white p-2 rounded-xl border border-gray-100 mb-2">
+                    <QRCodeSVG
+                      value="https://cartita.digital"
+                      size={120}
+                      level="H"
+                      includeMargin={false}
+                      fgColor="#FF6B35"
                     />
                   </div>
-                ) : (
-                  <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-red-500 rounded-xl flex-shrink-0 shadow-md"></div>
-                )}
-                <div className="flex-1">
-                  <h4 className="text-sm font-bold text-gray-900">{item.name}</h4>
-                  <p className="text-xs text-gray-500 line-clamp-2 mt-0.5">{item.desc}</p>
-                  <p className="text-base font-bold text-orange-600 mt-1">{item.price}</p>
+                  <span className="text-xs font-medium text-gray-500">cartita.digital</span>
                 </div>
-              </button>
-            ))}
-          </div>
+              </div>
 
-          {/* Bottom Button */}
-          <div className="absolute bottom-5 left-5 right-5">
-            <button 
-              onClick={() => setShowQR(true)}
-              className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-3.5 rounded-xl font-bold text-sm shadow-xl hover:shadow-2xl transition-all transform hover:scale-105"
-            >
-              Ver Carrito (3)
-            </button>
+              <div className="w-full space-y-2">
+                <button
+                  type="button"
+                  onClick={() => setShowCart(false)}
+                  className="w-full bg-gray-100 text-gray-800 py-3 rounded-xl text-xs font-semibold hover:bg-gray-200 transition"
+                >
+                  Volver al menú
+                </button>
+              </div>
+            </div>
+
+            {/* Bottom Button (only visible en menú) */}
+            {!showCart && (
+              <div className="absolute bottom-4 left-6 right-6">
+                <button
+                  onClick={() => setShowCart(true)}
+                  className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 rounded-xl font-semibold text-[13px] shadow-lg hover:shadow-xl transition-all transform hover:scale-102"
+                >
+                  Ver carrito (3)
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
