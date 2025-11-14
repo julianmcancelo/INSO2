@@ -414,7 +414,7 @@ const LandingPage = () => {
               <span className="text-orange-500">Marcas</span> que confían en nosotros
             </p>
             <p className="text-xs sm:text-sm text-gray-500">
-              Locales reales que ya usan Cartita en su día a día
+              Restaurantes como el tuyo que ya están tomando pedidos con Cartita
             </p>
           </div>
 

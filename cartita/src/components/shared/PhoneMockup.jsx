@@ -55,26 +55,27 @@ const PhoneMockup = () => {
 
             {/* Menu Items */}
             {[
-              { name: 'Milanesa con papas', desc: 'Con papas fritas y ensalada', price: '$2.500', image: milanesaImg },
-              { name: 'QUINTUPLE Hamburgesa', desc: '+ papas', price: '$2.800', image: 'https://dx49ypn7lfv84.cloudfront.net/479/54BHEfFuou-AlMQH.jpg' },
-              { name: 'Milanesa a caballo', desc: 'A caballo con huevo frito', price: '$2.900', image: null }
+              { name: 'Milanesa con papas', desc: 'Milanesa casera con papas fritas y ensalada mixta', price: '$2.500', image: milanesaImg },
+              { name: 'QUINTUPLE Hamburgesa', desc: 'Cinco medallones de carne, queso cheddar, panceta y papas fritas', price: '$2.800', image: 'https://dx49ypn7lfv84.cloudfront.net/479/54BHEfFuou-AlMQH.jpg' },
+              { name: 'Milanesa a caballo', desc: 'Milanesa con dos huevos fritos y papas rústicas', price: '$2.900', image: 'https://hoycocino.com.ar/wp-content/uploads/2023/08/milanesa-a-caballo-1024x681.jpg' }
             ].map((item, idx) => (
-              <div key={idx} className="bg-white border-2 border-gray-100 rounded-xl p-3 flex gap-3 hover:border-orange-300 transition-all shadow-sm">
+              <button
+                key={idx}
+                type="button"
+                onClick={() => {
+                  setSelectedItem(item);
+                  setShowImage(true);
+                }}
+                className="w-full text-left bg-white border-2 border-gray-100 rounded-xl p-3 flex gap-3 hover:border-orange-300 hover:shadow-md transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500/60"
+              >
                 {item.image ? (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSelectedItem(item);
-                      setShowImage(true);
-                    }}
-                    className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  >
+                  <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 shadow-md">
                     <img
                       src={item.image?.src ?? item.image}
                       alt={item.name}
                       className="w-full h-full object-cover"
                     />
-                  </button>
+                  </div>
                 ) : (
                   <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-red-500 rounded-xl flex-shrink-0 shadow-md"></div>
                 )}
@@ -83,7 +84,7 @@ const PhoneMockup = () => {
                   <p className="text-xs text-gray-500 line-clamp-2 mt-0.5">{item.desc}</p>
                   <p className="text-base font-bold text-orange-600 mt-1">{item.price}</p>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
 
@@ -194,7 +195,7 @@ const PhoneMockup = () => {
                 <X size={24} />
               </button>
 
-              <h3 className="text-lg sm:text-xl font-bold text-center text-gray-900 mb-3">
+              <h3 className="text-lg sm:text-xl font-bold text-center text-gray-900 mb-2">
                 {selectedItem?.name || 'Milanesa con papas'}
               </h3>
 
@@ -206,9 +207,14 @@ const PhoneMockup = () => {
                 />
               </div>
 
-              <p className="text-center text-xs sm:text-sm text-gray-600">
-                Imagen de ejemplo para el menú de Sabores Caseros.
-              </p>
+              <div className="text-center space-y-1">
+                <p className="text-xs sm:text-sm text-gray-600">
+                  {selectedItem?.desc || 'Plato casero preparado en el momento.'}
+                </p>
+                <p className="text-sm sm:text-base font-semibold text-orange-600">
+                  {selectedItem?.price || '$0,00'}
+                </p>
+              </div>
             </div>
           </div>
         </>
