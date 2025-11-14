@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { getLocalStorage, setLocalStorage, removeLocalStorage } from '@/lib/storage';
 
 const CartContext = createContext();
 
@@ -19,23 +20,23 @@ export const CartProvider = ({ children }) => {
 
   // Cargar el carrito y los datos del cliente del localStorage al iniciar
   useEffect(() => {
-    const savedCart = localStorage.getItem('cart');
+    const savedCart = getLocalStorage('cart');
     if (savedCart) {
       try {
         setCart(JSON.parse(savedCart));
       } catch (error) {
         console.error('Error al cargar carrito:', error);
-        localStorage.removeItem('cart');
+        removeLocalStorage('cart');
       }
     }
 
-    const savedClienteInfo = localStorage.getItem('clienteInfo');
+    const savedClienteInfo = getLocalStorage('clienteInfo');
     if (savedClienteInfo) {
       try {
         setClienteInfo(JSON.parse(savedClienteInfo));
       } catch (error) {
         console.error('Error al cargar info del cliente:', error);
-        localStorage.removeItem('clienteInfo');
+        removeLocalStorage('clienteInfo');
       }
     }
   }, []);
@@ -43,9 +44,9 @@ export const CartProvider = ({ children }) => {
   // Guardar el carrito en localStorage cuando cambie
   useEffect(() => {
     if (cart.length > 0) {
-      localStorage.setItem('cart', JSON.stringify(cart));
+      setLocalStorage('cart', JSON.stringify(cart));
     } else {
-      localStorage.removeItem('cart');
+      removeLocalStorage('cart');
     }
   }, [cart]);
 
@@ -95,7 +96,7 @@ export const CartProvider = ({ children }) => {
 
   const clearCart = () => {
     setCart([]);
-    localStorage.removeItem('cart');
+    removeLocalStorage('cart');
   };
 
   const getTotal = () => {
@@ -111,12 +112,12 @@ export const CartProvider = ({ children }) => {
 
   const setClienteData = (data) => {
     setClienteInfo(data);
-    localStorage.setItem('clienteInfo', JSON.stringify(data));
+    setLocalStorage('clienteInfo', JSON.stringify(data));
   };
 
   const clearClienteData = () => {
     setClienteInfo(null);
-    localStorage.removeItem('clienteInfo');
+    removeLocalStorage('clienteInfo');
   };
 
   const value = {

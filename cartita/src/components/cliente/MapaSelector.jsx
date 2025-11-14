@@ -189,7 +189,7 @@ export default function MapaSelector({ onUbicacionSeleccionada, ubicacionInicial
 
           {/* Resultados de búsqueda */}
           {searchResults.length > 0 && (
-            <div className="absolute z-50 w-full mt-2 bg-white border-2 border-gray-200 rounded-xl shadow-xl max-h-60 overflow-y-auto">
+            <div className="absolute z-[9999] w-full mt-2 bg-white border-2 border-gray-200 rounded-xl shadow-xl max-h-60 overflow-y-auto">
               {searchResults.map((result, index) => (
                 <button
                   key={index}

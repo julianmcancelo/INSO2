@@ -2,6 +2,7 @@
 
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { authAPI } from '@/lib/api';
+import { getLocalStorage, setLocalStorage, removeLocalStorage } from '@/lib/storage';
 
 const AuthContext = createContext();
 
@@ -20,8 +21,8 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     // Cargar usuario y token del localStorage
-    const savedToken = localStorage.getItem('token');
-    const savedUser = localStorage.getItem('user');
+    const savedToken = getLocalStorage('token');
+    const savedUser = getLocalStorage('user');
 
     if (savedToken && savedUser) {
       setToken(savedToken);
@@ -29,8 +30,8 @@ export const AuthProvider = ({ children }) => {
         setUser(JSON.parse(savedUser));
       } catch (error) {
         console.error('Error al parsear usuario:', error);
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
+        removeLocalStorage('user');
+        removeLocalStorage('token');
       }
     }
     setLoading(false);
@@ -44,8 +45,8 @@ export const AuthProvider = ({ children }) => {
       setToken(newToken);
       setUser(usuario);
 
-      localStorage.setItem('token', newToken);
-      localStorage.setItem('user', JSON.stringify(usuario));
+      setLocalStorage('token', newToken);
+      setLocalStorage('user', JSON.stringify(usuario));
 
       return { success: true, user: usuario };
     } catch (error) {
@@ -60,8 +61,8 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     setToken(null);
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    removeLocalStorage('token');
+    removeLocalStorage('user');
   };
 
   const value = {
