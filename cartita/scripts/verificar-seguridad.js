@@ -3,7 +3,43 @@
  * Ejecutar: node scripts/verificar-seguridad.js
  */
 
-require('dotenv').config();
+// Cargar variables de entorno manualmente
+const fs = require('fs');
+const path = require('path');
+
+// Intentar cargar .env y .env.local
+function loadEnvFile(filePath) {
+  try {
+    if (fs.existsSync(filePath)) {
+      const envContent = fs.readFileSync(filePath, 'utf8');
+      envContent.split('\n').forEach(line => {
+        // Ignorar comentarios y líneas vacías
+        line = line.trim();
+        if (!line || line.startsWith('#')) return;
+        
+        const match = line.match(/^([^=]+)=(.*)$/);
+        if (match) {
+          const key = match[1].trim();
+          let value = match[2].trim();
+          
+          // Eliminar comillas al inicio y final
+          value = value.replace(/^["'](.*)["']$/, '$1');
+          
+          // Solo establecer si no existe ya
+          if (!process.env[key]) {
+            process.env[key] = value;
+          }
+        }
+      });
+    }
+  } catch (error) {
+    // Continuar sin el archivo
+  }
+}
+
+// Cargar .env primero, luego .env.local (que sobrescribe)
+loadEnvFile(path.join(__dirname, '..', '.env'));
+loadEnvFile(path.join(__dirname, '..', '.env.local'));
 
 console.log('\n🔒 VERIFICACIÓN DE SEGURIDAD\n');
 console.log('='.repeat(50));
@@ -103,9 +139,7 @@ if (process.env.NODE_ENV === 'production') {
 
 console.log('\n🔐 Configuración de Seguridad\n');
 
-// Verificar archivos críticos
-const fs = require('fs');
-const path = require('path');
+// Verificar archivos críticos (fs y path ya están declarados arriba)
 
 const archivosImportantes = [
   'src/lib/middleware.js',

@@ -17,6 +17,8 @@
     "prisma:studio": "prisma studio",
     "prisma:seed": "prisma db seed",
     "security:check": "node scripts/verificar-seguridad.js",
+    "security:generate-jwt": "node scripts/generar-jwt-secret.js",
+    "security:generate-jwt-prod": "node scripts/generar-jwt-separados.js",
     "clean:logs": "node scripts/eliminar-logs.js"
   },
   "dependencies": {
