@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma';
 import { requireRole } from '@/lib/middleware';
 import crypto from 'crypto';
 import { enviarEmailInvitacion } from '@/lib/email';
+import { logInfo, logError } from '@/lib/logger';
 
 // POST - Regenerar invitación para una solicitud aceptada
 export const POST = requireRole('superadmin')(async (request, { params }) => {
@@ -87,12 +88,12 @@ export const POST = requireRole('superadmin')(async (request, { params }) => {
     Promise.resolve().then(async () => {
       try {
         await enviarEmailInvitacion(solicitud.email, nuevoToken, solicitud.nombreNegocio);
-        console.log('✅ Email de invitación regenerada enviado a:', solicitud.email);
+        logInfo('✅ Email de invitación regenerada enviado a:', solicitud.email);
       } catch (emailError) {
-        console.error('⚠️  No se pudo enviar email de invitación:', emailError.message);
+        logError('⚠️  No se pudo enviar email de invitación:', emailError.message);
       }
     }).catch(err => {
-      console.error('⚠️  Error en envío de email:', err.message);
+      logError('⚠️  Error en envío de email:', err.message);
     });
 
     return NextResponse.json({

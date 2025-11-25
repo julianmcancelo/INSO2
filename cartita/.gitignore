@@ -40,3 +40,41 @@ JWT_PRODUCCION.txt
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# Development files
+fotos/
+*.jpg
+*.png
+*.gif
+*.jpeg
+*.webp
+uploads/
+temp/
+.cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Test files
+*.test.js
+*.spec.js
+__tests__/
+coverage/
+
+# Database
+*.sqlite
+*.sqlite3
+*.db

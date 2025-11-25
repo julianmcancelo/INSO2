@@ -6,6 +6,7 @@ import { CheckCircle, Store, User, Mail, Lock, XCircle, Loader, ExternalLink, Ma
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import BrandLogo from '@/components/shared/BrandLogo';
+import { logInfo, logError } from '@/lib/logger';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
@@ -81,7 +82,7 @@ export default function RegistroPage({ params }) {
 
         if (checkResponse.data.exists) {
           // Email ya registrado - mostrar banner informativo pero dejar continuar
-          console.log('ℹ️ Email ya registrado, pero permitiendo crear nuevo local');
+          logInfo('ℹ️ Email ya registrado, pero permitiendo crear nuevo local');
           setEmailExists(true);
         }
       } catch (checkError) {
@@ -178,9 +179,9 @@ export default function RegistroPage({ params }) {
     e.preventDefault();
     e.stopPropagation();
 
-    console.log('Iniciando registro...');
-    console.log('FormData:', formData);
-    console.log('Email exists:', emailExists);
+    logInfo('Iniciando registro...');
+    logInfo('FormData:', formData);
+    logInfo('Email exists:', emailExists);
 
     // Validaciones básicas del local
     if (!formData.nombreLocal || !formData.slugLocal) {
@@ -209,16 +210,10 @@ export default function RegistroPage({ params }) {
     setSubmitting(true);
 
     try {
-      console.log('Enviando datos de registro...');
+      logInfo('Enviando datos de registro...');
       const response = await axios.post(`${API_URL}/api/registro/completar`, {
         token,
-        local: {
-          nombre: formData.nombreLocal,
-          slug: formData.slugLocal,
-          descripcion: formData.descripcion,
-          direccion: formData.direccion,
-          telefono: formData.telefono,
-          email: formData.emailLocal
+        ...formData
         },
         usuario: {
           nombre: formData.nombreUsuario,
@@ -227,7 +222,7 @@ export default function RegistroPage({ params }) {
         }
       });
 
-      console.log('✅ Registro exitoso:', response.data);
+      logInfo('✅ Registro exitoso:', response.data);
       toast.success('¡Registro completado exitosamente!');
       
       // Redirigir al login después de 2 segundos

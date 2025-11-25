@@ -17,7 +17,10 @@ transporter.verify(function (error, success) {
     console.error('❌ Error configuración email:', error.message);
     console.warn('⚠️  Los emails no se enviarán. Verifica EMAIL_USER y EMAIL_PASSWORD');
   } else {
-    console.log('✅ Servidor de email listo');
+    // Solo mostrar log en desarrollo
+    if (process.env.NODE_ENV === 'development') {
+      console.log('✅ Servidor de email listo');
+    }
   }
 });
 

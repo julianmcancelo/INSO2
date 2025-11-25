@@ -1,6 +1,7 @@
 'use client';
 
 import { io } from 'socket.io-client';
+import { logInfo, logError } from '@/lib/logger';
 
 const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3000';
 
@@ -16,15 +17,15 @@ export const initSocket = () => {
     });
 
     socket.on('connect', () => {
-      console.log('Socket conectado:', socket.id);
+      logInfo('Socket conectado:', socket.id);
     });
 
     socket.on('disconnect', () => {
-      console.log('Socket desconectado');
+      logInfo('Socket desconectado');
     });
 
     socket.on('connect_error', (error) => {
-      console.error('Error de conexión socket:', error);
+      logError('Error de conexión socket:', error);
     });
   }
 

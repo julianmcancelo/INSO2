@@ -1,0 +1,52 @@
+========================================
+VARIABLES DE ENTORNO PARA VERCEL
+========================================
+
+Copia y pega estas variables en:
+Vercel → Tu Proyecto → Settings → Environment Variables
+
+IMPORTANTE: NO incluyas las comillas, solo el valor
+
+========================================
+
+Variable: DATABASE_URL
+Valor: mysql://transpo1_cartita:feelthesky1@167.250.5.55:3306/transpo1_cartita
+
+Variable: JWT_SECRET
+Valor: ac09fc636029fd5d86ea9a835a5e5a7799e165a6c1c8989b60986f8d32f13da3abb176b74924a2b46f076403451252d2a4b84b63935cd05012bc520da4a144ec
+
+Variable: NEXT_PUBLIC_API_URL
+Valor: https://cartita.digital
+
+Variable: NEXT_PUBLIC_SOCKET_URL
+Valor: https://cartita.digital
+
+Variable: EMAIL_HOST
+Valor: smtp.gmail.com
+
+Variable: EMAIL_PORT
+Valor: 587
+
+Variable: EMAIL_USER
+Valor: cartita.digitalok@gmail.com
+
+Variable: EMAIL_PASSWORD
+Valor: xybfxjsaguavbzea
+
+Variable: EMAIL_FROM
+Valor: Cartita <cartita.digitalok@gmail.com>
+
+Variable: SUPERADMIN_EMAIL
+Valor: cartita.digitalok@gmail.com
+
+========================================
+CHECKLIST
+========================================
+
+[ ] Todas las variables agregadas en Vercel
+[ ] Aplicadas a: Production, Preview, Development
+[ ] Redeploy realizado después de agregar variables
+[ ] Cookies del navegador limpiadas
+[ ] Sitio probado y funcionando
+
+========================================

@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { useAuth } from '@/context/AuthContext';
 import axios from 'axios';
 import BrandLogo from '@/components/shared/BrandLogo';
+import { logInfo, logError } from '@/lib/logger';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
@@ -32,7 +33,7 @@ export default function SeleccionarLocalPage() {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      console.log('Locales recibidos:', response.data.locales);
+      logInfo('Locales recibidos:', response.data.locales);
 
       // La API ya devuelve solo los locales accesibles
       const localesAccesibles = response.data.locales || [];
@@ -52,8 +53,8 @@ export default function SeleccionarLocalPage() {
   };
 
   const seleccionarLocal = (local) => {
-    console.log('🏪 Seleccionando local:', local);
-    console.log('👤 Usuario actual:', user);
+    logInfo('🏪 Seleccionando local:', local);
+    logInfo('👤 Usuario actual:', user);
     
     // Actualizar el usuario con el local seleccionado
     const updatedUser = { 
@@ -66,13 +67,13 @@ export default function SeleccionarLocalPage() {
       }
     };
     
-    console.log('✅ Usuario actualizado:', updatedUser);
+    logInfo('✅ Usuario actualizado:', updatedUser);
     
     setUser(updatedUser);
     
     // Guardar en localStorage
     localStorage.setItem('user', JSON.stringify(updatedUser));
-    console.log('💾 Guardado en localStorage');
+    logInfo('💾 Guardado en localStorage');
     
     toast.success(`Local "${local.nombre}" seleccionado`);
     

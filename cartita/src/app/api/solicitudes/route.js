@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { enviarEmailConfirmacionSolicitud } from '@/lib/email';
+import { logInfo, logError } from '@/lib/logger';
 
 // POST - Crear solicitud desde landing page
 export async function POST(request) {
@@ -49,12 +50,12 @@ export async function POST(request) {
     Promise.resolve().then(async () => {
       try {
         await enviarEmailConfirmacionSolicitud(solicitud.email, solicitud.nombreNegocio);
-        console.log('✅ Email de confirmación enviado a:', solicitud.email);
+        logInfo('✅ Email de confirmación enviado a:', solicitud.email);
       } catch (emailError) {
-        console.error('⚠️  No se pudo enviar email de confirmación:', emailError.message);
+        logError('⚠️  No se pudo enviar email de confirmación:', emailError.message);
       }
     }).catch(err => {
-      console.error('⚠️  Error en envío de email:', err.message);
+      logError('⚠️  Error en envío de email:', err.message);
     });
 
     // TODO: Enviar email de notificación al admin

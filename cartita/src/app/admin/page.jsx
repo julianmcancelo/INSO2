@@ -6,14 +6,15 @@ import { useRouter } from 'next/navigation';
 import { LayoutDashboard, Package, ShoppingCart, Users, QrCode, Settings, LogOut, Store, Clock, FileText, AlertCircle, CheckCircle, RefreshCw } from 'lucide-react';
 import BrandLogo from '@/components/shared/BrandLogo';
 import { toast } from 'react-toastify';
+import { logInfo } from '@/lib/logger';
 
 export default function AdminDashboard() {
   const { user, logout } = useAuth();
   const router = useRouter();
 
-  console.log('Dashboard - Usuario cargado:', user);
-  console.log('Dashboard - Local ID:', user?.localId);
-  console.log('Dashboard - Local:', user?.local);
+  logInfo('Dashboard - Usuario cargado:', user);
+  logInfo('Dashboard - Local ID:', user?.localId);
+  logInfo('Dashboard - Local:', user?.local);
 
   const handleLogout = () => {
     logout();
