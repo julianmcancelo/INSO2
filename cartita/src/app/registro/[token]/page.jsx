@@ -213,8 +213,7 @@ export default function RegistroPage({ params }) {
       logInfo('Enviando datos de registro...');
       const response = await axios.post(`${API_URL}/api/registro/completar`, {
         token,
-        ...formData
-        },
+        ...formData,
         usuario: {
           nombre: formData.nombreUsuario,
           email: formData.emailUsuario,
