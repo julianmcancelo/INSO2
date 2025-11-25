@@ -23,6 +23,8 @@ export default function Step4MetodoPago({
   const [comprobantePreview, setComprobantePreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [copiado, setCopiado] = useState(null);
+  const [montoPaga, setMontoPaga] = useState('');
+  const [necesitaCambio, setNecesitaCambio] = useState(false);
 
   const handleMetodoPagoSelect = (metodo) => {
     setMetodoPago(metodo);
@@ -83,7 +85,7 @@ export default function Step4MetodoPago({
     setLoading(true);
 
     try {
-      const pedidoData = {
+      const pedidoPayload = {
         localId: local.id,
         nombreCliente: pedidoData.nombreCliente,
         telefonoCliente: pedidoData.telefonoCliente,
@@ -103,10 +105,15 @@ export default function Step4MetodoPago({
         total: getTotal(),
         metodoPago: metodoPago,
         comprobanteBase64: comprobante,
-        estadoPago: metodoPago === 'transferencia' ? 'pendiente' : 'confirmado'
+        estadoPago: metodoPago === 'transferencia' ? 'pendiente' : 'confirmado',
+        // Datos adicionales para efectivo
+        ...(metodoPago === 'efectivo' && necesitaCambio && montoPaga && {
+          montoPaga: parseFloat(montoPaga),
+          cambioRequerido: parseFloat(montoPaga) - getTotal()
+        })
       };
 
-      const response = await pedidoAPI.create(pedidoData);
+      const response = await pedidoAPI.create(pedidoPayload);
       
       clearCart();
       toast.success('¡Pedido realizado exitosamente!', {
@@ -152,6 +159,12 @@ export default function Step4MetodoPago({
 
       {/* Métodos de Pago */}
       <div className="space-y-3">
+        {!local.aceptaEfectivo && !local.aceptaTransferencia && !local.aceptaMercadoPago && (
+          <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 text-center">
+            <p className="text-red-800 font-semibold">⚠️ Este local no tiene métodos de pago configurados</p>
+            <p className="text-sm text-red-600 mt-1">Por favor contactá al local para coordinar el pago</p>
+          </div>
+        )}
         {/* Efectivo */}
         {local.aceptaEfectivo && (
           <button
@@ -171,7 +184,7 @@ export default function Step4MetodoPago({
               <div className="flex-1 text-left">
                 <h3 className="text-xl font-bold mb-1">Efectivo</h3>
                 <p className={`text-sm ${metodoPago === 'efectivo' ? 'text-white/80' : 'text-gray-600'}`}>
-                  Pagás al recibir el pedido
+                  {pedidoData.tipoEntrega === 'takeaway' ? 'Pagás al retirar' : 'Pagás al recibir el pedido'}
                 </p>
               </div>
               {metodoPago === 'efectivo' && (
@@ -179,6 +192,67 @@ export default function Step4MetodoPago({
               )}
             </div>
           </button>
+        )}
+
+        {/* Opciones de Efectivo */}
+        {metodoPago === 'efectivo' && (
+          <div className="bg-green-50 border-2 border-green-200 rounded-xl p-4 space-y-4 animate-fadeIn">
+            <div>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={necesitaCambio}
+                  onChange={(e) => {
+                    setNecesitaCambio(e.target.checked);
+                    if (!e.target.checked) setMontoPaga('');
+                  }}
+                  className="w-5 h-5 rounded border-2 border-green-600 text-green-600 focus:ring-2 focus:ring-green-500"
+                />
+                <span className="font-semibold text-green-900">Necesito cambio</span>
+              </label>
+            </div>
+
+            {necesitaCambio && (
+              <div className="space-y-2 animate-fadeIn">
+                <label className="block text-sm font-semibold text-green-900">
+                  ¿Con cuánto vas a pagar?
+                </label>
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-600 font-bold text-lg">$</span>
+                  <input
+                    type="number"
+                    value={montoPaga}
+                    onChange={(e) => setMontoPaga(e.target.value)}
+                    placeholder="Ej: 5000"
+                    min={getTotal()}
+                    step="100"
+                    className="w-full pl-8 pr-4 py-3 border-2 border-green-300 rounded-xl focus:border-green-600 focus:ring-4 focus:ring-green-600/20 transition-all text-lg font-semibold"
+                  />
+                </div>
+                {montoPaga && parseFloat(montoPaga) > getTotal() && (
+                  <div className="bg-white border-2 border-green-300 rounded-lg p-3">
+                    <p className="text-sm text-green-800">
+                      <span className="font-semibold">Tu cambio será:</span>{' '}
+                      <span className="text-xl font-bold text-green-900">
+                        ${(parseFloat(montoPaga) - getTotal()).toFixed(2)}
+                      </span>
+                    </p>
+                  </div>
+                )}
+                {montoPaga && parseFloat(montoPaga) < getTotal() && (
+                  <p className="text-sm text-red-600 font-medium">
+                    ⚠️ El monto debe ser mayor o igual al total del pedido
+                  </p>
+                )}
+              </div>
+            )}
+
+            <div className="bg-white border border-green-300 rounded-lg p-3">
+              <p className="text-sm text-green-800">
+                💡 <strong>Recordá:</strong> Tené el dinero preparado para agilizar la entrega
+              </p>
+            </div>
+          </div>
         )}
 
         {/* Transferencia */}
@@ -200,7 +274,7 @@ export default function Step4MetodoPago({
               <div className="flex-1 text-left">
                 <h3 className="text-xl font-bold mb-1">Transferencia</h3>
                 <p className={`text-sm ${metodoPago === 'transferencia' ? 'text-white/80' : 'text-gray-600'}`}>
-                  Transferencia bancaria
+                  Transferencia o depósito bancario
                 </p>
               </div>
               {metodoPago === 'transferencia' && (
@@ -238,9 +312,13 @@ export default function Step4MetodoPago({
       {metodoPago === 'transferencia' && (
         <div className="space-y-4 animate-fadeIn">
           <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 md:p-5">
-            <h3 className="font-bold text-blue-900 mb-4 text-base md:text-lg">
+            <h3 className="font-bold text-blue-900 mb-2 text-base md:text-lg flex items-center gap-2">
+              <CreditCard size={20} />
               Datos para transferir
             </h3>
+            <p className="text-sm text-blue-700 mb-4">
+              Transferí el monto exacto y subí el comprobante
+            </p>
             
             <div className="space-y-3">
               {/* CBU/Alias */}
@@ -354,8 +432,8 @@ export default function Step4MetodoPago({
           </div>
 
           <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-3 md:p-4">
-            <p className="text-xs md:text-sm text-yellow-800">
-              Tu pedido será confirmado una vez que verifiquemos el pago
+            <p className="text-xs md:text-sm text-yellow-800 font-medium">
+              ⏳ <strong>Importante:</strong> Tu pedido será confirmado una vez que verifiquemos el pago. Esto puede demorar unos minutos.
             </p>
           </div>
         </div>

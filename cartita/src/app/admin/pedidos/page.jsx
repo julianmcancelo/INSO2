@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, RefreshCw, Clock, CheckCircle } from 'lucide-react';
+import { ArrowLeft, RefreshCw, Clock, CheckCircle, Banknote, CreditCard, MapPin, Phone, FileImage } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { useAuth } from '@/context/AuthContext';
 import { pedidoAPI } from '@/lib/api';
@@ -170,6 +170,33 @@ export default function AdminPedidos() {
 
                   {/* Contenido */}
                   <div className="p-4">
+                    {/* Información de contacto y entrega */}
+                    <div className="bg-gray-50 rounded-lg p-3 mb-4 space-y-2 text-sm">
+                      <div className="flex items-center gap-2 text-gray-700">
+                        <Phone size={16} />
+                        <span>{pedido.telefonoCliente}</span>
+                      </div>
+                      {pedido.tipoEntrega === 'envio' && pedido.direccion && (
+                        <div className="flex items-start gap-2 text-gray-700">
+                          <MapPin size={16} className="mt-0.5 flex-shrink-0" />
+                          <div>
+                            <p className="font-medium">Envío a domicilio</p>
+                            <p className="text-xs">{pedido.direccion}</p>
+                            {pedido.referenciaDireccion && (
+                              <p className="text-xs text-gray-600">Ref: {pedido.referenciaDireccion}</p>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                      {pedido.tipoEntrega === 'takeaway' && (
+                        <div className="flex items-center gap-2 text-gray-700">
+                          <MapPin size={16} />
+                          <span className="font-medium">Retiro en el local</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Items del pedido */}
                     <div className="space-y-2 mb-4">
                       {pedido.items?.map((item, idx) => (
                         <div key={idx} className="flex justify-between text-sm">
@@ -179,12 +206,64 @@ export default function AdminPedidos() {
                       ))}
                     </div>
 
-                    <div className="border-t pt-3 flex justify-between items-center">
+                    <div className="border-t pt-3 flex justify-between items-center mb-4">
                       <span className="font-bold text-lg">Total:</span>
                       <span className="font-bold text-xl text-primary">
                         ${parseFloat(pedido.total || 0).toFixed(2)}
                       </span>
                     </div>
+
+                    {/* Información de pago */}
+                    {pedido.metodoPago && (
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          {pedido.metodoPago === 'efectivo' ? (
+                            <Banknote size={18} className="text-green-600" />
+                          ) : (
+                            <CreditCard size={18} className="text-blue-600" />
+                          )}
+                          <span className="font-semibold text-sm">
+                            {pedido.metodoPago === 'efectivo' ? 'Pago en Efectivo' : 'Transferencia Bancaria'}
+                          </span>
+                        </div>
+                        
+                        {pedido.metodoPago === 'efectivo' && pedido.montoPaga && (
+                          <div className="text-sm space-y-1">
+                            <p className="text-gray-700">
+                              Cliente paga con: <span className="font-bold">${parseFloat(pedido.montoPaga).toFixed(2)}</span>
+                            </p>
+                            {pedido.cambioRequerido && parseFloat(pedido.cambioRequerido) > 0 && (
+                              <p className="text-orange-700 font-semibold">
+                                💰 Cambio a entregar: ${parseFloat(pedido.cambioRequerido).toFixed(2)}
+                              </p>
+                            )}
+                          </div>
+                        )}
+
+                        {pedido.metodoPago === 'transferencia' && (
+                          <div className="text-sm space-y-1">
+                            <div className="flex items-center gap-2">
+                              <span className={`px-2 py-0.5 rounded text-xs font-medium ${
+                                pedido.estadoPago === 'confirmado' 
+                                  ? 'bg-green-100 text-green-800' 
+                                  : 'bg-yellow-100 text-yellow-800'
+                              }`}>
+                                {pedido.estadoPago === 'confirmado' ? 'Pago Verificado' : 'Pendiente de Verificación'}
+                              </span>
+                            </div>
+                            {pedido.comprobanteBase64 && (
+                              <button
+                                onClick={() => window.open(pedido.comprobanteBase64, '_blank')}
+                                className="flex items-center gap-1 text-blue-600 hover:text-blue-800 text-xs mt-2"
+                              >
+                                <FileImage size={14} />
+                                Ver comprobante
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    )}
 
                     {/* Botones de acción */}
                     <div className="mt-4 flex gap-2">

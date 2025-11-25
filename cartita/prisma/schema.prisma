@@ -114,6 +114,8 @@ model Pedido {
   metodoPago      String?  @map("metodo_pago") @db.VarChar(50)
   comprobanteBase64 String? @map("comprobante_base64") @db.LongText
   estadoPago      String?  @default("pendiente") @map("estado_pago") @db.VarChar(50)
+  montoPaga       Decimal? @map("monto_paga") @db.Decimal(10, 2)
+  cambioRequerido Decimal? @map("cambio_requerido") @db.Decimal(10, 2)
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
 

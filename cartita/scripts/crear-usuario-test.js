@@ -12,7 +12,7 @@ async function main() {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   // Verificar si ya existe
-  const existingUser = await prisma.usuario.findUnique({
+  const existingUser = await prisma.usuario.findFirst({
     where: { email }
   });
 
@@ -21,7 +21,7 @@ async function main() {
     console.log('Email:', email);
     console.log('Actualizando contraseña...');
     
-    await prisma.usuario.update({
+    await prisma.usuario.updateMany({
       where: { email },
       data: { password: hashedPassword }
     });

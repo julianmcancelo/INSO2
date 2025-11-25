@@ -76,7 +76,9 @@ export async function POST(request) {
       notas,
       metodoPago,
       comprobanteBase64,
-      estadoPago
+      estadoPago,
+      montoPaga,
+      cambioRequerido
     } = body;
 
     // Validaciones
@@ -101,12 +103,12 @@ export async function POST(request) {
       `INSERT INTO pedidos 
        (local_id, numero_pedido, nombre_cliente, telefono_cliente, 
         tipo_entrega, direccion, latitud, longitud, referencia_direccion,
-        total, notas, estado, metodo_pago, comprobante_base64, estado_pago) 
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, 'pendiente', $12, $13, $14) 
+        total, notas, estado, metodo_pago, comprobante_base64, estado_pago, monto_paga, cambio_requerido) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, 'pendiente', $12, $13, $14, $15, $16) 
        RETURNING *`,
       [localId, numeroPedido, nombreCliente, telefonoCliente, 
        tipoEntrega, direccion, latitud, longitud, referenciaDireccion,
-       total, notas, metodoPago, comprobanteBase64, estadoPago || 'pendiente']
+       total, notas, metodoPago, comprobanteBase64, estadoPago || 'pendiente', montoPaga || null, cambioRequerido || null]
     );
 
     const pedido = pedidoResult.rows[0];

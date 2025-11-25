@@ -10,13 +10,14 @@ async function main() {
   const hashedPassword = await bcrypt.hash('admin123', 10);
   
   const superadmin = await prisma.usuario.upsert({
-    where: { email: 'cartita.digitalok@gmail.com' },
+    where: { email_local_unique: { email: 'cartita.digitalok@gmail.com', localId: null } },
     update: {},
     create: {
       nombre: 'Super Admin',
       email: 'cartita.digitalok@gmail.com',
       password: hashedPassword,
       rol: 'superadmin',
+      localId: null,
       activo: true
     }
   });

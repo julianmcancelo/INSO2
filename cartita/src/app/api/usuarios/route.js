@@ -69,7 +69,7 @@ export const POST = requireRole('superadmin')(async (request) => {
     }
 
     // Verificar que el email no exista ya
-    const existente = await prisma.usuario.findUnique({
+    const existente = await prisma.usuario.findFirst({
       where: { email }
     });
 

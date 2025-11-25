@@ -15,13 +15,13 @@ export async function POST(request) {
       );
     }
 
-    // Buscar el usuario
-    const usuario = await prisma.usuario.findUnique({
+    // Buscar usuarios con ese email (puede haber múltiples)
+    const usuarios = await prisma.usuario.findMany({
       where: { email }
     });
 
     // Por seguridad, siempre devolver éxito (no revelar si el email existe)
-    if (!usuario) {
+    if (usuarios.length === 0) {
       return NextResponse.json({
         success: true,
         message: 'Si el email existe, recibirás un enlace de recuperación'
@@ -33,21 +33,23 @@ export async function POST(request) {
     const expiraEn = new Date();
     expiraEn.setHours(expiraEn.getHours() + 1); // Vence en 1 hora
 
-    // Guardar el token en la base de datos
-    await prisma.passwordReset.create({
-      data: {
-        usuarioId: usuario.id,
-        token,
-        expiraEn
-      }
-    });
+    // Guardar el token para todos los usuarios con ese email
+    for (const usuario of usuarios) {
+      await prisma.passwordReset.create({
+        data: {
+          usuarioId: usuario.id,
+          token,
+          expiraEn
+        }
+      });
+    }
 
-    // Enviar el email
+    // Enviar el email (solo al primer usuario para evitar duplicados)
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
     const resetUrl = `${baseUrl}/admin/restablecer-password/${token}`;
 
     try {
-      await enviarEmailRecuperacion(email, resetUrl, usuario.nombre);
+      await enviarEmailRecuperacion(email, resetUrl, usuarios[0].nombre);
     } catch (emailError) {
       // No fallar la petición si el email falla
     }
