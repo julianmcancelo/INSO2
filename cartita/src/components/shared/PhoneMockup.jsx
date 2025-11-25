@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { X, Utensils } from 'lucide-react';
-import milanesaImg from '../../../fotos/1.jpg';
 
 const PhoneMockup = () => {
   const [currentTime, setCurrentTime] = useState('');
@@ -62,7 +61,7 @@ const PhoneMockup = () => {
 
               {/* Items del Menú */}
               {[
-                { name: 'Milanesa con papas', desc: 'Milanesa casera con papas fritas y ensalada mixta', price: '$2.500', image: milanesaImg },
+                { name: 'Milanesa con papas', desc: 'Milanesa casera con papas fritas y ensalada mixta', price: '$2.500', image: 'https://images.unsplash.com/photo-1596834134639-e93e4abf555b?w=400&h=300&fit=crop' },
                 { name: 'QUINTUPLE Hamburgesa', desc: 'Cinco medallones de carne, queso cheddar, panceta y papas fritas', price: '$2.800', image: 'https://dx49ypn7lfv84.cloudfront.net/479/54BHEfFuou-AlMQH.jpg' },
                 { name: 'Milanesa a caballo', desc: 'Milanesa con dos huevos fritos y papas rústicas', price: '$2.900', image: 'https://hoycocino.com.ar/wp-content/uploads/2023/08/milanesa-a-caballo-1024x681.jpg' }
               ].map((item, idx) => (
@@ -270,7 +269,7 @@ const PhoneMockup = () => {
 
               <div className="rounded-2xl overflow-hidden shadow-lg mb-3">
                 <img
-                  src={(selectedItem?.image && (selectedItem.image.src ?? selectedItem.image)) || (milanesaImg?.src ?? milanesaImg)}
+                  src={(selectedItem?.image && (selectedItem.image.src ?? selectedItem.image)) || 'https://images.unsplash.com/photo-1596834134639-e93e4abf555b?w=400&h=300&fit=crop'}
                   alt={selectedItem?.name || 'Milanesa con papas'}
                   className="w-full h-auto object-cover"
                 />
